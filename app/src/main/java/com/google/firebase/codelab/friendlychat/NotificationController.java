@@ -217,6 +217,7 @@ public class NotificationController {
                     notification.put("body", body);
                     notification.put("title", title);
                     notification.put("icon", icon);
+                    notification.put("bbb", "bbb");
 
                     JSONObject data = new JSONObject();
                     data.put("message", message);

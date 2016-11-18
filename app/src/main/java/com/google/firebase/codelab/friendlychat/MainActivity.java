@@ -76,8 +76,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
-import com.pushwoosh.fragment.PushEventListener;
-import com.pushwoosh.fragment.PushFragment;
+
 
 import org.json.JSONArray;
 import org.w3c.dom.Comment;
@@ -94,7 +93,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends FragmentActivity implements PushEventListener, OnMapReadyCallback
+public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         ,GoogleApiClient.OnConnectionFailedListener {
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
 
@@ -113,36 +112,36 @@ public class MainActivity extends FragmentActivity implements PushEventListener,
 
     private int masgId = 0;
 
-
-    @Override
-    public void doOnRegistered(String registrationId)
-    {
-        //mGeneralStatus.setText(registrationId);
-    }
-
-    @Override
-    public void doOnRegisteredError(String errorId)
-    {
-        //mGeneralStatus.setText(errorId);
-    }
-
-    @Override
-    public void doOnUnregistered(final String message)
-    {
-       // mGeneralStatus.setText(message);
-    }
-
-    @Override
-    public void doOnUnregisteredError(String errorId)
-    {
-       // mGeneralStatus.setText(errorId);
-    }
-
-    @Override
-    public void doOnMessageReceive(String message)
-    {
-       // mGeneralStatus.setText(message);
-    }
+//
+//    @Override
+//    public void doOnRegistered(String registrationId)
+//    {
+//        //mGeneralStatus.setText(registrationId);
+//    }
+//
+//    @Override
+//    public void doOnRegisteredError(String errorId)
+//    {
+//        //mGeneralStatus.setText(errorId);
+//    }
+//
+//    @Override
+//    public void doOnUnregistered(final String message)
+//    {
+//       // mGeneralStatus.setText(message);
+//    }
+//
+//    @Override
+//    public void doOnUnregisteredError(String errorId)
+//    {
+//       // mGeneralStatus.setText(errorId);
+//    }
+//
+//    @Override
+//    public void doOnMessageReceive(String message)
+//    {
+//       // mGeneralStatus.setText(message);
+//    }
 
     @Override
     public void onMapReady(final GoogleMap aGoogleMap) {
@@ -227,14 +226,14 @@ public class MainActivity extends FragmentActivity implements PushEventListener,
 
     // Firebase instance variables
 
-    @Override
-    public void onNewIntent(Intent intent)
-    {
-        super.onNewIntent(intent);
-
-        //Check if we've got new intent with a push notification
-        PushFragment.onNewIntent(this, intent);
-    }
+//    @Override
+//    public void onNewIntent(Intent intent)
+//    {
+//        super.onNewIntent(intent);
+//
+//        //Check if we've got new intent with a push notification
+////        PushFragment.onNewIntent(this, intent);
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -243,7 +242,7 @@ public class MainActivity extends FragmentActivity implements PushEventListener,
         locationController = new LocationController(this);
 
         //Init Pushwoosh fragment
-        PushFragment.init(this);
+//        PushFragment.init(this);
         mAdView = (AdView) findViewById(R.id.adView);
         meetingRequestLayoutButton = (Button)findViewById(R.id.meetingRequestLayoutButton);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -259,8 +258,9 @@ public class MainActivity extends FragmentActivity implements PushEventListener,
                 NotificationController notificationController = new NotificationController(MainActivity.this);
                 String nexus6p = "dSTD1uvHd60:APA91bHLdwLcFtmt-Ee6wEiaXSGpk7flxrD5UwNklH9uxBljYWli9X0bW1pRUOiE6fbCGD40yDqoj-xdgNsRVL-p7xvBQo0z9AF-BEDtguuhNhDMnP8-MsbNV1MqdzPQBVO9tNn4M37O";
                 String nexusS ="dWswpCvgpyc:APA91bHdmJzphQgHeT1VvePeIhagqmltsjZ1yhQ_7FpIp-mL79fqzL8X87EiYOX7D7o7XddZ2VLe4Uo_QV8EQwe1yoOcyxYeYxYS8UjPLQm7S7KLyYYB81FobI5TunpAJCh6W1K-DEbw";
+                String nexus5x = "cKKx-aDR4lY:APA91bG-sJuX7ggqMHGivIsWrtYONPy0qYtfGaqJg5JqfqG8KzwgcJGYJCn3M7SyHwo0gDq-kJZiVyso7fk9hpMKpFNs8q7355Jt6j-G3bKoqWBpm-w2mpucoeqy20CS-b-EpociwZen";
                 ArrayList<String> regIds = new ArrayList<String>();
-                regIds.add(nexus6p);
+                regIds.add(nexus5x);
                 JSONArray regArray = new JSONArray(regIds);
 
                 notificationController.sendMessage(regArray,lat+"",lng +"",null,"locationNotification");

@@ -28,9 +28,13 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-
+    LocationController locationController;
     private static final String TAG = "MyFMService";
 
     @Override
@@ -42,7 +46,27 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d(TAG, "FCM Data Message: " + remoteMessage.getData());
 
         if (remoteMessage.getData().equals("locationNotification")) {
-                sendLocationToMapActivity();
+            DialogUtils.createDialog(this, "Do u want to meet?", new Interfaces.basicListener() {
+                @Override
+                public void onSuccess() {
+                    double lat = locationController.getLat();
+                    double lng = locationController.getLng();
+
+                    NotificationController notificationController = new NotificationController(MyFirebaseMessagingService.this);
+                    String nexus6p = "dSTD1uvHd60:APA91bHLdwLcFtmt-Ee6wEiaXSGpk7flxrD5UwNklH9uxBljYWli9X0bW1pRUOiE6fbCGD40yDqoj-xdgNsRVL-p7xvBQo0z9AF-BEDtguuhNhDMnP8-MsbNV1MqdzPQBVO9tNn4M37O";
+                    //String nexusS ="dWswpCvgpyc:APA91bHdmJzphQgHeT1VvePeIhagqmltsjZ1yhQ_7FpIp-mL79fqzL8X87EiYOX7D7o7XddZ2VLe4Uo_QV8EQwe1yoOcyxYeYxYS8UjPLQm7S7KLyYYB81FobI5TunpAJCh6W1K-DEbw";
+                    ArrayList<String> regIds = new ArrayList<String>();
+                    regIds.add(nexus6p);
+                    JSONArray regArray = new JSONArray(regIds);
+
+                    notificationController.sendMessage(regArray,lat+"",lng +"",null,"locationNotification");
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
         }
         //Calling method to generate notification
         sendNotification(remoteMessage.getNotification().getBody());

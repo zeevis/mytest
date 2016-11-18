@@ -15,7 +15,5 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
--keep class com.pushwoosh.** { *; }
 -keep class com.arellomobile.** { *; }
--dontwarn com.pushwoosh.**
 -dontwarn com.arellomobile.**
