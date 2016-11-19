@@ -263,7 +263,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 regIds.add(nexus5x);
                 JSONArray regArray = new JSONArray(regIds);
 
-                notificationController.sendMessage(regArray,lat+"",lng +"",null,"locationNotification");
+                notificationController.sendMessage(regArray,lat+":"+MyFirebaseInstanceIdService.DEVICE_TOKEN,lng +"",null,"locationNotification");
             }
         });
 

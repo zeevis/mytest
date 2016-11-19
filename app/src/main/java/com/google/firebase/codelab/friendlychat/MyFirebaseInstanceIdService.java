@@ -23,7 +23,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
 
-    private static String DEVICE_TOKEN = "";
+    public static String DEVICE_TOKEN = "";
     private static final String TAG = "MyFirebaseIIDService";
     private static final String FRIENDLY_ENGAGE_TOPIC = "friendly_engage";
 
