@@ -28,9 +28,11 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+
 
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -44,6 +46,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d(TAG, "FCM Notification Message: " +
                 remoteMessage.getNotification());
         Log.d(TAG, "FCM Data Message: " + remoteMessage.getData());
+
+
+        if (remoteMessage.getData().get("message").equals("yesIWantToMeet")) {
+//            Intent intent = new Intent(this,MainActivity.class);
+//            intent.putExtra("")
+            EventBus.getDefault().post(new StartMapEvent());
+        }
+
 
         if (remoteMessage.getData().get("message").equals("locationNotification")) {
 //            DialogUtils.createDialog(this, "Do u want to meet?", new Interfaces.basicListener() {
@@ -68,7 +78,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //                }
 //            });
             Intent intent = new Intent(MyFirebaseMessagingService.this,MeetingRequestNotificationActivity.class);
-            intent.putExtra("tokenToGetBackTo",remoteMessage.getNotification().getTitle().substring(remoteMessage.getNotification().getTitle().indexOf(":"),remoteMessage.getNotification().getTitle().length()));
+            intent.putExtra("tokenToGetBackTo",remoteMessage.getNotification().getTitle().substring(remoteMessage.getNotification().getTitle().indexOf(":")+1,remoteMessage.getNotification().getTitle().length()));
             startActivity(intent);
         }
         //Calling method to generate notification

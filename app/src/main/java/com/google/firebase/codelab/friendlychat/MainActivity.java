@@ -15,13 +15,18 @@
  */
 package com.google.firebase.codelab.friendlychat;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -47,6 +52,9 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.appinvite.AppInvite;
 import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.google.android.gms.auth.api.Auth;
@@ -143,6 +151,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 //       // mGeneralStatus.setText(message);
 //    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(StartMapEvent event) {
+        initGoogleMap();
+    }
+
+
     @Override
     public void onMapReady(final GoogleMap aGoogleMap) {
 
@@ -192,6 +206,32 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Main Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(mGoogleApiClient, getIndexApiAction());
+        mGoogleApiClient.disconnect();
+    }
+
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
         public TextView messageTextView;
@@ -239,12 +279,18 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        EventBus.getDefault().register(this);
+
+
+//        startActivity(new Intent(this, SignInActivity.class));
+
+
         locationController = new LocationController(this);
 
         //Init Pushwoosh fragment
 //        PushFragment.init(this);
         mAdView = (AdView) findViewById(R.id.adView);
-        meetingRequestLayoutButton = (Button)findViewById(R.id.meetingRequestLayoutButton);
+        meetingRequestLayoutButton = (Button) findViewById(R.id.meetingRequestLayoutButton);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
@@ -257,13 +303,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
                 NotificationController notificationController = new NotificationController(MainActivity.this);
                 String nexus6p = "dSTD1uvHd60:APA91bHLdwLcFtmt-Ee6wEiaXSGpk7flxrD5UwNklH9uxBljYWli9X0bW1pRUOiE6fbCGD40yDqoj-xdgNsRVL-p7xvBQo0z9AF-BEDtguuhNhDMnP8-MsbNV1MqdzPQBVO9tNn4M37O";
-                String nexusS ="dWswpCvgpyc:APA91bHdmJzphQgHeT1VvePeIhagqmltsjZ1yhQ_7FpIp-mL79fqzL8X87EiYOX7D7o7XddZ2VLe4Uo_QV8EQwe1yoOcyxYeYxYS8UjPLQm7S7KLyYYB81FobI5TunpAJCh6W1K-DEbw";
+                String nexusS = "dWswpCvgpyc:APA91bHdmJzphQgHeT1VvePeIhagqmltsjZ1yhQ_7FpIp-mL79fqzL8X87EiYOX7D7o7XddZ2VLe4Uo_QV8EQwe1yoOcyxYeYxYS8UjPLQm7S7KLyYYB81FobI5TunpAJCh6W1K-DEbw";
                 String nexus5x = "cKKx-aDR4lY:APA91bG-sJuX7ggqMHGivIsWrtYONPy0qYtfGaqJg5JqfqG8KzwgcJGYJCn3M7SyHwo0gDq-kJZiVyso7fk9hpMKpFNs8q7355Jt6j-G3bKoqWBpm-w2mpucoeqy20CS-b-EpociwZen";
                 ArrayList<String> regIds = new ArrayList<String>();
                 regIds.add(nexus5x);
                 JSONArray regArray = new JSONArray(regIds);
 
-                notificationController.sendMessage(regArray,lat+":"+MyFirebaseInstanceIdService.DEVICE_TOKEN,lng +"",null,"locationNotification");
+                notificationController.sendMessage(regArray, lat + ":" + MyFirebaseInstanceIdService.DEVICE_TOKEN, lng + "", null, "locationNotification");
             }
         });
 
@@ -272,7 +318,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void run() {
 
-                MyFirebaseInstanceIdService mfs= new MyFirebaseInstanceIdService();
+                MyFirebaseInstanceIdService mfs = new MyFirebaseInstanceIdService();
                 mfs.onTokenRefresh();
             }
         });
@@ -280,6 +326,17 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
+
+        ///////////////////////////////////////
+
+
+//
+//        mFirebaseAuth.signOut();
+//        mUsername = ANONYMOUS;
+
+
+        /////////////////////////////////
 
         // Initialize Firebase Remote Config.
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
@@ -304,7 +361,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         fetchConfig();
 
 
-
         if (mFirebaseUser == null) {
             // Not signed in, launch the Sign In activity
             startActivity(new Intent(this, SignInActivity.class));
@@ -321,11 +377,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         // Set default username is anonymous.
         mUsername = ANONYMOUS;
 
+        // ATTENTION: This "addApi(AppIndex.API)"was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API)
                 .addApi(AppInvite.API)
-                .build();
+                .addApi(AppIndex.API).build();
 
         // Initialize ProgressBar and RecyclerView.
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -383,10 +441,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         mMessageRecyclerView.setAdapter(mFirebaseAdapter);
 
 
-
-
-
-
         mMessageEditText = (EditText) findViewById(R.id.messageEditText);
         mMessageEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(mSharedPreferences
                 .getInt(CodelabPreferences.FRIENDLY_MSG_LENGTH, DEFAULT_MSG_LENGTH_LIMIT))});
@@ -440,13 +494,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 //                    }
 //                };
 
-               // mFirebaseDatabaseReference.child("usertest").addValueEventListener(postListener);
+                // mFirebaseDatabaseReference.child("usertest").addValueEventListener(postListener);
 //                mFirebaseDatabaseReference.child("usertest")
 //                        .push().setValue(friendlyMessage);
 //                mMessageEditText.setText("");
-
-
-
 
 
                 //final String uid = getUid();
@@ -476,8 +527,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                         });
 
 
-
-
 //                FirebaseMessaging fm = FirebaseMessaging.getInstance();
 //                String to = "dSTD1uvHd60:APA91bHLdwLcFtmt-Ee6wEiaXSGpk7flxrD5UwNklH9uxBljYWli9X0bW1pRUOiE6fbCGD40yDqoj-xdgNsRVL-p7xvBQo0z9AF-BEDtguuhNhDMnP8-MsbNV1MqdzPQBVO9tNn4M37O"; // the notification key
 //                AtomicInteger msgId = new AtomicInteger();
@@ -487,15 +536,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 //                        .build());
 
 
-
                 NotificationController notificationController = new NotificationController(MainActivity.this);
                 String nexus6p = "dSTD1uvHd60:APA91bHLdwLcFtmt-Ee6wEiaXSGpk7flxrD5UwNklH9uxBljYWli9X0bW1pRUOiE6fbCGD40yDqoj-xdgNsRVL-p7xvBQo0z9AF-BEDtguuhNhDMnP8-MsbNV1MqdzPQBVO9tNn4M37O";
-                String nexusS ="dWswpCvgpyc:APA91bHdmJzphQgHeT1VvePeIhagqmltsjZ1yhQ_7FpIp-mL79fqzL8X87EiYOX7D7o7XddZ2VLe4Uo_QV8EQwe1yoOcyxYeYxYS8UjPLQm7S7KLyYYB81FobI5TunpAJCh6W1K-DEbw";
+                String nexusS = "dWswpCvgpyc:APA91bHdmJzphQgHeT1VvePeIhagqmltsjZ1yhQ_7FpIp-mL79fqzL8X87EiYOX7D7o7XddZ2VLe4Uo_QV8EQwe1yoOcyxYeYxYS8UjPLQm7S7KLyYYB81FobI5TunpAJCh6W1K-DEbw";
                 ArrayList<String> regIds = new ArrayList<String>();
                 regIds.add(nexus6p);
                 JSONArray regArray = new JSONArray(regIds);
 
-                notificationController.sendMessage(regArray,"hhhhhh","ooooooo",null,"ma  kore?");
+                notificationController.sendMessage(regArray, "hhhhhh", "ooooooo", null, "ma  kore?");
 
 //               mFirebaseDatabaseReference.child("users").push().addValueEventListener(postListener).setValue(friendlyMessage);
 //                mMessageEditText.setText("");
@@ -538,9 +586,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onStart() {
-        super.onStart();
+        super.onStart();// ATTENTION: This was auto-generated to implement the App Indexing API.
+// See https://g.co/AppIndexing/AndroidStudio for more information.
+        mGoogleApiClient.connect();
         // Check if user is signed in.
         // TODO: Add code to check if user is signed in.
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.start(mGoogleApiClient, getIndexApiAction());
     }
 
     @Override
@@ -713,5 +766,4 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 return super.onOptionsItemSelected(item);
         }
     }
-
 }

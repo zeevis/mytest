@@ -20,7 +20,8 @@ public class User {
     public String username;
     public String email;
     public String userKeyToken;
-
+    public int lat;
+    public int lng;
 
     public String getUserKeyToken() {
         return userKeyToken;

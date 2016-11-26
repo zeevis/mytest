@@ -39,6 +39,9 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import static com.google.firebase.codelab.friendlychat.MainActivity.MESSAGES_CHILD;
+
+
 public class SignInActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
@@ -132,7 +135,16 @@ public class SignInActivity extends AppCompatActivity implements
     private void writeNewUser(String userId, String name, String email) {
         User user = new User(name, email);
 
-        mDatabase.child("pop").child(userId).setValue(user);
+        mDatabase.child("pop").child(userId).push().setValue(user);
+
+
+//        FriendlyMessage friendlyMessage = new
+//                FriendlyMessage(mMessageEditText.getText().toString(),
+//                mUsername,
+//                mPhotoUrl);
+//        mFirebaseDatabaseReference.child(MESSAGES_CHILD)
+//                .push().setValue(friendlyMessage);
+//        mMessageEditText.setText("");
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
@@ -145,7 +157,7 @@ public class SignInActivity extends AppCompatActivity implements
                         Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
 
                         // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
+                        // the auth state listener will be notified and logic to handle theF
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithCredential", task.getException());
