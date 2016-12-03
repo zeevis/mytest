@@ -1,5 +1,6 @@
 package com.google.firebase.codelab.friendlychat;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -18,6 +19,8 @@ import java.util.List;
  * Created by ideomobile on 11/12/16.
  */
 public class LocationController {
+
+    private static final int PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 0;
 
     Context context;
     Geocoder geocoder;
@@ -53,6 +56,9 @@ public class LocationController {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
+            ActivityCompat.requestPermissions((Activity)context,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSION_REQUEST_ACCESS_FINE_LOCATION);
             return;
         }
         Location location = lm.getLastKnownLocation(bestProvider);
@@ -73,6 +79,8 @@ public class LocationController {
         }
 
         lm.requestLocationUpdates(bestProvider, 2000, 10, locationListener);
+        lng = location.getLongitude();
+        lat = location.getLatitude();
     }
 
 
