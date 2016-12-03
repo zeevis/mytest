@@ -307,7 +307,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 NotificationController notificationController = new NotificationController(MainActivity.this);
                 String nexus6p = "dSTD1uvHd60:APA91bHLdwLcFtmt-Ee6wEiaXSGpk7flxrD5UwNklH9uxBljYWli9X0bW1pRUOiE6fbCGD40yDqoj-xdgNsRVL-p7xvBQo0z9AF-BEDtguuhNhDMnP8-MsbNV1MqdzPQBVO9tNn4M37O";
                 String nexusS = "dWswpCvgpyc:APA91bHdmJzphQgHeT1VvePeIhagqmltsjZ1yhQ_7FpIp-mL79fqzL8X87EiYOX7D7o7XddZ2VLe4Uo_QV8EQwe1yoOcyxYeYxYS8UjPLQm7S7KLyYYB81FobI5TunpAJCh6W1K-DEbw";
-                String nexus5x = "cKKx-aDR4lY:APA91bG-sJuX7ggqMHGivIsWrtYONPy0qYtfGaqJg5JqfqG8KzwgcJGYJCn3M7SyHwo0gDq-kJZiVyso7fk9hpMKpFNs8q7355Jt6j-G3bKoqWBpm-w2mpucoeqy20CS-b-EpociwZen";
+                String nexus5x = "c_eI-apYzKY:APA91bHzb4EEqDM2LmVaby08UF_ZH7GITl8utoL4rhwJgW76Ve5YSCb0qzOfJUQf7qnRcO3FselMT1Kz18BbafHIMoNcJL9UKCdZczO0yqyhkDQa8oXBe-WilO8GITw1jkcW7NiIkfEX";
                 ArrayList<String> regIds = new ArrayList<String>();
                 regIds.add(nexus5x);
                 JSONArray regArray = new JSONArray(regIds);
