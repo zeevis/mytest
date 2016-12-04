@@ -155,7 +155,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(StartMapEvent event) {
-        initGoogleMap();
+        initGoogleMap(eve);
     }
 
 
@@ -193,7 +193,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                                     .title("title")
                                     .icon(BitmapDescriptorFactory.defaultMarker(210.0f)));
 
-                            aGoogleMap.getUiSettings().setAllGesturesEnabled(true);
+                            aGoogleMap.getUiSettings().setAllGesturesEnabled(true );
 
                             CameraPosition cameraPosition = new CameraPosition.Builder().target(location).zoom(15.0f).build();
                             CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);

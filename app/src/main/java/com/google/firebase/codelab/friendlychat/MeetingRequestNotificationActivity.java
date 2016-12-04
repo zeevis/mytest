@@ -34,7 +34,7 @@ public class MeetingRequestNotificationActivity extends AppCompatActivity {
                 ArrayList<String> regIds = new ArrayList<String>();
                 regIds.add(getIntent().getStringExtra("tokenToGetBackTo"));
                 JSONArray regArray = new JSONArray(regIds);
-
+//kkkkkkkkkkkkkkkkk
                 notificationController.sendMessage(regArray,lat+"",lng +"",null,"yesIWantToMeet");
                 finish();
             }
