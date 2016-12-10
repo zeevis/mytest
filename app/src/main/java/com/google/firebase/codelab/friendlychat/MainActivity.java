@@ -119,6 +119,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private FirebaseAnalytics mFirebaseAnalytics;
     private SupportMapFragment mSupportMapFragment;
 
+    double latOfFriend;
+    double lngOfFriend;
+
 
     private int masgId = 0;
 
@@ -155,7 +158,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(StartMapEvent event) {
-        initGoogleMap(eve);
+
+        latOfFriend = event.lat;
+        lngOfFriend = event.lng;
+        initGoogleMap();
     }
 
 
@@ -180,8 +186,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 //                    }
 
 
-                    double lat = locationController.getLat();
-                    double lng = locationController.getLng();
+//                    double lat = locationController.getLat();
+//                    double lng = locationController.getLng();
+                    double lat = latOfFriend;//locationController.getLat();
+                    double lng = lngOfFriend;//locationController.getLng();
 
 
                     final LatLng location = new LatLng(lat, lng);
@@ -282,6 +290,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         EventBus.getDefault().register(this);
+
+        Intent intent = getIntent();
+        if(intent != null && intent.getStringExtra("intentType") != null && intent.getStringExtra("intentType").equals("cameFormMeetingActivity")){
+            latOfFriend = intent.getDoubleExtra("latToGetBackTo",0);
+            lngOfFriend = intent.getDoubleExtra("lngToGetBackTo",0);
+            initGoogleMap();
+        }
 
 
 

@@ -51,7 +51,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().get("message").equals("yesIWantToMeet")) {
 //            Intent intent = new Intent(this,MainActivity.class);
 //            intent.putExtra("")
-            EventBus.getDefault().post(new StartMapEvent(Integer.parseInt(remoteMessage.getNotification().getTitle()),Integer.parseInt(remoteMessage.getNotification().getBody())));
+            EventBus.getDefault().post(new StartMapEvent(Double.parseDouble(remoteMessage.getNotification().getTitle()),Double.parseDouble(remoteMessage.getNotification().getBody())));
         }
 
 
@@ -81,6 +81,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             intent.putExtra("tokenToGetBackTo",remoteMessage.getNotification().getTitle().substring(remoteMessage.getNotification().getTitle().indexOf(":")+1,remoteMessage.getNotification().getTitle().length()));
             intent.putExtra("latToGetBackTo",remoteMessage.getNotification().getTitle().substring(0,remoteMessage.getNotification().getTitle().indexOf(":") - 1));
             intent.putExtra("lngToGetBackTo",remoteMessage.getNotification().getBody());
+            startActivity(intent);
         }
         //Calling method to generate notification
         sendNotification(remoteMessage.getNotification().getBody());

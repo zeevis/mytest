@@ -1,5 +1,6 @@
 package com.google.firebase.codelab.friendlychat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -7,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
@@ -36,6 +38,12 @@ public class MeetingRequestNotificationActivity extends AppCompatActivity {
                 JSONArray regArray = new JSONArray(regIds);
 //kkkkkkkkkkkkkkkkk
                 notificationController.sendMessage(regArray,lat+"",lng +"",null,"yesIWantToMeet");
+                //EventBus.getDefault().post(new StartMapEvent(Double.parseDouble(getIntent().getStringExtra("latToGetBackTo")),Double.parseDouble(getIntent().getStringExtra("lngToGetBackTo"))));
+                Intent intent = new Intent(MeetingRequestNotificationActivity.this, MainActivity.class);
+                intent.putExtra("intentType","cameFormMeetingActivity");
+                intent.putExtra("latToGetBackTo",Double.parseDouble(getIntent().getStringExtra("latToGetBackTo") ));
+                intent.putExtra("lngToGetBackTo",Double.parseDouble(getIntent().getStringExtra("lngToGetBackTo")) );
+                startActivity(intent);
                 finish();
             }
 

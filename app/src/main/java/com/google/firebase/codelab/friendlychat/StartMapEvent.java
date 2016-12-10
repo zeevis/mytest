@@ -7,10 +7,10 @@ import android.app.usage.UsageEvents;
  */
 
 public class StartMapEvent {
-    int lat;
-    int lng;
+    double lat;
+    double lng;
 
-    public StartMapEvent(int lat, int lng) {
+    public StartMapEvent(double lat, double lng) {
         this.lat = lat;
         this.lng = lng;
     }

@@ -79,8 +79,10 @@ public class LocationController {
         }
 
         lm.requestLocationUpdates(bestProvider, 2000, 10, locationListener);
-        lng = location.getLongitude();
-        lat = location.getLatitude();
+        if(location !=null ) {
+            lng = location.getLongitude();
+            lat = location.getLatitude();
+        }
     }
 
 
