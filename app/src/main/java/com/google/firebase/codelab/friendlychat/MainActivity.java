@@ -188,22 +188,30 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
 //                    double lat = locationController.getLat();
 //                    double lng = locationController.getLng();
-                    double lat = latOfFriend;//locationController.getLat();
-                    double lng = lngOfFriend;//locationController.getLng();
+                    double latOfFriendTalkZone = latOfFriend;//locationController.getLat();
+                    double lngOfFriendTalkZone = lngOfFriend;//locationController.getLng();
 
+                    double latOfMe = locationController.getLat();
+                    double lngOfMe = locationController.getLng();
 
-                    final LatLng location = new LatLng(lat, lng);
+                    final LatLng locationOfFriend = new LatLng(latOfFriendTalkZone, lngOfFriendTalkZone);
+                    final LatLng locationOfMe = new LatLng(latOfMe, lngOfMe);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             aGoogleMap.addMarker(new MarkerOptions()
-                                    .position(location)
-                                    .title("title")
+                                    .position(locationOfFriend)
+                                    .title("talk zone")
+                                    .icon(BitmapDescriptorFactory.defaultMarker(210.0f)));
+
+                            aGoogleMap.addMarker(new MarkerOptions()
+                                    .position(locationOfMe)
+                                    .title("me")
                                     .icon(BitmapDescriptorFactory.defaultMarker(210.0f)));
 
                             aGoogleMap.getUiSettings().setAllGesturesEnabled(true );
 
-                            CameraPosition cameraPosition = new CameraPosition.Builder().target(location).zoom(15.0f).build();
+                            CameraPosition cameraPosition = new CameraPosition.Builder().target(locationOfFriend).zoom(15.0f).build();
                             CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
                             aGoogleMap.animateCamera(cameraUpdate);
                         }
