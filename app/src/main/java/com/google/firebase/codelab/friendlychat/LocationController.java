@@ -91,6 +91,9 @@ public class LocationController {
             lng = location.getLongitude();
             lat = location.getLatitude();
             bestProvider = lm.getBestProvider(criteria, false);
+
+            
+
         }
 
         @Override

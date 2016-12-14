@@ -21,6 +21,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -69,6 +70,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -121,6 +124,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     double latOfFriend;
     double lngOfFriend;
+
+    private Ma
 
 
     private int masgId = 0;
@@ -199,20 +204,47 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            aGoogleMap.addMarker(new MarkerOptions()
+                            Marker friendMarker = aGoogleMap.addMarker(new MarkerOptions()
                                     .position(locationOfFriend)
                                     .title("talk zone")
                                     .icon(BitmapDescriptorFactory.defaultMarker(210.0f)));
 
-                            aGoogleMap.addMarker(new MarkerOptions()
+                            Marker myMarker = aGoogleMap.addMarker(new MarkerOptions()
                                     .position(locationOfMe)
                                     .title("me")
                                     .icon(BitmapDescriptorFactory.defaultMarker(210.0f)));
+                            ArrayList<Marker> markerArrayList = new ArrayList<Marker>();
+                            markerArrayList.add(friendMarker);
+                            markerArrayList.add(myMarker);
 
+                            float[] results = new float[1];
+                            Location.distanceBetween(locationOfFriend.latitude, locationOfFriend.longitude,
+                                    locationOfMe.latitude, locationOfMe.longitude,
+                                    results);
                             aGoogleMap.getUiSettings().setAllGesturesEnabled(true );
 
-                            CameraPosition cameraPosition = new CameraPosition.Builder().target(locationOfFriend).zoom(15.0f).build();
-                            CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
+                            if(results[1] < 200){
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mSendButton.setEnabled(true);
+
+                                    }
+                                });
+                            }
+
+                            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                            for (Marker marker : markerArrayList) {
+                                builder.include(marker.getPosition());
+                            }
+                            LatLngBounds bounds = builder.build();
+
+                            int padding = 0; // offset from edges of the map in pixels
+                            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+
+
+                           // CameraPosition cameraPosition = new CameraPosition.Builder().target(locationOfFriend).zoom(15.0f).build();
+                           // CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
                             aGoogleMap.animateCamera(cameraUpdate);
                         }
                     });
