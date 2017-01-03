@@ -49,6 +49,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -105,7 +106,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback
         ,GoogleApiClient.OnConnectionFailedListener {
     private static final int PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 0;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
@@ -125,7 +126,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     double latOfFriend;
     double lngOfFriend;
 
-    private Ma
+   // private Ma
 
 
     private int masgId = 0;
@@ -207,7 +208,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                             Marker friendMarker = aGoogleMap.addMarker(new MarkerOptions()
                                     .position(locationOfFriend)
                                     .title("talk zone")
-                                    .icon(BitmapDescriptorFactory.defaultMarker(210.0f)));
+                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
 
                             Marker myMarker = aGoogleMap.addMarker(new MarkerOptions()
                                     .position(locationOfMe)
@@ -223,7 +224,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                                     results);
                             aGoogleMap.getUiSettings().setAllGesturesEnabled(true );
 
-                            if(results[1] < 200){
+                            if(results[0] < 200){
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -329,6 +330,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(mToolbar);
         EventBus.getDefault().register(this);
 
         Intent intent = getIntent();

@@ -123,7 +123,7 @@ public class SignInActivity extends AppCompatActivity implements
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
                 writeNewUser(account.getId(),account.getGivenName() ,account.getEmail() );
-                writeNewUser("123456","zzzzzzz" ,"zzzzzz@gmai.com" );
+                writeNewUser("12345678","zzzzzzz" ,"zzzzzz@gmai.com" );
 
             } else {
                 // Google Sign In failed

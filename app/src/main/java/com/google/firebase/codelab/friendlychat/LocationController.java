@@ -92,7 +92,7 @@ public class LocationController {
             lat = location.getLatitude();
             bestProvider = lm.getBestProvider(criteria, false);
 
-            
+
 
         }
 
