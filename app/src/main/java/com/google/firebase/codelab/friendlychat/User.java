@@ -20,8 +20,21 @@ public class User {
     public String username;
     public String email;
     public String userKeyToken;
+
+    public String userId;
+    public String userKeyToken;
+    public String userKeyToken;
+    public String userKeyToken;
+    public String userKeyToken;
+    public String userKeyToken;
+
     public int lat;
     public int lng;
+
+
+
+
+    writeNewUser(account.getId(),account.getGivenName() ,account.getEmail(),account.getFamilyName(),account.getDisplayName(),account.getIdToken(),account.getPhotoUrl() );
 
     public String getUserKeyToken() {
         return userKeyToken;

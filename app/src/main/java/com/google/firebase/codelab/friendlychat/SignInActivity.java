@@ -122,8 +122,8 @@ public class SignInActivity extends AppCompatActivity implements
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
-                writeNewUser(account.getId(),account.getGivenName() ,account.getEmail() );
-                writeNewUser("12345678","zzzzzzz" ,"zzzzzz@gmai.com" );
+                writeNewUser(account.getId(),account.getGivenName() ,account.getEmail(),account.getGivenName(),account.getFamilyName(),account.getDisplayName(),account.getIdToken(),account.getPhotoUrl() );
+                //writeNewUser("12345678","zzzzzzz" ,"zzzzzz@gmai.com" );
 
             } else {
                 // Google Sign In failed
@@ -133,6 +133,8 @@ public class SignInActivity extends AppCompatActivity implements
     }
 
     private void writeNewUser(String userId, String name, String email) {
+        writeNewUser(account.getId(),account.getGivenName() ,account.getEmail(),account.getGivenName(),account.getFamilyName(),account.getDisplayName(),account.getIdToken(),account.getPhotoUrl() );
+
         User user = new User(name, email);
 
         mDatabase.child("pop").child(userId).push().setValue(user);
