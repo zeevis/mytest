@@ -141,8 +141,9 @@ public class SignInActivity extends AppCompatActivity implements
 
         //User user = new User(name, email);
 
-        mDatabase.child("usersNew").child(user.getmUserId()).push().setValue(user);
-
+        mDatabase.child("usersNew").child(account.getId()).push().setValue(new FriendlyMessage("ddd","ddd","ddd"));
+//        mDatabase.child(MESSAGES_CHILD)
+//                .push().setValue(user);
 
 //        FriendlyMessage friendlyMessage = new
 //                FriendlyMessage(mMessageEditText.getText().toString(),
