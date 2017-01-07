@@ -17,27 +17,86 @@ import static android.support.v7.widget.StaggeredGridLayoutManager.TAG;
 @IgnoreExtraProperties
 public class User {
 
-    public String username;
-    public String email;
-    public String userKeyToken;
+    public String mUsername;
+    public String mEmail;
+    public String mUserKeyToken;
 
-    public String userId;
-    public String userKeyToken;
-    public String userKeyToken;
-    public String userKeyToken;
-    public String userKeyToken;
-    public String userKeyToken;
+    public String mUserId;
+    public String mUserGivenName;
+    public String mUserFamilyName;
+    public String mUserDisplayName;
+    public String mUserPhotoUrl;
 
-    public int lat;
-    public int lng;
+    public double mLat;
+    public double mLng;
 
+    public User(String userId, String userGivenName , String email, String userFamilyName, String userDisplayName, String userKeyToken, String userPhotoUrl, double lat, double lng ) {
+       // this.mUsername = uername;
+        this.mEmail = email;
+        this.mUserKeyToken = userKeyToken;
+        this.mUserId = userId;
+        this.mUserGivenName = userGivenName;
+        this.mUserFamilyName = userFamilyName;
+        this.mUserDisplayName = userDisplayName;
+        this.mUserPhotoUrl = userPhotoUrl;
+        this.mLat = lat;
+        this.mLng = lng;
+    }
 
+    public String getmUsername() {
+        return mUsername;
+    }
 
+    public String getmEmail() {
+        return mEmail;
+    }
 
-    writeNewUser(account.getId(),account.getGivenName() ,account.getEmail(),account.getFamilyName(),account.getDisplayName(),account.getIdToken(),account.getPhotoUrl() );
+    public String getmUserKeyToken() {
+        return mUserKeyToken;
+    }
+
+    public String getmUserId() {
+        return mUserId;
+    }
+
+    public String getmUserGivenName() {
+        return mUserGivenName;
+    }
+
+    public String getmUserFamilyName() {
+        return mUserFamilyName;
+    }
+
+    public String getmUserDisplayName() {
+        return mUserDisplayName;
+    }
+
+    public String getmUserPhotoUrl() {
+        return mUserPhotoUrl;
+    }
+
+    public double getmLat() {
+        return mLat;
+    }
+
+    public double getmLng() {
+        return mLng;
+    }
+
+    public void writeNewUser(String userId, String userGivenName , String email, String userFamilyName, String userDisplayName, String userKeyToken, String userPhotoUrl, int lat, int lng ){
+        mUserId = userId;
+        mUserGivenName = userGivenName;
+        mEmail = email;
+        mUserFamilyName = userFamilyName;
+        mUserDisplayName = userDisplayName;
+        mUserPhotoUrl = userPhotoUrl;
+        mUserKeyToken = userKeyToken;
+        mLat = lat;
+        mLng = lng;
+    }
 
     public String getUserKeyToken() {
-        return userKeyToken;
+        return mUserKeyToken;
     }
 
     public User() {
@@ -45,9 +104,9 @@ public class User {
     }
 
     public User(String userKeyToken, String username, String email) {
-        this.userKeyToken = userKeyToken;
-        this.username = username;
-        this.email = email;
+        this.mUserKeyToken = userKeyToken;
+        this.mUsername = username;
+        this.mEmail = email;
     }
 
 //    public void getValue(){
@@ -56,9 +115,9 @@ public class User {
 //
 //    }
 
-    public User(String username, String email) {
-        this.username = username;
-        this.email = email;
-    }
+//    public User(String username, String email) {
+//        this.username = username;
+//        this.email = email;
+//    }
 
 }

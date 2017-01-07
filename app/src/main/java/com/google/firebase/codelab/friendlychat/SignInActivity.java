@@ -122,7 +122,11 @@ public class SignInActivity extends AppCompatActivity implements
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
-                writeNewUser(account.getId(),account.getGivenName() ,account.getEmail(),account.getGivenName(),account.getFamilyName(),account.getDisplayName(),account.getIdToken(),account.getPhotoUrl() );
+                LocationController locationController = new LocationController(this);
+                double lat = locationController.getLat();
+                double lng = locationController.getLng();
+
+                writeNewUser(account,lat,lng);
                 //writeNewUser("12345678","zzzzzzz" ,"zzzzzz@gmai.com" );
 
             } else {
@@ -132,12 +136,12 @@ public class SignInActivity extends AppCompatActivity implements
         }
     }
 
-    private void writeNewUser(String userId, String name, String email) {
-        writeNewUser(account.getId(),account.getGivenName() ,account.getEmail(),account.getGivenName(),account.getFamilyName(),account.getDisplayName(),account.getIdToken(),account.getPhotoUrl() );
+    private void writeNewUser(GoogleSignInAccount account,double lat, double lng) {
+        User user = new User(account.getId(),account.getGivenName() ,account.getEmail(),account.getFamilyName(),account.getDisplayName(),account.getIdToken(),account.getPhotoUrl().toString(),lat,lng );
 
-        User user = new User(name, email);
+        //User user = new User(name, email);
 
-        mDatabase.child("pop").child(userId).push().setValue(user);
+        mDatabase.child("usersNew").child(user.getmUserId()).push().setValue(user);
 
 
 //        FriendlyMessage friendlyMessage = new

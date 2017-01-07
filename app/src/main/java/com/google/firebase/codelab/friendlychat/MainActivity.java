@@ -568,7 +568,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 // Get user information
                                 User user = dataSnapshot.getValue(User.class);
-                                String authorName = user.username;
+                               // String authorName = user.username;
 
 //                                // Create new comment object
 //                                String commentText = mCommentField.getText().toString();
