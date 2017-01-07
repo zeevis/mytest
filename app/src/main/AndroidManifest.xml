@@ -2,16 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.google.firebase.codelab.friendlychat">
 
-
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-
 
     <application
         android:allowBackup="true"
@@ -21,7 +17,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCz1_F8QfoQ1eYuzExRMxITau1mVgQaGos"/>
+            android:value="AIzaSyCz1_F8QfoQ1eYuzExRMxITau1mVgQaGos" />
         <meta-data
             android:name="PW_APPID"
             android:value="XXXXX-XXXXX" />
@@ -30,25 +26,27 @@
             android:value="A123456789012" />
 
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity android:name=".SignInActivity" />
-        <!--<activity-->
-            <!--android:name="com.pushwoosh.DeepLinkActivity"-->
-            <!--android:theme="@android:style/Theme.Translucent.NoTitleBar">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
+        <!-- <activity -->
+        <!-- android:name="com.pushwoosh.DeepLinkActivity" -->
+        <!-- android:theme="@android:style/Theme.Translucent.NoTitleBar"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.VIEW" /> -->
 
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
-                <!--<category android:name="android.intent.category.BROWSABLE" />-->
 
-                <!--<data android:scheme="pw-YOUR_PUSHWOOSH_APP_ID" />-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
+        <!-- <category android:name="android.intent.category.DEFAULT" /> -->
+        <!-- <category android:name="android.intent.category.BROWSABLE" /> -->
+
+
+        <!-- <data android:scheme="pw-YOUR_PUSHWOOSH_APP_ID" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
 
         <service
             android:name=".MyFirebaseMessagingService"
@@ -68,11 +66,28 @@
         <activity
             android:name=".MeetingRequestNotificationActivity"
             android:label="@string/title_activity_meeting_request_notification"
-            android:theme="@style/AppTheme.NoActionBar"></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+            android:theme="@style/AppTheme.NoActionBar" />
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".MainListActivity"
+            android:label="@string/title_activity_main_list"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
     </application>
 
 </manifest>
