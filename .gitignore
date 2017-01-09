@@ -4,3 +4,7 @@
 local.properties
 build
 app/google-services.json
+app/hs_err_pid13636.log
+app/hs_err_pid15356.log
+app/replay_pid13636.log
+app/replay_pid15356.log

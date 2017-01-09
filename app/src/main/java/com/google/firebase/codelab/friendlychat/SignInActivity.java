@@ -122,11 +122,7 @@ public class SignInActivity extends AppCompatActivity implements
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
-                LocationController locationController = new LocationController(this);
-                double lat = locationController.getLat();
-                double lng = locationController.getLng();
 
-                writeNewUser(account,lat,lng);
                 //writeNewUser("12345678","zzzzzzz" ,"zzzzzz@gmai.com" );
 
             } else {
@@ -141,7 +137,7 @@ public class SignInActivity extends AppCompatActivity implements
 
         //User user = new User(name, email);
 
-        mDatabase.child("usersNew").child(account.getId()).push().setValue(new FriendlyMessage("ddd","ddd","ddd"));
+        mDatabase.child("usersNew").child(user.getmUserId()).push().setValue(user);
 //        mDatabase.child(MESSAGES_CHILD)
 //                .push().setValue(user);
 
@@ -154,7 +150,7 @@ public class SignInActivity extends AppCompatActivity implements
 //        mMessageEditText.setText("");
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+    private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGooogle:" + acct.getId());
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mFirebaseAuth.signInWithCredential(credential)
@@ -171,6 +167,11 @@ public class SignInActivity extends AppCompatActivity implements
                             Toast.makeText(SignInActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
+                            LocationController locationController = new LocationController(SignInActivity.this);
+                            double lat = locationController.getLat();
+                            double lng = locationController.getLng();
+
+                            writeNewUser(acct,lat,lng);
                             startActivity(new Intent(SignInActivity.this, MainActivity.class));
                             finish();
                         }
