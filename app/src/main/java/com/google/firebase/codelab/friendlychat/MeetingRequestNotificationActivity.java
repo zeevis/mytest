@@ -43,6 +43,8 @@ public class MeetingRequestNotificationActivity extends AppCompatActivity {
                 intent.putExtra("intentType","cameFormMeetingActivity");
                 intent.putExtra("latToGetBackTo",Double.parseDouble(getIntent().getStringExtra("latToGetBackTo") ));
                 intent.putExtra("lngToGetBackTo",Double.parseDouble(getIntent().getStringExtra("lngToGetBackTo")) );
+                intent.putExtra("senderIdToGetBackToo",getIntent().getStringExtra("senderIdToGetBackToo") );
+
                 startActivity(intent);
                 finish();
             }

@@ -81,6 +81,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             intent.putExtra("tokenToGetBackTo",remoteMessage.getNotification().getTitle().substring(remoteMessage.getNotification().getTitle().indexOf(":")+1,remoteMessage.getNotification().getTitle().length()));
             intent.putExtra("latToGetBackTo",remoteMessage.getNotification().getTitle().substring(0,remoteMessage.getNotification().getTitle().indexOf(":") - 1));
             intent.putExtra("lngToGetBackTo",remoteMessage.getNotification().getBody());
+            intent.putExtra("senderIdToGetBackToo",remoteMessage.getFrom());
+
             startActivity(intent);
         }
         //Calling method to generate notification

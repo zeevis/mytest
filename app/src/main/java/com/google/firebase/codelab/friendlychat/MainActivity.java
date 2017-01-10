@@ -313,6 +313,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LinearLayoutManager mLinearLayoutManager;
     private ProgressBar mProgressBar;
     private EditText mMessageEditText;
+    private String friendId;
     LocationController locationController;
 
     // Firebase instance variables
@@ -338,6 +339,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(intent != null && intent.getStringExtra("intentType") != null && intent.getStringExtra("intentType").equals("cameFormMeetingActivity")){
             latOfFriend = intent.getDoubleExtra("latToGetBackTo",0);
             lngOfFriend = intent.getDoubleExtra("lngToGetBackTo",0);
+            friendId = intent.getStringExtra("senderIdToGetBackToo");
+
             initGoogleMap();
         }
 
@@ -460,7 +463,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 FriendlyMessage.class,
                 R.layout.item_message,
                 MessageViewHolder.class,
-                mFirebaseDatabaseReference.child(AppBaseDetails.getInstance().getAccount().getId() + user.getid)) {
+                mFirebaseDatabaseReference.child(AppBaseDetails.getInstance().getAccount().getId() + friendId)) {
 
             @Override
             protected void populateViewHolder(MessageViewHolder viewHolder,
@@ -534,7 +537,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         FriendlyMessage(mMessageEditText.getText().toString(),
                         mUsername,
                         mPhotoUrl);
-                mFirebaseDatabaseReference.child(MESSAGES_CHILD)
+                mFirebaseDatabaseReference.child(AppBaseDetails.getInstance().getAccount().getId() + friendId)
                         .push().setValue(friendlyMessage);
                 mMessageEditText.setText("");
 
