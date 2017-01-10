@@ -136,8 +136,8 @@ public class SignInActivity extends AppCompatActivity implements
         User user = new User(account.getId(),account.getGivenName() ,account.getEmail(),account.getFamilyName(),account.getDisplayName(),account.getIdToken(),account.getPhotoUrl().toString(),lat,lng );
 
         //User user = new User(name, email);
-
-        mDatabase.child("usersNew").child(user.getmUserId()).push().setValue(user);
+        //ask if user exists
+        mDatabase.child("usersNew").child(user.getmUserId()).setValue(user);
 //        mDatabase.child(MESSAGES_CHILD)
 //                .push().setValue(user);
 
