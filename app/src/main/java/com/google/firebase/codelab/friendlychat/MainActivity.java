@@ -343,6 +343,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
+
 //        startActivity(new Intent(this, SignInActivity.class));
 
 
@@ -459,7 +460,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 FriendlyMessage.class,
                 R.layout.item_message,
                 MessageViewHolder.class,
-                mFirebaseDatabaseReference.child(MESSAGES_CHILD)) {
+                mFirebaseDatabaseReference.child(AppBaseDetails.getInstance().getAccount().getId() + user.getid)) {
 
             @Override
             protected void populateViewHolder(MessageViewHolder viewHolder,

@@ -39,6 +39,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+
 import static com.google.firebase.codelab.friendlychat.MainActivity.MESSAGES_CHILD;
 
 
@@ -121,6 +123,7 @@ public class SignInActivity extends AppCompatActivity implements
             if (result.isSuccess()) {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
+                AppBaseDetails.getInstance().setAccount(account);
                 firebaseAuthWithGoogle(account);
 
                 //writeNewUser("12345678","zzzzzzz" ,"zzzzzz@gmai.com" );
