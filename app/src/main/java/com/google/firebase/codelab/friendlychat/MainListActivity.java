@@ -44,6 +44,14 @@ public class MainListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_list);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                MyFirebaseInstanceIdService mfs = new MyFirebaseInstanceIdService();
+                mfs.onTokenRefresh();
+            }
+        });
         locationController = new LocationController(this);
         userArrayList = new ArrayList<>();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

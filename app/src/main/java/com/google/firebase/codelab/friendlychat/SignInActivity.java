@@ -38,6 +38,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 
@@ -136,7 +137,7 @@ public class SignInActivity extends AppCompatActivity implements
     }
 
     private void writeNewUser(GoogleSignInAccount account,double lat, double lng) {
-        User user = new User(account.getId(),account.getGivenName() ,account.getEmail(),account.getFamilyName(),account.getDisplayName(),account.getIdToken(),account.getPhotoUrl().toString(),lat,lng );
+        User user = new User(account.getId(),account.getGivenName() ,account.getEmail(),account.getFamilyName(),account.getDisplayName(), FirebaseInstanceId.getInstance().getToken(),account.getPhotoUrl().toString(),lat,lng );
 
         //User user = new User(name, email);
         //ask if user exists

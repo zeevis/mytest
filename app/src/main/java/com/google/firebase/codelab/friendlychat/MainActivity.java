@@ -457,13 +457,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mLinearLayoutManager.setStackFromEnd(true);
         mMessageRecyclerView.setLayoutManager(mLinearLayoutManager);
 
+        String myId = AppBaseDetails.getInstance().getAccount().getId();
+        final String chatGroupName = Math.max(Float.parseFloat(myId),Float.parseFloat(friendId)) + Math.min(Float.parseFloat(myId),Float.parseFloat(myId)) +"";
         // New child entries
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
         mFirebaseAdapter = new FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder>(
                 FriendlyMessage.class,
                 R.layout.item_message,
                 MessageViewHolder.class,
-                mFirebaseDatabaseReference.child(AppBaseDetails.getInstance().getAccount().getId() + friendId)) {
+                mFirebaseDatabaseReference.child(chatGroupName)) {
 
             @Override
             protected void populateViewHolder(MessageViewHolder viewHolder,
@@ -537,7 +539,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         FriendlyMessage(mMessageEditText.getText().toString(),
                         mUsername,
                         mPhotoUrl);
-                mFirebaseDatabaseReference.child(AppBaseDetails.getInstance().getAccount().getId() + friendId)
+                mFirebaseDatabaseReference.child(chatGroupName)
                         .push().setValue(friendlyMessage);
                 mMessageEditText.setText("");
 

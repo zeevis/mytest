@@ -51,7 +51,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().get("message").equals("yesIWantToMeet")) {
 //            Intent intent = new Intent(this,MainActivity.class);
 //            intent.putExtra("")
-            EventBus.getDefault().post(new StartMapEvent(Double.parseDouble(remoteMessage.getNotification().getTitle()),Double.parseDouble(remoteMessage.getNotification().getBody())));
+         //   EventBus.getDefault().post(new StartMapEvent(Double.parseDouble(remoteMessage.getNotification().getTitle()),Double.parseDouble(remoteMessage.getNotification().getBody())));
+
+            Intent intent = new Intent(MyFirebaseMessagingService.this,MainActivity.class);
+            intent.putExtra("latToGetBackTo",Double.parseDouble(remoteMessage.getNotification().getTitle()));
+            intent.putExtra("lngToGetBackTo",Double.parseDouble(remoteMessage.getNotification().getBody()));
+            intent.putExtra("senderIdToGetBackToo",remoteMessage.getFrom());
+            intent.putExtra("intentType","cameFormMeetingActivity");
+            startActivity(intent);
+
+
+
+
         }
 
 
