@@ -95,6 +95,7 @@ import org.json.JSONArray;
 import org.w3c.dom.Comment;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -374,7 +375,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 regIds.add(nexus5x);
                 JSONArray regArray = new JSONArray(regIds);
 
-                notificationController.sendMessage(regArray, lat + ":" + MyFirebaseInstanceIdService.DEVICE_TOKEN, lng + "", null, "locationNotification");
+                notificationController.sendMessage(regArray, lat + ":" + MyFirebaseInstanceIdService.DEVICE_TOKEN, lng + ":" + AppBaseDetails.getInstance().getAccount().getId(), null, "locationNotification");
             }
         });
 
@@ -458,7 +459,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMessageRecyclerView.setLayoutManager(mLinearLayoutManager);
 
         String myId = AppBaseDetails.getInstance().getAccount().getId();
-        final String chatGroupName = Math.max(Float.parseFloat(myId),Float.parseFloat(friendId)) + Math.min(Float.parseFloat(myId),Float.parseFloat(myId)) +"";
+        final String chatGroupName;
+        BigInteger myIdBitInteger = new BigInteger(myId);
+        BigInteger friendIdBitInteger = new BigInteger(friendId);
+
+        if(friendIdBitInteger.compareTo(myIdBitInteger) > 0){
+            chatGroupName = friendId +myId;
+        }else{
+            chatGroupName = myId + friendId;
+        }
+
+       // final String chatGroupName = Math.max(new BigInteger(myId),new BigInteger(friendId)) + Math.min(Long.parseLong(myId),Long.parseLong(friendId)) +"";
         // New child entries
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
         mFirebaseAdapter = new FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder>(

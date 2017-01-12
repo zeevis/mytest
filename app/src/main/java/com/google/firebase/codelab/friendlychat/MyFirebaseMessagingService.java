@@ -31,8 +31,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -52,12 +54,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //            Intent intent = new Intent(this,MainActivity.class);
 //            intent.putExtra("")
          //   EventBus.getDefault().post(new StartMapEvent(Double.parseDouble(remoteMessage.getNotification().getTitle()),Double.parseDouble(remoteMessage.getNotification().getBody())));
+            
 
             Intent intent = new Intent(MyFirebaseMessagingService.this,MainActivity.class);
             intent.putExtra("latToGetBackTo",Double.parseDouble(remoteMessage.getNotification().getTitle()));
-            intent.putExtra("lngToGetBackTo",Double.parseDouble(remoteMessage.getNotification().getBody()));
-            intent.putExtra("senderIdToGetBackToo",remoteMessage.getFrom());
+            intent.putExtra("lngToGetBackTo",Double.parseDouble(remoteMessage.getNotification().getBody().substring(0,remoteMessage.getNotification().getBody().indexOf(":") - 1)));
+            intent.putExtra("senderIdToGetBackToo",remoteMessage.getNotification().getBody().substring(remoteMessage.getNotification().getBody().indexOf(":") + 1));
             intent.putExtra("intentType","cameFormMeetingActivity");
+            intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
 
 
@@ -91,8 +95,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Intent intent = new Intent(MyFirebaseMessagingService.this,MeetingRequestNotificationActivity.class);
             intent.putExtra("tokenToGetBackTo",remoteMessage.getNotification().getTitle().substring(remoteMessage.getNotification().getTitle().indexOf(":")+1,remoteMessage.getNotification().getTitle().length()));
             intent.putExtra("latToGetBackTo",remoteMessage.getNotification().getTitle().substring(0,remoteMessage.getNotification().getTitle().indexOf(":") - 1));
-            intent.putExtra("lngToGetBackTo",remoteMessage.getNotification().getBody());
-            intent.putExtra("senderIdToGetBackToo",remoteMessage.getFrom());
+            intent.putExtra("lngToGetBackTo",remoteMessage.getNotification().getBody().substring(0, remoteMessage.getNotification().getBody().indexOf(":") - 1));
+            intent.putExtra("senderIdToGetBackToo",remoteMessage.getNotification().getBody().substring(remoteMessage.getNotification().getBody().indexOf(":")  + 1));
+            intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
 
             startActivity(intent);
         }

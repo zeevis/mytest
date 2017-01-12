@@ -37,13 +37,13 @@ public class MeetingRequestNotificationActivity extends AppCompatActivity {
                 regIds.add(getIntent().getStringExtra("tokenToGetBackTo"));
                 JSONArray regArray = new JSONArray(regIds);
 //kkkkkkkkkkkkkkkkk
-                notificationController.sendMessage(regArray,lat+"",lng +"",null,"yesIWantToMeet");
+                notificationController.sendMessage(regArray,lat+"",lng + ":" + AppBaseDetails.getInstance().getAccount().getId(),null,"yesIWantToMeet");
                 //EventBus.getDefault().post(new StartMapEvent(Double.parseDouble(getIntent().getStringExtra("latToGetBackTo")),Double.parseDouble(getIntent().getStringExtra("lngToGetBackTo"))));
                 Intent intent = new Intent(MeetingRequestNotificationActivity.this, MainActivity.class);
                 intent.putExtra("intentType","cameFormMeetingActivity");
                 intent.putExtra("latToGetBackTo",Double.parseDouble(getIntent().getStringExtra("latToGetBackTo") ));
                 intent.putExtra("lngToGetBackTo",Double.parseDouble(getIntent().getStringExtra("lngToGetBackTo")) );
-                intent.putExtra("senderIdToGetBackToo",getIntent().getStringExtra("senderIdToGetBackToo") );
+                intent.putExtra("senderIdToGetBackToo",getIntent().getStringExtra("senderIdToGetBackToo"));
 
                 startActivity(intent);
                 finish();

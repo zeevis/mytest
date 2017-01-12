@@ -109,7 +109,7 @@ public class MainListActivity extends AppCompatActivity {
                         ArrayList<String> regIds = new ArrayList<String>();
                         regIds.add(user.getmUserKeyToken());
                         JSONArray regArray = new JSONArray(regIds);
-                        notificationController.sendMessage(regArray, lat + ":" + MyFirebaseInstanceIdService.DEVICE_TOKEN, lng + "", null, "locationNotification");
+                        notificationController.sendMessage(regArray, lat + ":" + MyFirebaseInstanceIdService.DEVICE_TOKEN, lng + ":" + AppBaseDetails.getInstance().getAccount().getId(), null, "locationNotification");
 
                     }
                 });
