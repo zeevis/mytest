@@ -58,7 +58,7 @@ public class MainListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
-       AppBaseDetails.getInstance().setAccount(mFirebaseAuth.getCurrentUser().);
+     //  AppBaseDetails.getInstance().setAccount(mFirebaseAuth.getCurrentUser().);//llllllllllllllllllllllllllllll
         //in every chatopens 2 people group infirebase one of children should be the location of both users if changes both observe
          DatabaseReference mRef = FirebaseDatabase.getInstance().getReference().child("users");
          mRef.keepSynced(true);
@@ -110,7 +110,7 @@ public class MainListActivity extends AppCompatActivity {
                         ArrayList<String> regIds = new ArrayList<String>();
                         regIds.add(user.getmUserKeyToken());
                         JSONArray regArray = new JSONArray(regIds);
-                        notificationController.sendMessage(regArray, lat + ":" + MyFirebaseInstanceIdService.DEVICE_TOKEN, lng + ":" + AppBaseDetails.getInstance().getAccount().getId(), null, "locationNotification");
+                        notificationController.sendMessage(regArray, lat + ":" + MyFirebaseInstanceIdService.DEVICE_TOKEN, lng + ":" +mFirebaseAuth.getCurrentUser().getUid(), null, "locationNotification");
 
                     }
                 });

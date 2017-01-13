@@ -13,6 +13,11 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 /**
@@ -21,6 +26,8 @@ import java.util.List;
 public class LocationController {
 
     private static final int PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 0;
+    private DatabaseReference mFirebaseDatabaseReference;
+
 
     Context context;
     Geocoder geocoder;
@@ -33,6 +40,7 @@ public class LocationController {
 
     public LocationController(Context context) {
         this.context = context;
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
         lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         startPresentingLocation();
     }
@@ -92,7 +100,8 @@ public class LocationController {
             lat = location.getLatitude();
             bestProvider = lm.getBestProvider(criteria, false);
 
-
+            mFirebaseDatabaseReference.child(chatGroupName)
+                    .push().setValue(friendlyMessage);
 
         }
 

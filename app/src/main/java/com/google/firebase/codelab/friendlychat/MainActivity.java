@@ -375,7 +375,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 regIds.add(nexus5x);
                 JSONArray regArray = new JSONArray(regIds);
 
-                notificationController.sendMessage(regArray, lat + ":" + MyFirebaseInstanceIdService.DEVICE_TOKEN, lng + ":" + AppBaseDetails.getInstance().getAccount().getId(), null, "locationNotification");
+                notificationController.sendMessage(regArray, lat + ":" + MyFirebaseInstanceIdService.DEVICE_TOKEN, lng + ":" + mFirebaseAuth.getCurrentUser().getUid(), null, "locationNotification");
             }
         });
 
@@ -458,12 +458,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mLinearLayoutManager.setStackFromEnd(true);
         mMessageRecyclerView.setLayoutManager(mLinearLayoutManager);
 
-        String myId = AppBaseDetails.getInstance().getAccount().getId();
+        String myId = mFirebaseAuth.getCurrentUser().getUid();
         final String chatGroupName;
-        BigInteger myIdBitInteger = new BigInteger(myId);
-        BigInteger friendIdBitInteger = new BigInteger(friendId);
+//        BigInteger myIdBitInteger = new BigInteger(myId);
+//        BigInteger friendIdBitInteger = new BigInteger(friendId);
 
-        if(friendIdBitInteger.compareTo(myIdBitInteger) > 0){
+        if(friendId.compareTo(myId) > 0){
             chatGroupName = friendId +myId;
         }else{
             chatGroupName = myId + friendId;

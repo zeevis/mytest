@@ -8,12 +8,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
 
 public class MeetingRequestNotificationActivity extends AppCompatActivity {
+    private FirebaseAuth mFirebaseAuth;
     LocationController locationController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +24,7 @@ public class MeetingRequestNotificationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_meeting_request_notification);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mFirebaseAuth = FirebaseAuth.getInstance();
         locationController = new LocationController(this);
 
 
@@ -37,7 +41,7 @@ public class MeetingRequestNotificationActivity extends AppCompatActivity {
                 regIds.add(getIntent().getStringExtra("tokenToGetBackTo"));
                 JSONArray regArray = new JSONArray(regIds);
 //kkkkkkkkkkkkkkkkk
-                notificationController.sendMessage(regArray,lat+"",lng + ":" + AppBaseDetails.getInstance().getAccount().getId(),null,"yesIWantToMeet");
+                notificationController.sendMessage(regArray,lat+"",lng + ":" + mFirebaseAuth.getCurrentUser().getUid(),null,"yesIWantToMeet");
                 //EventBus.getDefault().post(new StartMapEvent(Double.parseDouble(getIntent().getStringExtra("latToGetBackTo")),Double.parseDouble(getIntent().getStringExtra("lngToGetBackTo"))));
                 Intent intent = new Intent(MeetingRequestNotificationActivity.this, MainActivity.class);
                 intent.putExtra("intentType","cameFormMeetingActivity");
