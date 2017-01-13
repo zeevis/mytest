@@ -58,6 +58,7 @@ public class MainListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
+       AppBaseDetails.getInstance().setAccount(mFirebaseAuth.getCurrentUser().);
         //in every chatopens 2 people group infirebase one of children should be the location of both users if changes both observe
          DatabaseReference mRef = FirebaseDatabase.getInstance().getReference().child("users");
          mRef.keepSynced(true);
