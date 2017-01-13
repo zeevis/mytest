@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -99,9 +100,13 @@ public class LocationController {
             lng = location.getLongitude();
             lat = location.getLatitude();
             bestProvider = lm.getBestProvider(criteria, false);
+            String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-            mFirebaseDatabaseReference.child(chatGroupName)
-                    .push().setValue(friendlyMessage);
+            mFirebaseDatabaseReference.child("usersNew").child(userid).child("mLat")
+                    .setValue(lat);
+
+            mFirebaseDatabaseReference.child("usersNew").child(userid).child("mLng")
+                    .setValue(lng);
 
         }
 

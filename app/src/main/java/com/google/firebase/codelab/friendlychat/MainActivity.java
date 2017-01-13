@@ -335,6 +335,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(mToolbar);
         EventBus.getDefault().register(this);
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
         Intent intent = getIntent();
         if(intent != null && intent.getStringExtra("intentType") != null && intent.getStringExtra("intentType").equals("cameFormMeetingActivity")){
@@ -346,7 +347,29 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
 
+        mFirebaseDatabaseReference.child("usersNew").child(friendId).child("mLat").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                System.out.println(snapshot.getValue());
+                latOfFriend = snapshot.getValue(double.class);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+
+        mFirebaseDatabaseReference.child("usersNew").child(friendId).child("mLng").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                System.out.println(snapshot.getValue());
+                lngOfFriend = snapshot.getValue(double.class);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 //        startActivity(new Intent(this, SignInActivity.class));
 
@@ -471,7 +494,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
        // final String chatGroupName = Math.max(new BigInteger(myId),new BigInteger(friendId)) + Math.min(Long.parseLong(myId),Long.parseLong(friendId)) +"";
         // New child entries
-        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+
         mFirebaseAdapter = new FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder>(
                 FriendlyMessage.class,
                 R.layout.item_message,
