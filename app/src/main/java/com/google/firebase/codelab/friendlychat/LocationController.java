@@ -29,7 +29,6 @@ public class LocationController {
     private static final int PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 0;
     private DatabaseReference mFirebaseDatabaseReference;
 
-
     Context context;
     Geocoder geocoder;
     String bestProvider;
@@ -38,6 +37,16 @@ public class LocationController {
     double lng;
     LocationManager lm;
     Criteria criteria;
+
+    public Interfaces.basicListener getBasicListenerLocationChanged() {
+        return basicListenerLocationChanged;
+    }
+
+    public void setBasicListenerLocationChanged(Interfaces.basicListener basicListenerLocationChanged) {
+        this.basicListenerLocationChanged = basicListenerLocationChanged;
+    }
+
+    private Interfaces.basicListener basicListenerLocationChanged;
 
     public LocationController(Context context) {
         this.context = context;
@@ -107,7 +116,10 @@ public class LocationController {
 
             mFirebaseDatabaseReference.child("usersNew").child(userid).child("mLng")
                     .setValue(lng);
+            if(basicListenerLocationChanged != null){
+                basicListenerLocationChanged.onSuccess();
 
+            }
 
         }
 

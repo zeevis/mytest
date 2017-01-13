@@ -137,6 +137,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private int masgId = 0;
 
+    private Interfaces.basicListener basicListenerLocationChanged = new Interfaces.basicListener() {
+        @Override
+        public void onSuccess() {
+            double latOfMe = locationController.getLat();
+            double lngOfMe = locationController.getLng();
+            final LatLng myLocationLatLng = new LatLng(latOfMe, lngOfMe);
+            if(myMarker!= null) {
+                myMarker.setPosition(myLocationLatLng);
+            }
+        }
+
+        @Override
+        public void onError() {
+
+        }
+    };
+
 //
 //    @Override
 //    public void doOnRegistered(String registrationId)
@@ -382,11 +399,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
 
-
 //        startActivity(new Intent(this, SignInActivity.class));
 
 
         locationController = new LocationController(this);
+        locationController.setBasicListenerLocationChanged(basicListenerLocationChanged);
 
         //Init Pushwoosh fragment
 //        PushFragment.init(this);
