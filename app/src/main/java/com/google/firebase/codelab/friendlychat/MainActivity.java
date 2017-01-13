@@ -123,12 +123,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private FirebaseAnalytics mFirebaseAnalytics;
     private SupportMapFragment mSupportMapFragment;
+    private boolean latFriendLocationChanged = false;
+    private boolean lngFriendLocationChanged = false;
 
     double latOfFriend;
     double lngOfFriend;
 
    // private Ma
 
+    private Marker friendMarker;
+
+    private Marker myMarker;
 
     private int masgId = 0;
 
@@ -206,12 +211,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Marker friendMarker = aGoogleMap.addMarker(new MarkerOptions()
+                             friendMarker = aGoogleMap.addMarker(new MarkerOptions()
                                     .position(locationOfFriend)
                                     .title("talk zone")
                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
 
-                            Marker myMarker = aGoogleMap.addMarker(new MarkerOptions()
+                             myMarker = aGoogleMap.addMarker(new MarkerOptions()
                                     .position(locationOfMe)
                                     .title("me")
                                     .icon(BitmapDescriptorFactory.defaultMarker(210.0f)));
@@ -352,24 +357,31 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onDataChange(DataSnapshot snapshot) {
                 System.out.println(snapshot.getValue());
                 latOfFriend = snapshot.getValue(double.class);
+                latFriendLocationChanged = true;
+                changeMarkerPosition();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
+
 
         mFirebaseDatabaseReference.child("usersNew").child(friendId).child("mLng").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 System.out.println(snapshot.getValue());
                 lngOfFriend = snapshot.getValue(double.class);
+                lngFriendLocationChanged = true;
+                changeMarkerPosition();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
+
+
 
 //        startActivity(new Intent(this, SignInActivity.class));
 
@@ -827,6 +839,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+    private void changeMarkerPosition(){
+        if(latFriendLocationChanged && lngFriendLocationChanged) {
+            final LatLng locationOfFriend = new LatLng(latOfFriend, lngOfFriend);
+            if(friendMarker!= null) {
+                friendMarker.setPosition(locationOfFriend);
+            }
+            latFriendLocationChanged = false;
+            lngFriendLocationChanged = false;
+        }
+    }
     /**
      * Apply retrieved length limit to edit text field.
      * This result may be fresh from the server or it may be from cached

@@ -108,6 +108,7 @@ public class LocationController {
             mFirebaseDatabaseReference.child("usersNew").child(userid).child("mLng")
                     .setValue(lng);
 
+
         }
 
         @Override
