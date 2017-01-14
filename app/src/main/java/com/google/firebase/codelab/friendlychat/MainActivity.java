@@ -126,6 +126,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private boolean latFriendLocationChanged = false;
     private boolean lngFriendLocationChanged = false;
 
+    boolean isInTalkZone;
+
     double latOfFriend;
     double lngOfFriend;
 
@@ -146,7 +148,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             if(myMarker!= null) {
                 myMarker.setPosition(myLocationLatLng);
             }
-        }
+
+            float[] results = new float[1];
+            Location.distanceBetween(latOfFriend, lngOfFriend,
+                    latOfMe, lngOfMe,
+                    results);
+            if(results[0] < 200){
+                        mSendButton.setEnabled(true);
+                isInTalkZone = true;
+                }else {
+                mSendButton.setEnabled(false);
+                isInTalkZone = false;
+            }
+            }
+
 
         @Override
         public void onError() {
@@ -354,6 +369,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 //        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(mToolbar);
         EventBus.getDefault().register(this);
@@ -581,7 +597,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence.toString().trim().length() > 0) {
+                if (isInTalkZone && charSequence.toString().trim().length() > 0) {
                     mSendButton.setEnabled(true);
                 } else {
                     mSendButton.setEnabled(false);
@@ -595,6 +611,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         mSendButton = (Button) findViewById(R.id.sendButton);
+        mSendButton.setEnabled(false);
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -864,7 +881,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
             latFriendLocationChanged = false;
             lngFriendLocationChanged = false;
-        }
+
+            float[] results = new float[1];
+            Location.distanceBetween(latOfFriend, lngOfFriend,
+                    locationController.getLat(), locationController.getLng(),
+                    results);
+
+            if(results[0] < 200){
+                        mSendButton.setEnabled(true);
+                isInTalkZone = true;
+            }else {
+                mSendButton.setEnabled(false);
+                isInTalkZone = false;
+            }
+            }
+
+
     }
     /**
      * Apply retrieved length limit to edit text field.
