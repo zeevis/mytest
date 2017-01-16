@@ -9,6 +9,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
@@ -48,6 +53,19 @@ public class MeetingRequestNotificationActivity extends AppCompatActivity {
                 intent.putExtra("latToGetBackTo",Double.parseDouble(getIntent().getStringExtra("latToGetBackTo") ));
                 intent.putExtra("lngToGetBackTo",Double.parseDouble(getIntent().getStringExtra("lngToGetBackTo")) );
                 intent.putExtra("senderIdToGetBackToo",getIntent().getStringExtra("senderIdToGetBackToo"));
+
+
+
+
+                DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("matches");
+                DatabaseReference friendRef = FirebaseDatabase.getInstance().getReference().child("usersNew").child(getIntent().getStringExtra("senderIdToGetBackToo")).child("matches");
+                myRef.keepSynced(true);
+                friendRef.keepSynced(true);
+                myRef.push().setValue(getIntent().getStringExtra("senderIdToGetBackToo"));
+                friendRef.push().setValue(mFirebaseAuth.getCurrentUser().getUid());
+
+
+
 
                 startActivity(intent);
                 finish();

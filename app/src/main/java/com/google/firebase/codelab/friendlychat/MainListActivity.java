@@ -21,9 +21,12 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.crash.FirebaseCrash;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 
@@ -60,10 +63,7 @@ public class MainListActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
      //  AppBaseDetails.getInstance().setAccount(mFirebaseAuth.getCurrentUser().);//llllllllllllllllllllllllllllll
         //in every chatopens 2 people group infirebase one of children should be the location of both users if changes both observe
-         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference().child("users");
-         mRef.keepSynced(true);
 
-        Query queryRef = mRef.orderByChild("fullName");
 
 
         /////////////////////////////////////////////////////
