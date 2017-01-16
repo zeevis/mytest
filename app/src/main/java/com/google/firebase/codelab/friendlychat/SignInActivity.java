@@ -38,6 +38,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
@@ -144,7 +145,8 @@ public class SignInActivity extends AppCompatActivity implements
         mDatabase.child("usersNew").child(user.getmUserId()).setValue(user);
 //        mDatabase.child(MESSAGES_CHILD)
 //                .push().setValue(user);
-
+      Query query =  mDatabase.child("usersNew").orderByValue();
+        query.get
 //        FriendlyMessage friendlyMessage = new
 //                FriendlyMessage(mMessageEditText.getText().toString(),
 //                mUsername,
