@@ -70,6 +70,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
 
+
+
+
+
+
         if (remoteMessage.getData().get("message").equals("locationNotification")) {
 //            DialogUtils.createDialog(this, "Do u want to meet?", new Interfaces.basicListener() {
 //                @Override

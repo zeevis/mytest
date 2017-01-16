@@ -55,14 +55,12 @@ public class MeetingRequestNotificationActivity extends AppCompatActivity {
                 intent.putExtra("senderIdToGetBackToo",getIntent().getStringExtra("senderIdToGetBackToo"));
 
 
-
-
                 DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("matches");
                 DatabaseReference friendRef = FirebaseDatabase.getInstance().getReference().child("usersNew").child(getIntent().getStringExtra("senderIdToGetBackToo")).child("matches");
                 myRef.keepSynced(true);
                 friendRef.keepSynced(true);
-                myRef.push().setValue(getIntent().getStringExtra("senderIdToGetBackToo"));
-                friendRef.push().setValue(mFirebaseAuth.getCurrentUser().getUid());
+                myRef.child(getIntent().getStringExtra("senderIdToGetBackToo")).setValue(getIntent().getStringExtra("senderIdToGetBackToo"));
+                friendRef.child(mFirebaseAuth.getCurrentUser().getUid()).setValue(mFirebaseAuth.getCurrentUser().getUid());
 
 
 
