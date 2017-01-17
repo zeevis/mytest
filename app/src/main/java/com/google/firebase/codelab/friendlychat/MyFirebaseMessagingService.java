@@ -57,47 +57,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //            Intent intent = new Intent(this,MainActivity.class);
 //            intent.putExtra("")
          //   EventBus.getDefault().post(new StartMapEvent(Double.parseDouble(remoteMessage.getNotification().getTitle()),Double.parseDouble(remoteMessage.getNotification().getBody())));
-            Looper.prepare();
 
-            new Handler().post(new Runnable() { // This thread runs in the UI
-                @Override
-                public void run() {
-                    DialogUtils.createDialog(MyFirebaseMessagingService.this, "You've been approved, would you like to chat now?", new Interfaces.basicListener() {
-                        @Override
-                        public void onSuccess() {
-                            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                            intent.putExtra("latToGetBackTo",Double.parseDouble(remoteMessage.getNotification().getTitle()));
-                            intent.putExtra("lngToGetBackTo",Double.parseDouble(remoteMessage.getNotification().getBody().substring(0,remoteMessage.getNotification().getBody().indexOf(":") - 1)));
-                            intent.putExtra("senderIdToGetBackToo",remoteMessage.getNotification().getBody().substring(remoteMessage.getNotification().getBody().indexOf(":") + 1));
-                            intent.putExtra("intentType","cameFormMeetingActivity");
-                            intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                        }
-
-                        @Override
-                        public void onError() {
-
-                        }
-                    });
-
-                }
-            });
-
-
-            Looper.loop();
-
-
-
-
-
-
+            sendApprovedNotification("You've been approved, would you like to chat now?", remoteMessage);
         }
-
-
-
-
-
-
 
         if (remoteMessage.getData().get("message").equals("locationNotification")) {
 //            DialogUtils.createDialog(this, "Do u want to meet?", new Interfaces.basicListener() {
@@ -133,6 +95,35 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         //Calling method to generate notification
         sendNotification(remoteMessage.getNotification().getBody());
     }
+
+
+    private void sendApprovedNotification(String messageBody,RemoteMessage remoteMessage) {
+        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        intent.putExtra("latToGetBackTo",Double.parseDouble(remoteMessage.getNotification().getTitle()));
+        intent.putExtra("lngToGetBackTo",Double.parseDouble(remoteMessage.getNotification().getBody().substring(0,remoteMessage.getNotification().getBody().indexOf(":") - 1)));
+        intent.putExtra("senderIdToGetBackToo",remoteMessage.getNotification().getBody().substring(remoteMessage.getNotification().getBody().indexOf(":") + 1));
+        intent.putExtra("intentType","cameFormMeetingActivity");
+        intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Hunt me")
+                .setContentText(messageBody)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0, notificationBuilder.build());
+    }
+
 
     //This method is only generating push notification
     //It is same as we did in earlier posts
