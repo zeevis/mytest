@@ -76,13 +76,26 @@ public class MatchesActivity extends AppCompatActivity {
             @Override
             protected void populateViewHolder(final MatchesActivity.MessageViewHolder viewHolder,
                                               final String userid, int position) {
- 
+
                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("usersNew").child(userid);
 
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
-                        User user =  snapshot.getValue(User.class);
+                        final User user =  snapshot.getValue(User.class);
+
+                        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(MatchesActivity.this, MainActivity.class);
+                                intent.putExtra("intentType" ,"cameFormMeetingActivity" );
+                                intent.putExtra("latToGetBackTo" ,user.getmLat() );
+                                intent.putExtra("lngToGetBackTo" ,user.getmLng() );
+                                intent.putExtra("senderIdToGetBackToo" ,user.getmUserId() );
+                                startActivity(intent);
+
+                            }
+                        });
 
                             viewHolder.messageTextView.setText(user.getmEmail());
                             viewHolder.messengerTextView.setText(user.getmUserDisplayName());
