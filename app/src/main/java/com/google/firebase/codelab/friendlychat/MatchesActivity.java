@@ -76,40 +76,13 @@ public class MatchesActivity extends AppCompatActivity {
             @Override
             protected void populateViewHolder(final MatchesActivity.MessageViewHolder viewHolder,
                                               final String userid, int position) {
-                // mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-//
-//                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-////                        Intent intent = new Intent(MainListActivity.this,MainActivity.class);
-////                        intent.putExtra("userid",user.getmUserId());
-////                        intent.putExtra("usertoken",user.getmUserKeyToken());
-////                        intent.putExtra("userlat",user.getmLat());
-////                        intent.putExtra("userlng",user.getmLng());
-////                        startActivity(intent);
-//                        double lat = locationController.getLat();
-//                        double lng = locationController.getLng();
-//
-//                        NotificationController notificationController = new NotificationController(MatchesActivity.this);
-//                        // String nexus6p = "dSTD1uvHd60:APA91bHLdwLcFtmt-Ee6wEiaXSGpk7flxrD5UwNklH9uxBljYWli9X0bW1pRUOiE6fbCGD40yDqoj-xdgNsRVL-p7xvBQo0z9AF-BEDtguuhNhDMnP8-MsbNV1MqdzPQBVO9tNn4M37O";
-//                        // String nexusS = "dWswpCvgpyc:APA91bHdmJzphQgHeT1VvePeIhagqmltsjZ1yhQ_7FpIp-mL79fqzL8X87EiYOX7D7o7XddZ2VLe4Uo_QV8EQwe1yoOcyxYeYxYS8UjPLQm7S7KLyYYB81FobI5TunpAJCh6W1K-DEbw";
-//                        // String nexus5x = "c_eI-apYzKY:APA91bHzb4EEqDM2LmVaby08UF_ZH7GITl8utoL4rhwJgW76Ve5YSCb0qzOfJUQf7qnRcO3FselMT1Kz18BbafHIMoNcJL9UKCdZczO0yqyhkDQa8oXBe-WilO8GITw1jkcW7NiIkfEX";
-//                        ArrayList<String> regIds = new ArrayList<String>();
-//                        regIds.add(user.getmUserKeyToken());
-//                        JSONArray regArray = new JSONArray(regIds);
-//                        notificationController.sendMessage(regArray, lat + ":" + MyFirebaseInstanceIdService.DEVICE_TOKEN, lng + ":" +mFirebaseAuth.getCurrentUser().getUid(), null, "locationNotification");
-//
-//                    }
-//                });
-
-
+ 
                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("usersNew").child(userid);
 
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
                         User user =  snapshot.getValue(User.class);
-
 
                             viewHolder.messageTextView.setText(user.getmEmail());
                             viewHolder.messengerTextView.setText(user.getmUserDisplayName());
@@ -123,8 +96,6 @@ public class MatchesActivity extends AppCompatActivity {
                                         .load(user.getmUserPhotoUrl())
                                         .into(viewHolder.messengerImageView);
                             }
-
-
 
                     }
 
