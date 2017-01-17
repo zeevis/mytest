@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 public class DialogUtils {
 
-    public static void createDialog(Context c, String message, final Interfaces.basicListener basicListener){
+    public static void createDialog(Context c, String message, final Interfaces.basicListener basicListener, String positiveButtonText,String negetiveButtonText){
         AlertDialog.Builder builder = new AlertDialog.Builder(c);
         LayoutInflater inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View dialog = inflater.inflate(R.layout.basic_dialog, null);
@@ -31,6 +31,13 @@ public class DialogUtils {
         mAlert.setCanceledOnTouchOutside(true);
         mAlert.setCancelable(true);
 
+        if(positiveButtonText != null){
+            yesButton.setText(positiveButtonText);
+        }
+
+        if(negetiveButtonText != null){
+            noButton.setText(negetiveButtonText);
+        }
         yesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,6 +54,9 @@ public class DialogUtils {
             }
         });
         mAlert.show();
+    }
 
+    public static void createDialog(Context c, String message, final Interfaces.basicListener basicListener){
+        createDialog( c,  message,  basicListener, null,null);
     }
 }

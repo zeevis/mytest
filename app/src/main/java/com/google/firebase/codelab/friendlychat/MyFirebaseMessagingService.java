@@ -15,12 +15,15 @@
  */
 package com.google.firebase.codelab.friendlychat;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -42,7 +45,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MyFMService";
 
     @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
+    public void onMessageReceived(final RemoteMessage remoteMessage) {
         // Handle data payload of FCM messages.
         Log.d(TAG, "FCM Message Id: " + remoteMessage.getMessageId());
         Log.d(TAG, "FCM Notification Message: " +
@@ -54,15 +57,36 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //            Intent intent = new Intent(this,MainActivity.class);
 //            intent.putExtra("")
          //   EventBus.getDefault().post(new StartMapEvent(Double.parseDouble(remoteMessage.getNotification().getTitle()),Double.parseDouble(remoteMessage.getNotification().getBody())));
-            
-kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
-            Intent intent = new Intent(MyFirebaseMessagingService.this,MainActivity.class);
-            intent.putExtra("latToGetBackTo",Double.parseDouble(remoteMessage.getNotification().getTitle()));
-            intent.putExtra("lngToGetBackTo",Double.parseDouble(remoteMessage.getNotification().getBody().substring(0,remoteMessage.getNotification().getBody().indexOf(":") - 1)));
-            intent.putExtra("senderIdToGetBackToo",remoteMessage.getNotification().getBody().substring(remoteMessage.getNotification().getBody().indexOf(":") + 1));
-            intent.putExtra("intentType","cameFormMeetingActivity");
-            intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            Looper.prepare();
+
+            new Handler().post(new Runnable() { // This thread runs in the UI
+                @Override
+                public void run() {
+                    DialogUtils.createDialog(MyFirebaseMessagingService.this, "You've been approved, would you like to chat now?", new Interfaces.basicListener() {
+                        @Override
+                        public void onSuccess() {
+                            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                            intent.putExtra("latToGetBackTo",Double.parseDouble(remoteMessage.getNotification().getTitle()));
+                            intent.putExtra("lngToGetBackTo",Double.parseDouble(remoteMessage.getNotification().getBody().substring(0,remoteMessage.getNotification().getBody().indexOf(":") - 1)));
+                            intent.putExtra("senderIdToGetBackToo",remoteMessage.getNotification().getBody().substring(remoteMessage.getNotification().getBody().indexOf(":") + 1));
+                            intent.putExtra("intentType","cameFormMeetingActivity");
+                            intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+                    });
+
+                }
+            });
+
+
+            Looper.loop();
+
+
 
 
 
