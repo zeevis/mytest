@@ -16,4 +16,5 @@
     </string>
     <string name="title_activity_main_list">MainListActivity</string>
     <string name="title_activity_matches">MatchesActivity</string>
+    <string name="matches_screen">Matches Screen</string>
 </resources>

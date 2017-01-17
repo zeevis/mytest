@@ -33,18 +33,20 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MatchesActivity extends AppCompatActivity {
     private LinearLayoutManager mLinearLayoutManager;
     private DatabaseReference mFirebaseDatabaseReference;
-    private FirebaseRecyclerAdapter<User, MatchesActivity.MessageViewHolder>
+    private FirebaseRecyclerAdapter<String, MatchesActivity.MessageViewHolder>
             mFirebaseAdapter;
     private FirebaseAuth mFirebaseAuth;
     private RecyclerView mMessageRecyclerView;
     private ArrayList<User> userArrayList;
     private LocationController locationController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_matches);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mFirebaseAuth = FirebaseAuth.getInstance();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -63,18 +65,17 @@ public class MatchesActivity extends AppCompatActivity {
         mMessageRecyclerView.setLayoutManager(mLinearLayoutManager);
 
 
-
         // New child entries
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
-        mFirebaseAdapter = new FirebaseRecyclerAdapter<User, MatchesActivity.MessageViewHolder>(
-                User.class,
+        mFirebaseAdapter = new FirebaseRecyclerAdapter<String, MatchesActivity.MessageViewHolder>(
+                String.class,
                 R.layout.item_message,
                 MatchesActivity.MessageViewHolder.class,
                 mFirebaseDatabaseReference.child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("matches")) {
 
             @Override
             protected void populateViewHolder(final MatchesActivity.MessageViewHolder viewHolder,
-                                              final User userid, int position) {
+                                              final String userid, int position) {
                 // mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 //
 //                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -102,36 +103,36 @@ public class MatchesActivity extends AppCompatActivity {
 //                });
 
 
-               DatabaseReference databaseReference =  FirebaseDatabase.getInstance().getReference().child("usersNew").child(userid);
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("usersNew").child(userid);
 
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                         @Override
-                                                         public void onDataChange(DataSnapshot snapshot) {
-                                                             for (DataSnapshot child : snapshot.getChildren()) {
-                                                                 User user = (User)child.getValue();
-
-                                                                 viewHolder.messageTextView.setText(user.getmEmail());
-                                                                 viewHolder.messengerTextView.setText(user.getmUserDisplayName());
-                                                                 if (user.getmUserPhotoUrl() == null) {
-                                                                     viewHolder.messengerImageView
-                                                                             .setImageDrawable(ContextCompat
-                                                                                     .getDrawable(MatchesActivity.this,
-                                                                                             R.drawable.ic_account_circle_black_36dp));
-                                                                 } else {
-                                                                     Glide.with(MatchesActivity.this)
-                                                                             .load(user.getmUserPhotoUrl())
-                                                                             .into(viewHolder.messengerImageView);
-                                                                 }
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        User user =  snapshot.getValue(User.class);
 
 
-                                                             }
-                                                         }
+                            viewHolder.messageTextView.setText(user.getmEmail());
+                            viewHolder.messengerTextView.setText(user.getmUserDisplayName());
+                            if (user.getmUserPhotoUrl() == null) {
+                                viewHolder.messengerImageView
+                                        .setImageDrawable(ContextCompat
+                                                .getDrawable(MatchesActivity.this,
+                                                        R.drawable.ic_account_circle_black_36dp));
+                            } else {
+                                Glide.with(MatchesActivity.this)
+                                        .load(user.getmUserPhotoUrl())
+                                        .into(viewHolder.messengerImageView);
+                            }
 
-                                                                     @Override
-                                                                     public void onCancelled(DatabaseError databaseError) {
 
-                                                                     }
-                    });
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 
 
                 //  userArrayList.add(user);
@@ -172,7 +173,6 @@ public class MatchesActivity extends AppCompatActivity {
         mMessageRecyclerView.setAdapter(mFirebaseAdapter);
 
 
-
     }
 
 
@@ -197,7 +197,6 @@ public class MatchesActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -211,6 +210,9 @@ public class MatchesActivity extends AppCompatActivity {
             case R.id.fresh_config_menu:
                 //fetchConfig();
                 // return true;
+            case R.id.matches_screen_menu:
+                startActivity(new Intent(this, MatchesActivity.class));
+                return true;
             case R.id.sign_out_menu:
                 mFirebaseAuth.signOut();
                 // mUsername = ANONYMOUS;
@@ -220,7 +222,6 @@ public class MatchesActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
 
 }
