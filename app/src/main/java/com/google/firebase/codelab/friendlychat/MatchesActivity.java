@@ -89,9 +89,9 @@ public class MatchesActivity extends AppCompatActivity {
                             public void onClick(View view) {
                                 Intent intent = new Intent(MatchesActivity.this, MainActivity.class);
                                 intent.putExtra("intentType" ,"cameFormMeetingActivity" );
-                                intent.putExtra("latToGetBackTo" ,user.getmLat() );
-                                intent.putExtra("lngToGetBackTo" ,user.getmLng() );
-                                intent.putExtra("senderIdToGetBackToo" ,user.getmUserId() );
+                                intent.putExtra("latToGetBackTo" ,user.getmLat());
+                                intent.putExtra("lngToGetBackTo" ,user.getmLng());
+                                intent.putExtra("senderIdToGetBackToo" ,user.getmUserId());
                                 startActivity(intent);
 
                             }
