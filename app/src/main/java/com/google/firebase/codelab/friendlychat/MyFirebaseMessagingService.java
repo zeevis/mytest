@@ -98,11 +98,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
     private void sendApprovedNotification(String messageBody,RemoteMessage remoteMessage) {
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(),MeetingRequestNotificationActivity.class);
         intent.putExtra("latToGetBackTo",Double.parseDouble(remoteMessage.getNotification().getTitle()));
         intent.putExtra("lngToGetBackTo",Double.parseDouble(remoteMessage.getNotification().getBody().substring(0,remoteMessage.getNotification().getBody().indexOf(":") - 1)));
         intent.putExtra("senderIdToGetBackToo",remoteMessage.getNotification().getBody().substring(remoteMessage.getNotification().getBody().indexOf(":") + 1));
-        intent.putExtra("intentType","cameFormMeetingActivity");
+        intent.putExtra("intentType","youHaveBeenApproved");
+        intent.putExtra("message",messageBody);
         intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -122,6 +123,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0, notificationBuilder.build());
+        startActivity(intent);
     }
 
 

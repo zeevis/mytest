@@ -44,10 +44,10 @@ public class MeetingRequestNotificationActivity extends AppCompatActivity {
             @Override
             public void onSuccess() {
 
-                if(getIntent().getStringExtra("youHaveBeenApproved") != null && getIntent().getStringExtra("youHaveBeenApproved").equals("youHaveBeenApproved")){
-                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                    intent.putExtra("latToGetBackTo",Double.parseDouble(getIntent().getStringExtra("latToGetBackTo")));
-                    intent.putExtra("lngToGetBackTo",Double.parseDouble(getIntent().getStringExtra("lngToGetBackTo")));
+                if(getIntent().getStringExtra("intentType") != null && getIntent().getStringExtra("intentType").equals("youHaveBeenApproved")){
+                    Intent intent = new Intent(MeetingRequestNotificationActivity.this,MainActivity.class);
+                    intent.putExtra("latToGetBackTo",getIntent().getDoubleExtra("latToGetBackTo",0));
+                    intent.putExtra("lngToGetBackTo",getIntent().getDoubleExtra("lngToGetBackTo",0));
                     intent.putExtra("senderIdToGetBackToo", getIntent().getStringExtra("senderIdToGetBackToo"));
                     intent.putExtra("intentType","cameFormMeetingActivity");
                     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
