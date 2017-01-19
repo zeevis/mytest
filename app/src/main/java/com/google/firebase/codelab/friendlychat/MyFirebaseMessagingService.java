@@ -103,7 +103,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.putExtra("lngToGetBackTo",Double.parseDouble(remoteMessage.getNotification().getBody().substring(0,remoteMessage.getNotification().getBody().indexOf(":") - 1)));
         intent.putExtra("senderIdToGetBackToo",remoteMessage.getNotification().getBody().substring(remoteMessage.getNotification().getBody().indexOf(":") + 1));
         intent.putExtra("intentType","youHaveBeenApproved");
-        intent.putExtra("message",messageBody);
+        intent.putExtra("mainMessage",messageBody);
         intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
