@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:text="Pending"/>
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/usersRecyclerViewPanding"
+        android:id="@+id/usersRecyclerViewPending"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />

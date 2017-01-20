@@ -35,8 +35,11 @@ public class MatchesActivity extends AppCompatActivity {
     private DatabaseReference mFirebaseDatabaseReference;
     private FirebaseRecyclerAdapter<String, MatchesActivity.MessageViewHolder>
             mFirebaseAdapter;
+    private FirebaseRecyclerAdapter<String, MatchesActivity.MessageViewHolder>
+            mFirebaseAdapterPending;
     private FirebaseAuth mFirebaseAuth;
     private RecyclerView mMessageRecyclerView;
+    private RecyclerView mMessageRecyclerViewPending;
     private ArrayList<User> userArrayList;
     private LocationController locationController;
 
@@ -60,13 +63,17 @@ public class MatchesActivity extends AppCompatActivity {
         // Initialize ProgressBar and RecyclerView.
         // mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         mMessageRecyclerView = (RecyclerView) findViewById(R.id.usersRecyclerView);
+        mMessageRecyclerViewPending = (RecyclerView) findViewById(R.id.usersRecyclerViewPending);
+
         mLinearLayoutManager = new LinearLayoutManager(this);
         mLinearLayoutManager.setStackFromEnd(true);
         mMessageRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mMessageRecyclerViewPending.setLayoutManager(mLinearLayoutManager);
 
 
         // New child entries
-        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+
+         = FirebaseDatabase.getInstance().getReference();
         mFirebaseAdapter = new FirebaseRecyclerAdapter<String, MatchesActivity.MessageViewHolder>(
                 String.class,
                 R.layout.item_message,
@@ -148,13 +155,13 @@ public class MatchesActivity extends AppCompatActivity {
                         (positionStart >= (friendlyMessageCount - 1) &&
                                 lastVisiblePosition == (positionStart - 1))) {
                     mMessageRecyclerView.scrollToPosition(positionStart);
+
                 }
             }
         });
 
         mMessageRecyclerView.setLayoutManager(mLinearLayoutManager);
         mMessageRecyclerView.setAdapter(mFirebaseAdapter);
-
 
     }
 
