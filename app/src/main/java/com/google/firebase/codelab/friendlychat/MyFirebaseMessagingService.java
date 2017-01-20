@@ -27,6 +27,9 @@ import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -83,13 +86,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //
 //                }
 //            });
+            String friendId = remoteMessage.getNotification().getBody().substring(remoteMessage.getNotification().getBody().indexOf(":")  + 1);
+            FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+            DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("pending");
+          // DatabaseReference friendRef = FirebaseDatabase.getInstance().getReference().child("usersNew").child(getIntent().getStringExtra("senderIdToGetBackToo")).child("matches");
+            myRef.keepSynced(true);
+            myRef.child(friendId).setValue(friendId);
+
+
             Intent intent = new Intent(MyFirebaseMessagingService.this,MeetingRequestNotificationActivity.class);
             intent.putExtra("tokenToGetBackTo",remoteMessage.getNotification().getTitle().substring(remoteMessage.getNotification().getTitle().indexOf(":")+1,remoteMessage.getNotification().getTitle().length()));
             intent.putExtra("latToGetBackTo",remoteMessage.getNotification().getTitle().substring(0,remoteMessage.getNotification().getTitle().indexOf(":") - 1));
             intent.putExtra("lngToGetBackTo",remoteMessage.getNotification().getBody().substring(0, remoteMessage.getNotification().getBody().indexOf(":") - 1));
-            intent.putExtra("senderIdToGetBackToo",remoteMessage.getNotification().getBody().substring(remoteMessage.getNotification().getBody().indexOf(":")  + 1));
+            intent.putExtra("senderIdToGetBackToo",friendId);
             intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-
             startActivity(intent);
         }
         //Calling method to generate notification

@@ -93,7 +93,6 @@ public class MatchesActivity extends AppCompatActivity {
                                 intent.putExtra("lngToGetBackTo" ,user.getmLng());
                                 intent.putExtra("senderIdToGetBackToo" ,user.getmUserId());
                                 startActivity(intent);
-
                             }
                         });
 
