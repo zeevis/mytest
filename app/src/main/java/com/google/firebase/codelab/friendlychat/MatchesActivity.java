@@ -32,6 +32,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MatchesActivity extends AppCompatActivity {
     private LinearLayoutManager mLinearLayoutManager;
+    private LinearLayoutManager mLinearLayoutManagerPending;
+
     private DatabaseReference mFirebaseDatabaseReference;
     private FirebaseRecyclerAdapter<String, MatchesActivity.MessageViewHolder>
             mFirebaseAdapter;
@@ -66,14 +68,66 @@ public class MatchesActivity extends AppCompatActivity {
         mMessageRecyclerViewPending = (RecyclerView) findViewById(R.id.usersRecyclerViewPending);
 
         mLinearLayoutManager = new LinearLayoutManager(this);
+        mLinearLayoutManagerPending = new LinearLayoutManager(this);
         mLinearLayoutManager.setStackFromEnd(true);
+        mLinearLayoutManagerPending.setStackFromEnd(true);
         mMessageRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mMessageRecyclerViewPending.setLayoutManager(mLinearLayoutManager);
+        mMessageRecyclerViewPending.setLayoutManager(mLinearLayoutManagerPending);
 
 
         // New child entries
 
-         = FirebaseDatabase.getInstance().getReference();
+        mFirebaseDatabaseReference= FirebaseDatabase.getInstance().getReference();
+        mFirebaseAdapterPending = new FirebaseRecyclerAdapter<String,MatchesActivity.MessageViewHolder>(
+                String.class,
+                R.layout.item_message,
+                MatchesActivity.MessageViewHolder.class,
+                mFirebaseDatabaseReference.child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("pending")) {
+            @Override
+            protected void populateViewHolder(final MessageViewHolder viewHolder, final String userid, int position) {
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("usersNew").child(userid);
+
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        final User user =  snapshot.getValue(User.class);
+
+                        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(MatchesActivity.this, MainActivity.class);
+                                intent.putExtra("intentType" ,"cameFormMeetingActivity" );
+                                intent.putExtra("latToGetBackTo" ,user.getmLat());
+                                intent.putExtra("lngToGetBackTo" ,user.getmLng());
+                                intent.putExtra("senderIdToGetBackToo" ,user.getmUserId());
+                                intent.putExtra("pending" ,"pending" );
+                                startActivity(intent);
+                            }
+                        });
+
+                        viewHolder.messageTextView.setText(user.getmEmail());
+                        viewHolder.messengerTextView.setText(user.getmUserDisplayName());
+                        if (user.getmUserPhotoUrl() == null) {
+                            viewHolder.messengerImageView
+                                    .setImageDrawable(ContextCompat
+                                            .getDrawable(MatchesActivity.this,
+                                                    R.drawable.ic_account_circle_black_36dp));
+                        } else {
+                            Glide.with(MatchesActivity.this)
+                                    .load(user.getmUserPhotoUrl())
+                                    .into(viewHolder.messengerImageView);
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+        };
         mFirebaseAdapter = new FirebaseRecyclerAdapter<String, MatchesActivity.MessageViewHolder>(
                 String.class,
                 R.layout.item_message,
@@ -160,9 +214,33 @@ public class MatchesActivity extends AppCompatActivity {
             }
         });
 
+
+
+        mFirebaseAdapterPending.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                int friendlyMessageCount = mFirebaseAdapterPending.getItemCount();
+                int lastVisiblePosition =
+                        mLinearLayoutManagerPending.findLastCompletelyVisibleItemPosition();
+                // If the recycler view is initially being loaded or the
+                // user is at the bottom of the list, scroll to the bottom
+                // of the list to show the newly added message.
+                if (lastVisiblePosition == -1 ||
+                        (positionStart >= (friendlyMessageCount - 1) &&
+                                lastVisiblePosition == (positionStart - 1))) {
+                    mMessageRecyclerViewPending.scrollToPosition(positionStart);
+
+                }
+            }
+        });
+
+
+
         mMessageRecyclerView.setLayoutManager(mLinearLayoutManager);
         mMessageRecyclerView.setAdapter(mFirebaseAdapter);
-
+mMessageRecyclerViewPending.setLayoutManager(mLinearLayoutManagerPending);
+        mMessageRecyclerViewPending.setAdapter(mFirebaseAdapterPending);
     }
 
 

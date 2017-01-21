@@ -375,13 +375,41 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         EventBus.getDefault().register(this);
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         if(intent != null && intent.getStringExtra("intentType") != null && intent.getStringExtra("intentType").equals("cameFormMeetingActivity")){
-            latOfFriend = intent.getDoubleExtra("latToGetBackTo",0);
-            lngOfFriend = intent.getDoubleExtra("lngToGetBackTo",0);
-            friendId = intent.getStringExtra("senderIdToGetBackToo");
 
-            initGoogleMap();
+            if(intent.getStringExtra("pending") != null &&intent.getStringExtra("pending").equals("pending")){
+                DialogUtils.createDialog(this, "do you approve this user?", new Interfaces.basicListener() {
+                    @Override
+                    public void onSuccess() {
+                        DatabaseReference myRefPending = FirebaseDatabase.getInstance().getReference().child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("pending");
+                        myRefPending.keepSynced(true);
+                        myRefPending.child(intent.getStringExtra("senderIdToGetBackToo")).removeValue();
+
+
+                        latOfFriend = intent.getDoubleExtra("latToGetBackTo", 0);
+                        lngOfFriend = intent.getDoubleExtra("lngToGetBackTo", 0);
+                        friendId = intent.getStringExtra("senderIdToGetBackToo");
+                        initGoogleMap();
+
+                    }
+
+                    @Override
+                    public void onError() {
+                        DatabaseReference myRefPending = FirebaseDatabase.getInstance().getReference().child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("pending");
+                        myRefPending.keepSynced(true);
+                        myRefPending.child(intent.getStringExtra("senderIdToGetBackToo")).removeValue();
+                        finish();
+                    }
+                });
+            }else {
+                latOfFriend = intent.getDoubleExtra("latToGetBackTo", 0);
+                lngOfFriend = intent.getDoubleExtra("lngToGetBackTo", 0);
+                friendId = intent.getStringExtra("senderIdToGetBackToo");
+                initGoogleMap();
+            }
+
+
         }
 
 
