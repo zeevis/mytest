@@ -377,19 +377,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         final Intent intent = getIntent();
         if(intent != null && intent.getStringExtra("intentType") != null && intent.getStringExtra("intentType").equals("cameFormMeetingActivity")){
+            latOfFriend = intent.getDoubleExtra("latToGetBackTo", 0);
+            lngOfFriend = intent.getDoubleExtra("lngToGetBackTo", 0);
+            friendId = intent.getStringExtra("senderIdToGetBackToo");
 
             if(intent.getStringExtra("pending") != null &&intent.getStringExtra("pending").equals("pending")){
                 DialogUtils.createDialog(this, "do you approve this user?", new Interfaces.basicListener() {
                     @Override
                     public void onSuccess() {
                         DatabaseReference myRefPending = FirebaseDatabase.getInstance().getReference().child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("pending");
+                        DatabaseReference myRefMatches = FirebaseDatabase.getInstance().getReference().child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("matches");
+                        myRefMatches.keepSynced(true);
                         myRefPending.keepSynced(true);
-                        myRefPending.child(intent.getStringExtra("senderIdToGetBackToo")).removeValue();
-
-
-                        latOfFriend = intent.getDoubleExtra("latToGetBackTo", 0);
-                        lngOfFriend = intent.getDoubleExtra("lngToGetBackTo", 0);
-                        friendId = intent.getStringExtra("senderIdToGetBackToo");
+                        myRefPending.child(friendId).removeValue();
+                        myRefMatches.child(friendId).setValue(friendId);
                         initGoogleMap();
 
                     }
@@ -403,9 +404,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                 });
             }else {
-                latOfFriend = intent.getDoubleExtra("latToGetBackTo", 0);
-                lngOfFriend = intent.getDoubleExtra("lngToGetBackTo", 0);
-                friendId = intent.getStringExtra("senderIdToGetBackToo");
                 initGoogleMap();
             }
 
