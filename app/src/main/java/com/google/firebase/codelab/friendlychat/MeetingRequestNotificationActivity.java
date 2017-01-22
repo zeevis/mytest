@@ -93,6 +93,7 @@ public class MeetingRequestNotificationActivity extends AppCompatActivity {
                     myRef.child(getIntent().getStringExtra("senderIdToGetBackToo")).setValue("redDot");
                     friendRef.child(mFirebaseAuth.getCurrentUser().getUid()).setValue(mFirebaseAuth.getCurrentUser().getUid());
                     friendRef.child(mFirebaseAuth.getCurrentUser().getUid()).setValue("redDot");
+                    myRef.child(getIntent().getStringExtra("senderIdToGetBackToo")).setValue("redDot");
 
                     startActivity(intent);
                     finish();

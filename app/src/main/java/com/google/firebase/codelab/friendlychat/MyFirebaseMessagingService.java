@@ -92,7 +92,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
           // DatabaseReference friendRef = FirebaseDatabase.getInstance().getReference().child("usersNew").child(getIntent().getStringExtra("senderIdToGetBackToo")).child("matches");
             myRef.keepSynced(true);
             myRef.child(friendId).setValue(friendId);
-            myRef.child(friendId).setValue("redDo");
+            myRef.child(friendId).setValue("redDot");
 
 
             Intent intent = new Intent(MyFirebaseMessagingService.this,MeetingRequestNotificationActivity.class);
