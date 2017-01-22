@@ -380,26 +380,26 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             latOfFriend = intent.getDoubleExtra("latToGetBackTo", 0);
             lngOfFriend = intent.getDoubleExtra("lngToGetBackTo", 0);
             friendId = intent.getStringExtra("senderIdToGetBackToo");
+            final DatabaseReference myRefPending = FirebaseDatabase.getInstance().getReference().child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("pending");
 
             if(intent.getStringExtra("pending") != null &&intent.getStringExtra("pending").equals("pending")){
                 DialogUtils.createDialog(this, "do you approve this user?", new Interfaces.basicListener() {
                     @Override
                     public void onSuccess() {
-                        DatabaseReference myRefPending = FirebaseDatabase.getInstance().getReference().child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("pending");
                         DatabaseReference myRefMatches = FirebaseDatabase.getInstance().getReference().child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("matches");
                         myRefMatches.keepSynced(true);
                         myRefPending.keepSynced(true);
                         myRefPending.child(friendId).removeValue();
                         myRefMatches.child(friendId).setValue(friendId);
+                        myRefMatches.child(friendId).setValue("redDot");
                         initGoogleMap();
 
                     }
 
                     @Override
                     public void onError() {
-                        DatabaseReference myRefPending = FirebaseDatabase.getInstance().getReference().child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("pending");
                         myRefPending.keepSynced(true);
-                        myRefPending.child(intent.getStringExtra("senderIdToGetBackToo")).removeValue();
+                        myRefPending.child(friendId).removeValue();
                         finish();
                     }
                 });
