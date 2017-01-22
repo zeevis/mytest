@@ -375,6 +375,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         EventBus.getDefault().register(this);
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
+        // Initialize Firebase Auth
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
         final Intent intent = getIntent();
         if(intent != null && intent.getStringExtra("intentType") != null && intent.getStringExtra("intentType").equals("cameFormMeetingActivity")){
             latOfFriend = intent.getDoubleExtra("latToGetBackTo", 0);
@@ -391,7 +395,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         myRefPending.keepSynced(true);
                         myRefPending.child(friendId).removeValue();
                         myRefMatches.child(friendId).setValue(friendId);
-                        myRefMatches.child(friendId).setValue("redDot");
+                        myRefMatches.child(friendId).child(friendId).child("redDot").setValue("redDot");
                         initGoogleMap();
 
                     }
@@ -483,9 +487,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        // Initialize Firebase Auth
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
 
 
         ///////////////////////////////////////
