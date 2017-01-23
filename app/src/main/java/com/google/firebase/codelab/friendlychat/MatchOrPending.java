@@ -9,6 +9,8 @@ public class MatchOrPending {
     String userId;
     String redDot;
 
+    public MatchOrPending() {
+    }
     public MatchOrPending(String userId, String redDot) {
         this.userId = userId;
         this.redDot = redDot;

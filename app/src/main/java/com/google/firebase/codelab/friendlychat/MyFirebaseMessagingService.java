@@ -91,8 +91,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("pending");
           // DatabaseReference friendRef = FirebaseDatabase.getInstance().getReference().child("usersNew").child(getIntent().getStringExtra("senderIdToGetBackToo")).child("matches");
             myRef.keepSynced(true);
-            myRef.child(friendId).setValue(friendId);
-            myRef.child(friendId).child(friendId).child("redDot").setValue("redDot");
+            myRef.child(friendId).child("userId").setValue(friendId);
+            myRef.child(friendId).child("redDot").setValue("redDot");
 
 
             Intent intent = new Intent(MyFirebaseMessagingService.this,MeetingRequestNotificationActivity.class);

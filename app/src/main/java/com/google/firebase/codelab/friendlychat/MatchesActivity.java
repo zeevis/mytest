@@ -35,9 +35,9 @@ public class MatchesActivity extends AppCompatActivity {
     private LinearLayoutManager mLinearLayoutManagerPending;
 
     private DatabaseReference mFirebaseDatabaseReference;
-    private FirebaseRecyclerAdapter<String, MatchesActivity.MessageViewHolder>
+    private FirebaseRecyclerAdapter<MatchOrPending, MatchesActivity.MessageViewHolder>
             mFirebaseAdapter;
-    private FirebaseRecyclerAdapter<String, MatchesActivity.MessageViewHolder>
+    private FirebaseRecyclerAdapter<MatchOrPending, MatchesActivity.MessageViewHolder>
             mFirebaseAdapterPending;
     private FirebaseAuth mFirebaseAuth;
     private RecyclerView mMessageRecyclerView;
@@ -78,14 +78,14 @@ public class MatchesActivity extends AppCompatActivity {
         // New child entries
 
         mFirebaseDatabaseReference= FirebaseDatabase.getInstance().getReference();
-        mFirebaseAdapterPending = new FirebaseRecyclerAdapter<String,MatchesActivity.MessageViewHolder>(
-                String.class,
+        mFirebaseAdapterPending = new FirebaseRecyclerAdapter<MatchOrPending,MatchesActivity.MessageViewHolder>(
+                MatchOrPending.class,
                 R.layout.item_message,
                 MatchesActivity.MessageViewHolder.class,
                 mFirebaseDatabaseReference.child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("pending")) {
             @Override
-            protected void populateViewHolder(final MessageViewHolder viewHolder, final String userid, int position) {
-                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("usersNew").child(userid);
+            protected void populateViewHolder(final MessageViewHolder viewHolder, final MatchOrPending matchOrPending, int position) {
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("usersNew").child(matchOrPending.getUserId());
 
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -128,17 +128,17 @@ public class MatchesActivity extends AppCompatActivity {
 
             }
         };
-        mFirebaseAdapter = new FirebaseRecyclerAdapter<String, MatchesActivity.MessageViewHolder>(
-                String.class,
+        mFirebaseAdapter = new FirebaseRecyclerAdapter<MatchOrPending, MatchesActivity.MessageViewHolder>(
+                MatchOrPending.class,
                 R.layout.item_message,
                 MatchesActivity.MessageViewHolder.class,
                 mFirebaseDatabaseReference.child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("matches")) {
 
             @Override
             protected void populateViewHolder(final MatchesActivity.MessageViewHolder viewHolder,
-                                              final String userid, int position) {
+                                              final MatchOrPending matchOrPending, int position) {
 
-                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("usersNew").child(userid);
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("usersNew").child(matchOrPending.getUserId());
 
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

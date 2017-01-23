@@ -391,11 +391,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     @Override
                     public void onSuccess() {
                         DatabaseReference myRefMatches = FirebaseDatabase.getInstance().getReference().child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("matches");
+                        DatabaseReference myFriendMatches = FirebaseDatabase.getInstance().getReference().child("usersNew").child(friendId).child("matches");
                         myRefMatches.keepSynced(true);
                         myRefPending.keepSynced(true);
+                        myFriendMatches.keepSynced(true);
                         myRefPending.child(friendId).removeValue();
-                        myRefMatches.child(friendId).setValue(friendId);
-                        myRefMatches.child(friendId).child(friendId).child("redDot").setValue("redDot");
+                        myRefMatches.child(friendId).child("userId").setValue(friendId);
+                        myRefMatches.child(friendId).child("redDot").setValue("redDot");
+
+                        myFriendMatches.child(mFirebaseAuth.getCurrentUser().getUid()).child("userId").setValue(mFirebaseAuth.getCurrentUser().getUid());
+                        myFriendMatches.child(mFirebaseAuth.getCurrentUser().getUid()).child("redDot").setValue("redDot");
+
+                        notificationController.sendMessage(regArray, lat + "", lng + ":" + mFirebaseAuth.getCurrentUser().getUid(), null, "yesIWantToMeet");
                         initGoogleMap();
 
                     }
