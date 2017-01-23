@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 
 repositories {
     mavenLocal()
+    mavenCentral()
     flatDir {
         dirs 'libs'
     }
@@ -81,6 +82,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:9.4.0'
 
     compile 'com.google.android.gms:play-services-appindexing:9.4.0'
+    'com.facebook.android:facebook-android-sdk:[4,5)'
 //    compile 'com.android.support.test.espresso:espresso-core:2.2.1'
 }
 
