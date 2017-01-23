@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -85,7 +86,7 @@ public class MatchesActivity extends AppCompatActivity {
                 mFirebaseDatabaseReference.child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("pending")) {
             @Override
             protected void populateViewHolder(final MessageViewHolder viewHolder, final MatchOrPending matchOrPending, int position) {
-                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("usersNew").child(matchOrPending.getUserId());
+                DatabaseReference databaseReference = mFirebaseDatabaseReference.child("usersNew").child(matchOrPending.getUserId());
 
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -108,6 +109,12 @@ public class MatchesActivity extends AppCompatActivity {
 
                         viewHolder.messageTextView.setText(user.getmEmail());
                         viewHolder.messengerTextView.setText(user.getmUserDisplayName());
+
+                        if(matchOrPending.getRedDot() != null && matchOrPending.getRedDot().equals("redDot")){
+                            viewHolder.redDotImageView.setVisibility(View.VISIBLE);
+                        }else{
+                            viewHolder.redDotImageView.setVisibility(View.GONE);
+                        }
                         if (user.getmUserPhotoUrl() == null) {
                             viewHolder.messengerImageView
                                     .setImageDrawable(ContextCompat
@@ -160,6 +167,13 @@ public class MatchesActivity extends AppCompatActivity {
 
                             viewHolder.messageTextView.setText(user.getmEmail());
                             viewHolder.messengerTextView.setText(user.getmUserDisplayName());
+
+                        if(matchOrPending.getRedDot() != null && matchOrPending.getRedDot().equals("redDot")){
+                            viewHolder.redDotImageView.setVisibility(View.VISIBLE);
+                        }else{
+                            viewHolder.redDotImageView.setVisibility(View.GONE);
+                        }
+
                             if (user.getmUserPhotoUrl() == null) {
                                 viewHolder.messengerImageView
                                         .setImageDrawable(ContextCompat
@@ -249,12 +263,14 @@ mMessageRecyclerViewPending.setLayoutManager(mLinearLayoutManagerPending);
         public TextView messageTextView;
         public TextView messengerTextView;
         public CircleImageView messengerImageView;
+        public LinearLayout redDotImageView;
 
         public MessageViewHolder(View v) {
             super(v);
             messageTextView = (TextView) itemView.findViewById(R.id.messageTextView);
             messengerTextView = (TextView) itemView.findViewById(R.id.messengerTextView);
             messengerImageView = (CircleImageView) itemView.findViewById(R.id.messengerImageView);
+            redDotImageView = (LinearLayout) itemView.findViewById(R.id.redDotLayOut);
         }
     }
 

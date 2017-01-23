@@ -126,10 +126,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private boolean latFriendLocationChanged = false;
     private boolean lngFriendLocationChanged = false;
 
-    boolean isInTalkZone;
+    private boolean isFriendPending;
+    private boolean isFriendMatch;
 
-    double latOfFriend;
-    double lngOfFriend;
+    private boolean isInTalkZone;
+
+    private double latOfFriend;
+    private double lngOfFriend;
 
    // private Ma
 
@@ -388,10 +391,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             final DatabaseReference myRefPending = FirebaseDatabase.getInstance().getReference().child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("pending");
 
             if(intent.getStringExtra("pending") != null &&intent.getStringExtra("pending").equals("pending")){
+                isFriendPending = true;
                 DialogUtils.createDialog(this, "do you approve this user?", new Interfaces.basicListener() {
                     @Override
                     public void onSuccess() {
-                        DatabaseReference myRefMatches = FirebaseDatabase.getInstance().getReference().child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("matches");fffffffffff
+                        DatabaseReference myRefMatches = FirebaseDatabase.getInstance().getReference().child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("matches");
                         DatabaseReference myFriendMatches = FirebaseDatabase.getInstance().getReference().child("usersNew").child(friendId).child("matches");
                         myRefMatches.keepSynced(true);
                         myRefPending.keepSynced(true);
@@ -406,6 +410,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         regIds.add( intent.getStringExtra("senderTokenToGetBackToo"));
                         JSONArray regArray = new JSONArray(regIds);
                         notificationController.sendMessage(regArray, locationController.getLat() + "", locationController.getLng() + ":" + mFirebaseAuth.getCurrentUser().getUid(), null, "yesIWantToMeet");
+
+                        isFriendPending = false;
+                        isFriendMatch = true;
                         initGoogleMap();
 
                     }
@@ -418,6 +425,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                 });
             }else {
+                isFriendMatch = true;
                 initGoogleMap();
             }
 
@@ -790,7 +798,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             mAdView.pause();
         }
         super.onPause();
-        mFirebaseDatabaseReference.child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("matches");
+        if(isFriendMatch) {
+            mFirebaseDatabaseReference.child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("matches").child(friendId).child("redDot").removeValue();
+        }
+        if(isFriendPending) {
+            mFirebaseDatabaseReference.child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("pending").child(friendId).child("redDot").removeValue();
+        }
     }
 
     /** Called when returning to the activity */
