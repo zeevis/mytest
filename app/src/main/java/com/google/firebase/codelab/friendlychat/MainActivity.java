@@ -373,6 +373,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(mToolbar);
         EventBus.getDefault().register(this);
+        final NotificationController notificationController = new NotificationController(MainActivity.this);
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
         // Initialize Firebase Auth
@@ -401,8 +402,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                         myFriendMatches.child(mFirebaseAuth.getCurrentUser().getUid()).child("userId").setValue(mFirebaseAuth.getCurrentUser().getUid());
                         myFriendMatches.child(mFirebaseAuth.getCurrentUser().getUid()).child("redDot").setValue("redDot");
-
-                        notificationController.sendMessage(regArray, lat + "", lng + ":" + mFirebaseAuth.getCurrentUser().getUid(), null, "yesIWantToMeet");
+                        ArrayList<String> regIds = new ArrayList<String>();
+                        regIds.add( intent.getStringExtra("senderTokenToGetBackToo"));
+                        JSONArray regArray = new JSONArray(regIds);
+                        notificationController.sendMessage(regArray, locationController.getLat() + "", locationController.getLng() + ":" + mFirebaseAuth.getCurrentUser().getUid(), null, "yesIWantToMeet");
                         initGoogleMap();
 
                     }
@@ -472,7 +475,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 double lat = locationController.getLat();
                 double lng = locationController.getLng();
 
-                NotificationController notificationController = new NotificationController(MainActivity.this);
+
                 String nexus6p = "dSTD1uvHd60:APA91bHLdwLcFtmt-Ee6wEiaXSGpk7flxrD5UwNklH9uxBljYWli9X0bW1pRUOiE6fbCGD40yDqoj-xdgNsRVL-p7xvBQo0z9AF-BEDtguuhNhDMnP8-MsbNV1MqdzPQBVO9tNn4M37O";
                 String nexusS = "dWswpCvgpyc:APA91bHdmJzphQgHeT1VvePeIhagqmltsjZ1yhQ_7FpIp-mL79fqzL8X87EiYOX7D7o7XddZ2VLe4Uo_QV8EQwe1yoOcyxYeYxYS8UjPLQm7S7KLyYYB81FobI5TunpAJCh6W1K-DEbw";
                 String nexus5x = "c_eI-apYzKY:APA91bHzb4EEqDM2LmVaby08UF_ZH7GITl8utoL4rhwJgW76Ve5YSCb0qzOfJUQf7qnRcO3FselMT1Kz18BbafHIMoNcJL9UKCdZczO0yqyhkDQa8oXBe-WilO8GITw1jkcW7NiIkfEX";
@@ -718,14 +721,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //                        .build());
 
 
-                NotificationController notificationController = new NotificationController(MainActivity.this);
-                String nexus6p = "dSTD1uvHd60:APA91bHLdwLcFtmt-Ee6wEiaXSGpk7flxrD5UwNklH9uxBljYWli9X0bW1pRUOiE6fbCGD40yDqoj-xdgNsRVL-p7xvBQo0z9AF-BEDtguuhNhDMnP8-MsbNV1MqdzPQBVO9tNn4M37O";
-                String nexusS = "dWswpCvgpyc:APA91bHdmJzphQgHeT1VvePeIhagqmltsjZ1yhQ_7FpIp-mL79fqzL8X87EiYOX7D7o7XddZ2VLe4Uo_QV8EQwe1yoOcyxYeYxYS8UjPLQm7S7KLyYYB81FobI5TunpAJCh6W1K-DEbw";
-                ArrayList<String> regIds = new ArrayList<String>();
-                regIds.add(nexus6p);
-                JSONArray regArray = new JSONArray(regIds);
-
-                notificationController.sendMessage(regArray, "hhhhhh", "ooooooo", null, "ma  kore?");
+//                NotificationController notificationController = new NotificationController(MainActivity.this);
+//                String nexus6p = "dSTD1uvHd60:APA91bHLdwLcFtmt-Ee6wEiaXSGpk7flxrD5UwNklH9uxBljYWli9X0bW1pRUOiE6fbCGD40yDqoj-xdgNsRVL-p7xvBQo0z9AF-BEDtguuhNhDMnP8-MsbNV1MqdzPQBVO9tNn4M37O";
+//                String nexusS = "dWswpCvgpyc:APA91bHdmJzphQgHeT1VvePeIhagqmltsjZ1yhQ_7FpIp-mL79fqzL8X87EiYOX7D7o7XddZ2VLe4Uo_QV8EQwe1yoOcyxYeYxYS8UjPLQm7S7KLyYYB81FobI5TunpAJCh6W1K-DEbw";
+//                ArrayList<String> regIds = new ArrayList<String>();
+//                regIds.add(nexus6p);
+//                JSONArray regArray = new JSONArray(regIds);
+//
+//                notificationController.sendMessage(regArray, "hhhhhh", "ooooooo", null, "ma  kore?");
 
 //               mFirebaseDatabaseReference.child("users").push().addValueEventListener(postListener).setValue(friendlyMessage);
 //                mMessageEditText.setText("");

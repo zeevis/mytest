@@ -100,6 +100,7 @@ public class MatchesActivity extends AppCompatActivity {
                                 intent.putExtra("latToGetBackTo" ,user.getmLat());
                                 intent.putExtra("lngToGetBackTo" ,user.getmLng());
                                 intent.putExtra("senderIdToGetBackToo" ,user.getmUserId());
+                                intent.putExtra("senderTokenToGetBackToo" ,user.getmUserKeyToken());
                                 intent.putExtra("pending" ,"pending" );
                                 startActivity(intent);
                             }
