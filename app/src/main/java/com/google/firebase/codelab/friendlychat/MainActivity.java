@@ -661,6 +661,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         .push().setValue(friendlyMessage);
                 mMessageEditText.setText("");
 
+                DatabaseReference myFriendMatches = FirebaseDatabase.getInstance().getReference().child("usersNew").child(friendId).child("matches");
+                myFriendMatches.child(mFirebaseAuth.getCurrentUser().getUid()).child("redDot").setValue("redDot");
+
 
 //                ValueEventListener postListener = new ValueEventListener() {
 //                    @Override
@@ -686,30 +689,30 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
                 //final String uid = getUid();
-                FirebaseDatabase.getInstance().getReference().child("users")
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                // Get user information
-                                User user = dataSnapshot.getValue(User.class);
-                               // String authorName = user.username;
-
-//                                // Create new comment object
-//                                String commentText = mCommentField.getText().toString();
-//                                Comment comment = new Comment(uid, authorName, commentText);
+//                FirebaseDatabase.getInstance().getReference().child("users")
+//                        .addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(DataSnapshot dataSnapshot) {
+//                                // Get user information
+//                                User user = dataSnapshot.getValue(User.class);
+//                               // String authorName = user.username;
 //
-//                                // Push the comment, it will appear in the list
-//                                mCommentsReference.push().setValue(comment);
+////                                // Create new comment object
+////                                String commentText = mCommentField.getText().toString();
+////                                Comment comment = new Comment(uid, authorName, commentText);
+////
+////                                // Push the comment, it will appear in the list
+////                                mCommentsReference.push().setValue(comment);
+////
+////                                // Clear the field
+////                                mCommentField.setText(null);
+//                            }
 //
-//                                // Clear the field
-//                                mCommentField.setText(null);
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
+//                            @Override
+//                            public void onCancelled(DatabaseError databaseError) {
+//
+//                            }
+//                        });
 
 
 //                FirebaseMessaging fm = FirebaseMessaging.getInstance();
@@ -787,6 +790,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             mAdView.pause();
         }
         super.onPause();
+        mFirebaseDatabaseReference.child("usersNew").child("")
     }
 
     /** Called when returning to the activity */
