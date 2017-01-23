@@ -391,7 +391,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 DialogUtils.createDialog(this, "do you approve this user?", new Interfaces.basicListener() {
                     @Override
                     public void onSuccess() {
-                        DatabaseReference myRefMatches = FirebaseDatabase.getInstance().getReference().child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("matches");
+                        DatabaseReference myRefMatches = FirebaseDatabase.getInstance().getReference().child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("matches");fffffffffff
                         DatabaseReference myFriendMatches = FirebaseDatabase.getInstance().getReference().child("usersNew").child(friendId).child("matches");
                         myRefMatches.keepSynced(true);
                         myRefPending.keepSynced(true);
@@ -790,7 +790,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             mAdView.pause();
         }
         super.onPause();
-        mFirebaseDatabaseReference.child("usersNew").child("")
+        mFirebaseDatabaseReference.child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("matches");
     }
 
     /** Called when returning to the activity */
