@@ -19,4 +19,5 @@
     <string name="matches_screen">Matches Screen</string>
     <string name="facebook_app_id">1837133439841478</string>
     <string name="fb_login_protocol_scheme">fb1837133439841478</string>
+    <string name="title_activity_prophile">ProphileActivity</string>
 </resources>

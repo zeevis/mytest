@@ -45,7 +45,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -76,15 +78,34 @@ public class SignInActivity extends AppCompatActivity implements
     private AccessTokenTracker accessTokenTracker;
     private AccessToken accessToken;
     private ProfileTracker profileTracker;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 // ...
 
 
     // Firebase instance variables
+    @Override
+    public void onStart() {
+        super.onStart();
+        mFirebaseAuth.addAuthStateListener(mAuthListener);
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mFirebaseAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        // Initialize FirebaseAuth
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        // Assign fields
+        mSignInButton = (SignInButton) findViewById(R.id.sign_in_button);
+
 // ...
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
@@ -106,6 +127,23 @@ public class SignInActivity extends AppCompatActivity implements
 
             });
 
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+                // ...
+            }
+        };
+
+
+
         accessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
@@ -125,11 +163,6 @@ public class SignInActivity extends AppCompatActivity implements
 
         };
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        // Initialize FirebaseAuth
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        // Assign fields
-        mSignInButton = (SignInButton) findViewById(R.id.sign_in_button);
 
         // Set click listeners
         mSignInButton.setOnClickListener(this);
@@ -146,7 +179,7 @@ public class SignInActivity extends AppCompatActivity implements
 
         // Initialize FirebaseAuth
         faceBookLoginButton = (LoginButton)findViewById(R.id.login_button);
-        faceBookLoginButton.setReadPermissions(Arrays.asList("user_status"));
+        faceBookLoginButton.setReadPermissions("email", "public_profile");
 
 
         // If using in a fragment
@@ -158,16 +191,20 @@ public class SignInActivity extends AppCompatActivity implements
             @Override
             public void onSuccess(LoginResult loginResult) {
                 // App code
+                Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
             @Override
             public void onCancel() {
                 // App code
+                Log.d(TAG, "facebook:onCancel");
             }
 
             @Override
             public void onError(FacebookException exception) {
                 // App code
+                Log.d(TAG, "facebook:onError", exception);
             }
         });
 
@@ -229,8 +266,8 @@ public class SignInActivity extends AppCompatActivity implements
     }
 
     private void writeNewUser(GoogleSignInAccount account,double lat, double lng) {
-        User user = new User( FirebaseAuth.getInstance().getCurrentUser().getUid(),account.getGivenName() ,account.getEmail(),account.getFamilyName(),account.getDisplayName(), FirebaseInstanceId.getInstance().getToken(),account.getPhotoUrl().toString(),lat,lng );
-
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        User user = new User( firebaseUser.getUid(),account.getGivenName() ,account.getEmail(),account.getFamilyName(),account.getDisplayName(), FirebaseInstanceId.getInstance().getToken(),account.getPhotoUrl().toString(),lat,lng );
         //User user = new User(name, email);
         //ask if user exists
         mDatabase.child("usersNew").child(user.getmUserId()).setValue(user);
@@ -244,6 +281,24 @@ public class SignInActivity extends AppCompatActivity implements
 //                .push().setValue(friendlyMessage);
 //        mMessageEditText.setText("");
     }
+
+    private void writeNewUserFacebook(double lat, double lng) {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        User user = new User( firebaseUser.getUid(),firebaseUser.getDisplayName() ,firebaseUser.getEmail(),firebaseUser.getDisplayName(),firebaseUser.getDisplayName(), FirebaseInstanceId.getInstance().getToken(),firebaseUser.getPhotoUrl().toString(),lat,lng );
+        //User user = new User(name, email);
+        //ask if user exists
+        mDatabase.child("usersNew").child(user.getmUserId()).setValue(user);
+//        mDatabase.child(MESSAGES_CHILD)
+//                .push().setValue(user);
+//        FriendlyMessage friendlyMessage = new
+//                FriendlyMessage(mMessageEditText.getText().toString(),
+//                mUsername,
+//                mPhotoUrl);
+//        mFirebaseDatabaseReference.child(MESSAGES_CHILD)
+//                .push().setValue(friendlyMessage);
+//        mMessageEditText.setText("");
+    }
+
 
     private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGooogle:" + acct.getId());
@@ -274,6 +329,38 @@ public class SignInActivity extends AppCompatActivity implements
                 });
     }
 
+    private void handleFacebookAccessToken(AccessToken token) {
+        Log.d(TAG, "handleFacebookAccessToken:" + token);
+
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mFirebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "signInWithCredential", task.getException());
+                            Toast.makeText(SignInActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }else {
+                            LocationController locationController = new LocationController(SignInActivity.this);
+                            double lat = locationController.getLat();
+                            double lng = locationController.getLng();
+
+                            writeNewUserFacebook(lat,lng);
+
+                            startActivity(new Intent(SignInActivity.this, MainListActivity.class));
+                            finish();
+                        }
+
+                        // ...
+                    }
+                });
+    }
 
     @Override
     protected void onDestroy() {
