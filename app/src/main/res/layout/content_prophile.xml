@@ -27,7 +27,7 @@
 
         <ImageView
             android:id="@+id/imageViewDrawerAvatar"
-            android:layout_width="75dp"
+            android:layout_width="73dp"
             android:layout_height="75dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/image_view_gender_selector"
