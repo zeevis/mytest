@@ -23,10 +23,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -48,6 +53,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static com.google.firebase.codelab.friendlychat.MainActivity.MESSAGES_CHILD;
 
@@ -67,6 +73,9 @@ public class SignInActivity extends AppCompatActivity implements
     private DatabaseReference mDatabase;
     private LoginButton faceBookLoginButton;
     private CallbackManager callbackManager;
+    private AccessTokenTracker accessTokenTracker;
+    private AccessToken accessToken;
+    private ProfileTracker profileTracker;
 // ...
 
 
@@ -79,6 +88,43 @@ public class SignInActivity extends AppCompatActivity implements
 // ...
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+
+            });
+
+        accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+                // Set the access token using
+                // currentAccessToken when it's loaded or set.
+            }
+
+        };
+        // If the access token is available already assign it.
+        accessToken = AccessToken.getCurrentAccessToken();
+
+        profileTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+
+            }
+
+        };
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
         // Initialize FirebaseAuth
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -101,6 +147,8 @@ public class SignInActivity extends AppCompatActivity implements
         // Initialize FirebaseAuth
         faceBookLoginButton = (LoginButton)findViewById(R.id.login_button);
         faceBookLoginButton.setReadPermissions("email");
+
+
         // If using in a fragment
        // faceBookLoginButton.setFragment(this);
         // Other app specific specialization
@@ -123,6 +171,12 @@ public class SignInActivity extends AppCompatActivity implements
             }
         });
 
+        faceBookLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginManager.getInstance().logInWithReadPermissions(SignInActivity.this, Arrays.asList("public_profile"));
+            }
+        });
 
     }
 
@@ -154,6 +208,7 @@ public class SignInActivity extends AppCompatActivity implements
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
@@ -217,5 +272,13 @@ public class SignInActivity extends AppCompatActivity implements
                         }
                     }
                 });
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        accessTokenTracker.stopTracking();
+        profileTracker.stopTracking();
     }
 }
