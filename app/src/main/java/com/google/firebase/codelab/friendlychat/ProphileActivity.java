@@ -63,7 +63,6 @@ public class ProphileActivity extends AppCompatActivity {
                         uploadFile(String fileName, filePath);
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                            mImageViewAvatar.setImageBitmap(bitmap);
                             Picasso.with(getApplicationContext()).load(uri).transform(new CircleTransform()).into(mImageViewAvatar);
 
                         } catch (IOException e) {
