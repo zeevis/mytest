@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,6 +21,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.io.IOException;
 
 public class ProphileActivity extends AppCompatActivity {
     private final int CROPPING_IMAGE_FROM_GALERY_REQUEST_CODE = 1;
@@ -55,17 +58,21 @@ public class ProphileActivity extends AppCompatActivity {
             switch (requestCode) {
                 case CROPPING_IMAGE_FROM_GALERY_REQUEST_CODE:
 
-                    Uri uri = data.getData();
-                    if (uri == null) {
-                        Bitmap bitmap = (Bitmap)data.getExtras().get("data");
-                        uri = ImageUtils.getImageUri(getApplicationContext(), bitmap);
-                        postImage(bitmap);
-                    }
-                    else{
-                        ImageUtils.getBitmapFromUri(getApplicationContext(), target, uri);
+                    if (requestCode == CROPPING_IMAGE_FROM_GALERY_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+                        Uri filePath = data.getData();
+                        uploadFile(String fileName, filePath);
+                        try {
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                            mImageViewAvatar.setImageBitmap(bitmap);
+                            Picasso.with(getApplicationContext()).load(uri).transform(new CircleTransform()).into(mImageViewAvatar);
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
 
-                    Picasso.with(getApplicationContext()).load(uri).transform(new CircleTransform()).into(mImageViewAvatar);
+
+
 
                     break;
 
@@ -137,8 +144,12 @@ public class ProphileActivity extends AppCompatActivity {
         }
     }
 
-
-
+    private void showFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), CROPPING_IMAGE_FROM_GALERY_REQUEST_CODE);
+    }
 
 
 
