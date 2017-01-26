@@ -52,6 +52,7 @@ public class ProphileActivity extends AppCompatActivity {
 
     private  ArrayList<ImageView> imageViewArrayList;
     private  ArrayList<ImageButton> imageButtonArrayList;
+    private int lastButtonPressedPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +95,8 @@ public class ProphileActivity extends AppCompatActivity {
             imageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onAvatarButtonClicked(imageButtonArrayList.indexOf(imageButton));
+                    lastButtonPressedPosition = imageButtonArrayList.indexOf(imageButton);
+                    onAvatarButtonClicked();
                 }
             });
         }
@@ -127,8 +129,8 @@ public class ProphileActivity extends AppCompatActivity {
                         //uploadFile(String fileName, filePath);
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                            Picasso.with(getApplicationContext()).load(filePath).transform(new CircleTransform()).into(imageViewArrayList.get(data.getIntExtra("position",0)));
-                            imageViewArrayList.get(data.getIntExtra("position",0)).setImageBitmap(bitmap);
+                            Picasso.with(getApplicationContext()).load(filePath).transform(new CircleTransform()).into(imageViewArrayList.get(lastButtonPressedPosition));
+                            //imageViewArrayList.get(data.getIntExtra("position",0)).setImageBitmap(bitmap);
 
 
                         } catch (IOException e) {
@@ -209,16 +211,15 @@ public class ProphileActivity extends AppCompatActivity {
         }
     }
 
-    private void showFileChooser(int position) {
+    private void showFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        intent.putExtra("position",position);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), CROPPING_IMAGE_FROM_GALERY_REQUEST_CODE);
     }
 
 
-    private void onAvatarButtonClicked(final int position) {
+    private void onAvatarButtonClicked() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String[] items = {"Take a picture",
@@ -243,7 +244,7 @@ public class ProphileActivity extends AppCompatActivity {
                 }
 
                 if (which == 1) {
-                    showFileChooser(position);
+                    showFileChooser();
                 }
 
             }
