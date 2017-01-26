@@ -14,6 +14,10 @@
         android:title="@string/matches_screen"
         />
     <item
+        android:id="@+id/profile_page_menu"
+        android:title="@string/profile_screen"
+        />
+    <item
         android:id="@+id/invite_menu"
         android:title="@string/invite_menu_label"
         />

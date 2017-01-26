@@ -1,6 +1,9 @@
 package com.google.firebase.codelab.friendlychat;
 
+import android.*;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -12,6 +15,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -23,11 +29,27 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ProphileActivity extends AppCompatActivity {
     private final int CROPPING_IMAGE_FROM_GALERY_REQUEST_CODE = 1;
     private final int CAPTURE_IMAGE_CAMERA_REQUEST_CODE = 2;
     private FirebaseStorage firebaseStorage;
+    private ImageButton cameraButton0;
+    private ImageButton cameraButton1;
+    private ImageButton cameraButton2;
+    private ImageButton cameraButton3;
+    private ImageButton cameraButton4;
+    private ImageButton cameraButton5;
+    private ImageView mImageViewAvatar0;
+    private ImageView mImageViewAvatar1;
+    private ImageView mImageViewAvatar2;
+    private ImageView mImageViewAvatar3;
+    private ImageView mImageViewAvatar4;
+    private ImageView mImageViewAvatar5;
+
+    private  ArrayList<ImageView> imageViewArrayList;
+    private  ArrayList<ImageButton> imageButtonArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +58,46 @@ public class ProphileActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         firebaseStorage = FirebaseStorage.getInstance();
+        cameraButton0 = (ImageButton)findViewById(R.id.imageButtonDrawerIntentPhoto0);
+        cameraButton1 = (ImageButton)findViewById(R.id.imageButtonDrawerIntentPhoto1);
+        cameraButton2 = (ImageButton)findViewById(R.id.imageButtonDrawerIntentPhoto2);
+        cameraButton3 = (ImageButton)findViewById(R.id.imageButtonDrawerIntentPhoto3);
+        cameraButton4 = (ImageButton)findViewById(R.id.imageButtonDrawerIntentPhoto4);
+        cameraButton5 = (ImageButton)findViewById(R.id.imageButtonDrawerIntentPhoto5);
+
+        mImageViewAvatar0 = (ImageView)findViewById(R.id.imageViewDrawerAvatar0);
+        mImageViewAvatar1 = (ImageView)findViewById(R.id.imageViewDrawerAvatar1);
+        mImageViewAvatar2 = (ImageView)findViewById(R.id.imageViewDrawerAvatar2);
+        mImageViewAvatar3 = (ImageView)findViewById(R.id.imageViewDrawerAvatar3);
+        mImageViewAvatar4 = (ImageView)findViewById(R.id.imageViewDrawerAvatar4);
+        mImageViewAvatar5 = (ImageView)findViewById(R.id.imageViewDrawerAvatar5);
+
+        imageViewArrayList = new ArrayList<>();
+        imageButtonArrayList = new ArrayList<>();
+        imageButtonArrayList.add(cameraButton0);
+        imageButtonArrayList.add(cameraButton1);
+        imageButtonArrayList.add(cameraButton2);
+        imageButtonArrayList.add(cameraButton3);
+        imageButtonArrayList.add(cameraButton4);
+        imageButtonArrayList.add(cameraButton5);
+        imageViewArrayList.add(mImageViewAvatar0);
+        imageViewArrayList.add(mImageViewAvatar1);
+        imageViewArrayList.add(mImageViewAvatar2);
+        imageViewArrayList.add(mImageViewAvatar3);
+        imageViewArrayList.add(mImageViewAvatar4);
+        imageViewArrayList.add(mImageViewAvatar5);
+
+
+        for(final ImageButton imageButton:imageButtonArrayList){
+            imageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onAvatarButtonClicked(imageButtonArrayList.indexOf(imageButton));
+                }
+            });
+        }
+
+
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -60,10 +122,12 @@ public class ProphileActivity extends AppCompatActivity {
 
                     if (requestCode == CROPPING_IMAGE_FROM_GALERY_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
                         Uri filePath = data.getData();
-                        uploadFile(String fileName, filePath);
+                        //uploadFile(String fileName, filePath);
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                            Picasso.with(getApplicationContext()).load(uri).transform(new CircleTransform()).into(mImageViewAvatar);
+                            //Picasso.with(getApplicationContext()).load(uri).transform(new CircleTransform()).into(imageViewArrayList.get(data.getIntExtra("position",0)));
+                            imageViewArrayList.get(data.getIntExtra("position",0)).setImageBitmap(bitmap);
+
 
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -76,8 +140,8 @@ public class ProphileActivity extends AppCompatActivity {
                     break;
 
                 case CAPTURE_IMAGE_CAMERA_REQUEST_CODE:
-                    Picasso.with(getApplicationContext()).load(mCurrentPhotoPath).transform(new CircleTransform()).into(mImageViewAvatar);
-                    ImageUtils.getBitmapFromUri(getApplicationContext(), target, Uri.parse(mCurrentPhotoPath));
+//                    Picasso.with(getApplicationContext()).load(mCurrentPhotoPath).transform(new CircleTransform()).into(mImageViewAvatar);
+//                    ImageUtils.getBitmapFromUri(getApplicationContext(), target, Uri.parse(mCurrentPhotoPath));
 
                     break;
             }
@@ -143,15 +207,48 @@ public class ProphileActivity extends AppCompatActivity {
         }
     }
 
-    private void showFileChooser() {
+    private void showFileChooser(int position) {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.putExtra("position",position);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), CROPPING_IMAGE_FROM_GALERY_REQUEST_CODE);
     }
 
 
+    private void onAvatarButtonClicked(final int position) {
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String[] items = {"Take a picture",
+                "Choose form existing"};
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+
+                String[] storagePermission = {android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+                if (which == 0) {
+                  //  openCameraIntent();
+//                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//
+//F
+//                    } else if (checkSelfPermission(storagePermission[0])
+//                            != PackageManager.PERMISSION_GRANTED) {
+//                        requestPermissions(storagePermission, PERMISSION_STORAGE_REQUEST_CODE);
+//                    } else {
+//                        openCameraIntent();
+//                    }
+                }
+
+                if (which == 1) {
+                    showFileChooser(position);
+                }
+
+            }
+        });
+        builder.create();
+        builder.show();
+    }
 
 
 }
