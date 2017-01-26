@@ -20,19 +20,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
+
+
     <FrameLayout
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content">
 
-        <ImageView
+
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageViewDrawerAvatar0"
-            android:layout_width="73dp"
+            android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_marginTop="10dp"
             android:layout_gravity="center|bottom"
-            android:background="@drawable/image_view_gender_selector"
-            android:scaleType="centerInside" />
+            android:src="@drawable/image_view_gender_selector"
+             />
+
+
+        <!--<ImageView-->
+            <!--android:id="@+id/imageViewDrawerAvatar0"-->
+            <!--android:layout_width="73dp"-->
+            <!--android:layout_height="75dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_gravity="center|bottom"-->
+            <!--android:background="@drawable/image_view_gender_selector"-->
+            <!--android:scaleType="centerInside" />-->
 
         <ImageButton
             android:id="@+id/imageButtonDrawerIntentPhoto0"
@@ -49,14 +63,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageViewDrawerAvatar1"
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_marginTop="10dp"
             android:layout_gravity="center|bottom"
-            android:background="@drawable/image_view_gender_selector"
-            android:scaleType="centerInside" />
+            android:src="@drawable/image_view_gender_selector"
+             />
 
         <ImageButton
             android:id="@+id/imageButtonDrawerIntentPhoto1"
@@ -73,14 +87,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageViewDrawerAvatar2"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center|bottom"
-                android:background="@drawable/image_view_gender_selector"
-                android:scaleType="centerInside" />
+                android:src="@drawable/image_view_gender_selector"
+                 />
 
             <ImageButton
                 android:id="@+id/imageButtonDrawerIntentPhoto2"
@@ -105,14 +119,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:layout_gravity="center|bottom"
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageViewDrawerAvatar3"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/image_view_gender_selector"
-                android:scaleType="centerInside" />
+                android:layout_gravity="center|bottom"
+                android:src="@drawable/image_view_gender_selector"
+                 />
 
             <ImageButton
                 android:id="@+id/imageButtonDrawerIntentPhoto3"
@@ -129,14 +143,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:layout_gravity="center|bottom"
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageViewDrawerAvatar4"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/image_view_gender_selector"
-                android:scaleType="centerInside" />
+                android:layout_gravity="center|bottom"
+                android:src="@drawable/image_view_gender_selector"
+               />
 
             <ImageButton
                 android:id="@+id/imageButtonDrawerIntentPhoto4"
@@ -153,14 +167,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:layout_gravity="center|bottom"
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageViewDrawerAvatar5"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/image_view_gender_selector"
-                android:scaleType="centerInside" />
+                android:layout_gravity="center|bottom"
+                android:src="@drawable/image_view_gender_selector"
+                 />
 
             <ImageButton
                 android:id="@+id/imageButtonDrawerIntentPhoto5"

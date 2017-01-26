@@ -28,10 +28,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProphileActivity extends AppCompatActivity {
     private final int CROPPING_IMAGE_FROM_GALERY_REQUEST_CODE = 1;
@@ -43,14 +44,14 @@ public class ProphileActivity extends AppCompatActivity {
     private ImageButton cameraButton3;
     private ImageButton cameraButton4;
     private ImageButton cameraButton5;
-    private ImageView mImageViewAvatar0;
-    private ImageView mImageViewAvatar1;
-    private ImageView mImageViewAvatar2;
-    private ImageView mImageViewAvatar3;
-    private ImageView mImageViewAvatar4;
-    private ImageView mImageViewAvatar5;
+    private CircleImageView mImageViewAvatar0;
+    private CircleImageView mImageViewAvatar1;
+    private CircleImageView mImageViewAvatar2;
+    private CircleImageView mImageViewAvatar3;
+    private CircleImageView mImageViewAvatar4;
+    private CircleImageView mImageViewAvatar5;
 
-    private  ArrayList<ImageView> imageViewArrayList;
+    private  ArrayList<CircleImageView> imageViewArrayList;
     private  ArrayList<ImageButton> imageButtonArrayList;
     private int lastButtonPressedPosition;
 
@@ -68,12 +69,12 @@ public class ProphileActivity extends AppCompatActivity {
         cameraButton4 = (ImageButton)findViewById(R.id.imageButtonDrawerIntentPhoto4);
         cameraButton5 = (ImageButton)findViewById(R.id.imageButtonDrawerIntentPhoto5);
 
-        mImageViewAvatar0 = (ImageView)findViewById(R.id.imageViewDrawerAvatar0);
-        mImageViewAvatar1 = (ImageView)findViewById(R.id.imageViewDrawerAvatar1);
-        mImageViewAvatar2 = (ImageView)findViewById(R.id.imageViewDrawerAvatar2);
-        mImageViewAvatar3 = (ImageView)findViewById(R.id.imageViewDrawerAvatar3);
-        mImageViewAvatar4 = (ImageView)findViewById(R.id.imageViewDrawerAvatar4);
-        mImageViewAvatar5 = (ImageView)findViewById(R.id.imageViewDrawerAvatar5);
+        mImageViewAvatar0 = (CircleImageView)findViewById(R.id.imageViewDrawerAvatar0);
+        mImageViewAvatar1 = (CircleImageView)findViewById(R.id.imageViewDrawerAvatar1);
+        mImageViewAvatar2 = (CircleImageView)findViewById(R.id.imageViewDrawerAvatar2);
+        mImageViewAvatar3 = (CircleImageView)findViewById(R.id.imageViewDrawerAvatar3);
+        mImageViewAvatar4 = (CircleImageView)findViewById(R.id.imageViewDrawerAvatar4);
+        mImageViewAvatar5 = (CircleImageView)findViewById(R.id.imageViewDrawerAvatar5);
 
         imageViewArrayList = new ArrayList<>();
         imageButtonArrayList = new ArrayList<>();
@@ -127,15 +128,15 @@ public class ProphileActivity extends AppCompatActivity {
                     if (requestCode == CROPPING_IMAGE_FROM_GALERY_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
                         Uri filePath = data.getData();
                         //uploadFile(String fileName, filePath);
-                        try {
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                            Picasso.with(getApplicationContext()).load(filePath).transform(new CircleTransform()).into(imageViewArrayList.get(lastButtonPressedPosition));
-                            //imageViewArrayList.get(data.getIntExtra("position",0)).setImageBitmap(bitmap);
+
+                           // Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                           // Picasso.with(getApplicationContext()).load(filePath).transform(new CircleTransform()).into(imageViewArrayList.get(lastButtonPressedPosition));
+
+                        Glide.with(ProphileActivity.this)
+                                .load(filePath)
+                                .into(imageViewArrayList.get(lastButtonPressedPosition));
 
 
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
                     }
 
 
