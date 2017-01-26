@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +28,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -125,7 +127,7 @@ public class ProphileActivity extends AppCompatActivity {
                         //uploadFile(String fileName, filePath);
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                            //Picasso.with(getApplicationContext()).load(uri).transform(new CircleTransform()).into(imageViewArrayList.get(data.getIntExtra("position",0)));
+                            Picasso.with(getApplicationContext()).load(filePath).transform(new CircleTransform()).into(imageViewArrayList.get(data.getIntExtra("position",0)));
                             imageViewArrayList.get(data.getIntExtra("position",0)).setImageBitmap(bitmap);
 
 

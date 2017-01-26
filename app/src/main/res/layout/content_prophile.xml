@@ -30,6 +30,7 @@
             android:layout_width="73dp"
             android:layout_height="75dp"
             android:layout_marginTop="10dp"
+            android:layout_gravity="center|bottom"
             android:background="@drawable/image_view_gender_selector"
             android:scaleType="centerInside" />
 
@@ -53,6 +54,7 @@
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_marginTop="10dp"
+            android:layout_gravity="center|bottom"
             android:background="@drawable/image_view_gender_selector"
             android:scaleType="centerInside" />
 
@@ -76,6 +78,7 @@
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:layout_marginTop="10dp"
+                android:layout_gravity="center|bottom"
                 android:background="@drawable/image_view_gender_selector"
                 android:scaleType="centerInside" />
 
@@ -103,6 +106,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:layout_gravity="center|bottom"
                 android:id="@+id/imageViewDrawerAvatar3"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
@@ -126,6 +130,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:layout_gravity="center|bottom"
                 android:id="@+id/imageViewDrawerAvatar4"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
@@ -149,6 +154,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:layout_gravity="center|bottom"
                 android:id="@+id/imageViewDrawerAvatar5"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
