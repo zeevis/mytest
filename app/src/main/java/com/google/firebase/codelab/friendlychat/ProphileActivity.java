@@ -1,6 +1,7 @@
 package com.google.firebase.codelab.friendlychat;
 
 import android.*;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -31,6 +33,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -129,30 +132,40 @@ public class ProphileActivity extends AppCompatActivity {
             switch (requestCode) {
                 case CROPPING_IMAGE_FROM_GALERY_REQUEST_CODE:
 
-                    if (requestCode == CROPPING_IMAGE_FROM_GALERY_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+                    if (resultCode == RESULT_OK && data != null && data.getData() != null) {
                         Uri filePath = data.getData();
-                        //uploadFile(String fileName, filePath);
-
-                           // Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                           // Picasso.with(getApplicationContext()).load(filePath).transform(new CircleTransform()).into(imageViewArrayList.get(lastButtonPressedPosition));
-
                         Glide.with(ProphileActivity.this)
                                 .load(filePath)
                                 .into(imageViewArrayList.get(lastButtonPressedPosition));
-
                         uploadFile(lastButtonPressedPosition+"",filePath);
-
-
                     }
-
-
-
-
                     break;
-
                 case CAPTURE_IMAGE_CAMERA_REQUEST_CODE:
 //                    Picasso.with(getApplicationContext()).load(mCurrentPhotoPath).transform(new CircleTransform()).into(mImageViewAvatar);
 //                    ImageUtils.getBitmapFromUri(getApplicationContext(), target, Uri.parse(mCurrentPhotoPath));
+                    if ( resultCode == Activity.RESULT_OK) {
+                        // Check if the result includes a thumbnail Bitmap
+
+                       if(data != null && data.getData() != null){
+                           Uri filePath = data.getData();
+                           Glide.with(ProphileActivity.this)
+                                   .load(filePath)
+                                   .into(imageViewArrayList.get(lastButtonPressedPosition));
+                           uploadFile(lastButtonPressedPosition+"",filePath);
+                       }
+
+                        if (data == null) {
+                            // TODO Do something with the full image stored
+                            // in outputFileUri. Perhaps copying it to the app folder
+
+                            Uri filePath = Uri.parse(data.getStringExtra(MediaStore.EXTRA_OUTPUT));
+                            Glide.with(ProphileActivity.this)
+                                    .load(filePath)
+                                    .into(imageViewArrayList.get(lastButtonPressedPosition));
+                            uploadFile(lastButtonPressedPosition+"",filePath);
+                        }
+                    }
+
 
                     break;
             }
@@ -218,6 +231,15 @@ public class ProphileActivity extends AppCompatActivity {
             //you can display an error toast
         }
     }
+
+    private void saveFullImage() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File file = new File(Environment.getExternalStorageDirectory(), "test.jpg");
+        Uri outputFileUri = Uri.fromFile(file);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri.toString());
+        startActivityForResult(intent, CAPTURE_IMAGE_CAMERA_REQUEST_CODE);
+    }
+
 
     private void showFileChooser() {
         Intent intent = new Intent();
