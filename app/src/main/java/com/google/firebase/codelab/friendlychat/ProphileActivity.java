@@ -261,6 +261,7 @@ public class ProphileActivity extends AppCompatActivity {
                 String[] storagePermission = {android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
                 if (which == 0) {
+                    saveFullImage();
                   //  openCameraIntent();
 //                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
 //
