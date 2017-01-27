@@ -4,6 +4,7 @@ import android.*;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -38,8 +39,12 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -112,8 +117,8 @@ public class ProphileActivity extends AppCompatActivity {
                 int i = 0;
                 for (DataSnapshot postSnapshot: snapshot.getChildren()) {
                     Glide.with(ProphileActivity.this)
-                            .load(postSnapshot.getValue(Uri.class))
-                            .into(imageViewArrayList.get(i));
+                            .load(Uri.parse(postSnapshot.getValue(String.class)))
+                            .into(imageViewArrayList.get(Integer.parseInt(postSnapshot.getKey())));
                     ++i;
                 }
             }
@@ -160,10 +165,23 @@ public class ProphileActivity extends AppCompatActivity {
 
                     if (resultCode == RESULT_OK && data != null && data.getData() != null) {
                         Uri filePath = data.getData();
+                        Uri filePathCompressed = null;
+                        try {
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), filePath);
+                            filePathCompressed = getImageUri(this,bitmap);
+
+                            //filePathCompressed = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), filePath.toString(), "Title", null));
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+
+
                         Glide.with(ProphileActivity.this)
-                                .load(filePath)
+                                .load(filePathCompressed != null?filePathCompressed:filePath)
                                 .into(imageViewArrayList.get(lastButtonPressedPosition));
-                        uploadFile(lastButtonPressedPosition+"",filePath);
+                        uploadFile(lastButtonPressedPosition+"",filePathCompressed != null?filePathCompressed:filePath);
                     }
                     break;
                 case CAPTURE_IMAGE_CAMERA_REQUEST_CODE:
@@ -174,20 +192,37 @@ public class ProphileActivity extends AppCompatActivity {
 
                        if(data != null && data.getData() != null){
                            Uri filePath = data.getData();
+                           Uri filePathCompressed = null;
+                           try {
+                               Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), filePath);
+                               filePathCompressed = getImageUri(this,bitmap);
+                           } catch (IOException e) {
+                               e.printStackTrace();
+                           }
+
+
+
                            Glide.with(ProphileActivity.this)
-                                   .load(filePath)
+                                   .load(filePathCompressed != null?filePathCompressed:filePath)
                                    .into(imageViewArrayList.get(lastButtonPressedPosition));
-                           uploadFile(lastButtonPressedPosition+"",filePath);
+                           uploadFile(lastButtonPressedPosition+"",filePathCompressed != null?filePathCompressed:filePath);
                        }
 
                         if (data == null) {
                             // TODO Do something with the full image stored
                             // in outputFileUri. Perhaps copying it to the app folder
                             Uri filePath =  outputFileUri;
+                            Uri filePathCompressed = null;
+                            try {
+                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), filePath);
+                                filePathCompressed = getImageUri(this,bitmap);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                             Glide.with(ProphileActivity.this)
-                                    .load(filePath)
+                                    .load(filePathCompressed != null?filePathCompressed:filePath)
                                     .into(imageViewArrayList.get(lastButtonPressedPosition));
-                            uploadFile(lastButtonPressedPosition+"",filePath);
+                            uploadFile(lastButtonPressedPosition+"",filePathCompressed != null?filePathCompressed:filePath);
                         }
                     }
 
@@ -200,7 +235,39 @@ public class ProphileActivity extends AppCompatActivity {
 
 
 
+    public static Uri getImageUri(Context aContext, Bitmap aBitmap) {
+       // ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+//        OutputStream output=null;
+//        output=new FileOutputStream(file);
+//
+//
+//        try {
+//
+//            // Compress into png format image from 0% - 100%
+//            aBitmap.compress(Bitmap.CompressFormat.PNG, 100, output);
+//            output.flush();
+//            output.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
+        String path = MediaStore.Images.Media.insertImage(aContext.getContentResolver(), aBitmap, "Title", null);
+        OutputStream imagefile = null;
+        try {
+            imagefile = new FileOutputStream("temp.jpg");
+            aBitmap.compress(Bitmap.CompressFormat.JPEG, 50, imagefile);
+            imagefile.flush();
+            imagefile.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+// Write 'bitmap' to file using JPEG and 80% quality hint for JPEG:
+//        aBitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
+        return Uri.parse(path);
+    }
 
 
 
@@ -223,7 +290,7 @@ public class ProphileActivity extends AppCompatActivity {
                             //if the upload is successfull
                             //hiding the progress dialog
                             Uri profilePicUrl =  taskSnapshot.getDownloadUrl();
-                            mFirebaseDatabaseReference.child("usersNew").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("profilePic").child(lastButtonPressedPosition + "").setValue(profilePicUrl);
+                            mFirebaseDatabaseReference.child("usersNew").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("profilePic").child(lastButtonPressedPosition + "").setValue(profilePicUrl.toString());
                             progressDialog.dismiss();
                             //and displaying a success toast
                             Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
