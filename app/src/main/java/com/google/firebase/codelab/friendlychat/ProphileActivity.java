@@ -24,6 +24,8 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -50,6 +52,7 @@ public class ProphileActivity extends AppCompatActivity {
     private CircleImageView mImageViewAvatar3;
     private CircleImageView mImageViewAvatar4;
     private CircleImageView mImageViewAvatar5;
+    private DatabaseReference mFirebaseDatabaseReference;
 
     private  ArrayList<CircleImageView> imageViewArrayList;
     private  ArrayList<ImageButton> imageButtonArrayList;
@@ -62,6 +65,7 @@ public class ProphileActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         firebaseStorage = FirebaseStorage.getInstance();
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
         cameraButton0 = (ImageButton)findViewById(R.id.imageButtonDrawerIntentPhoto0);
         cameraButton1 = (ImageButton)findViewById(R.id.imageButtonDrawerIntentPhoto1);
         cameraButton2 = (ImageButton)findViewById(R.id.imageButtonDrawerIntentPhoto2);
@@ -136,6 +140,8 @@ public class ProphileActivity extends AppCompatActivity {
                                 .load(filePath)
                                 .into(imageViewArrayList.get(lastButtonPressedPosition));
 
+                        uploadFile(lastButtonPressedPosition+"",filePath);
+
 
                     }
 
@@ -178,8 +184,9 @@ public class ProphileActivity extends AppCompatActivity {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             //if the upload is successfull
                             //hiding the progress dialog
+                            Uri profilePicUrl =  taskSnapshot.getDownloadUrl();
+                            mFirebaseDatabaseReference.child("usersNew").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("profilePic").child(lastButtonPressedPosition + "").setValue(profilePicUrl);
                             progressDialog.dismiss();
-
                             //and displaying a success toast
                             Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
                         }
