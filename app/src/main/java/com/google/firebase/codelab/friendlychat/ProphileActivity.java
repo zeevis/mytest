@@ -251,7 +251,7 @@ public class ProphileActivity extends AppCompatActivity {
 //            e.printStackTrace();
 //        }
 
-        String path = MediaStore.Images.Media.insertImage(aContext.getContentResolver(), aBitmap, "Title", null);
+        String path = MediaStore.Images.Media.insertImage(aContext.getContentResolver(), aBitmap, "temp.jpg", null);
         OutputStream imagefile = null;
         try {
             imagefile = new FileOutputStream("temp.jpg");
