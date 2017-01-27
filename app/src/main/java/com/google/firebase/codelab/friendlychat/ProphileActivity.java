@@ -36,6 +36,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -60,6 +61,7 @@ public class ProphileActivity extends AppCompatActivity {
     private  ArrayList<CircleImageView> imageViewArrayList;
     private  ArrayList<ImageButton> imageButtonArrayList;
     private int lastButtonPressedPosition;
+    private  Uri outputFileUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,8 +159,7 @@ public class ProphileActivity extends AppCompatActivity {
                         if (data == null) {
                             // TODO Do something with the full image stored
                             // in outputFileUri. Perhaps copying it to the app folder
-
-                            Uri filePath = Uri.parse(data.getStringExtra(MediaStore.EXTRA_OUTPUT));
+                            Uri filePath =  outputFileUri;
                             Glide.with(ProphileActivity.this)
                                     .load(filePath)
                                     .into(imageViewArrayList.get(lastButtonPressedPosition));
@@ -234,9 +235,10 @@ public class ProphileActivity extends AppCompatActivity {
 
     private void saveFullImage() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File file = new File(Environment.getExternalStorageDirectory(), "test.jpg");
-        Uri outputFileUri = Uri.fromFile(file);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri.toString());
+        Calendar cal = Calendar.getInstance();
+        File file = new File(Environment.getExternalStorageDirectory(), cal.getTimeInMillis() +".jpg");
+        outputFileUri = Uri.fromFile(file);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
         startActivityForResult(intent, CAPTURE_IMAGE_CAMERA_REQUEST_CODE);
     }
 
