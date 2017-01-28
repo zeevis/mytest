@@ -21,8 +21,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -67,7 +69,9 @@ public class ProphileActivity extends AppCompatActivity {
     private CircleImageView mImageViewAvatar4;
     private CircleImageView mImageViewAvatar5;
     private DatabaseReference mFirebaseDatabaseReference;
-
+    private Button sendAboutButton;
+    private TextView aboutMeTextView;
+    private EditText aboutMeEditText;
     private  ArrayList<CircleImageView> imageViewArrayList;
     private  ArrayList<ImageButton> imageButtonArrayList;
     private int lastButtonPressedPosition;
@@ -81,6 +85,9 @@ public class ProphileActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         firebaseStorage = FirebaseStorage.getInstance();
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        sendAboutButton = (Button)findViewById(R.id.sendAboutButton);
+        aboutMeTextView = (TextView) findViewById(R.id.aboutMeTextView);
+        aboutMeEditText = (EditText) findViewById(R.id.aboutMeEditText);
         cameraButton0 = (ImageButton)findViewById(R.id.imageButtonDrawerIntentPhoto0);
         cameraButton1 = (ImageButton)findViewById(R.id.imageButtonDrawerIntentPhoto1);
         cameraButton2 = (ImageButton)findViewById(R.id.imageButtonDrawerIntentPhoto2);
@@ -129,6 +136,21 @@ public class ProphileActivity extends AppCompatActivity {
             }
         });
 
+        mFirebaseDatabaseReference.child("usersNew").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("mAboutMe").orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                String aboutMe = snapshot.getValue(String.class);
+                aboutMeTextView.setText(aboutMe);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
 
         for(final ImageButton imageButton:imageButtonArrayList){
             imageButton.setOnClickListener(new View.OnClickListener() {
@@ -141,7 +163,16 @@ public class ProphileActivity extends AppCompatActivity {
         }
 
 
-
+        sendAboutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String aboutString = aboutMeEditText.getText().toString();
+                aboutMeTextView.setText(aboutString);
+                aboutMeEditText.setText("");
+                mFirebaseDatabaseReference.child("usersNew").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("mAboutMe")
+                        .setValue(aboutString);
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
