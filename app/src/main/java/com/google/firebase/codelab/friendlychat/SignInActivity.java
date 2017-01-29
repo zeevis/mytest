@@ -312,12 +312,12 @@ public class SignInActivity extends AppCompatActivity implements
 //        mMessageEditText.setText("");
     }
 
-    private void writeNewUserFacebook(double lat, double lng) {
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        User user = new User( firebaseUser.getUid(),firebaseUser.getDisplayName() ,firebaseUser.getEmail(),firebaseUser.getDisplayName(),firebaseUser.getDisplayName(), FirebaseInstanceId.getInstance().getToken(),firebaseUser.getPhotoUrl().toString(),lat,lng );
+    private void writeNewUserFacebook(final double lat,final double lng) {
+        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        final User user = new User( firebaseUser.getUid(),firebaseUser.getDisplayName() ,firebaseUser.getEmail(),firebaseUser.getDisplayName(),firebaseUser.getDisplayName(), FirebaseInstanceId.getInstance().getToken(),firebaseUser.getPhotoUrl().toString(),lat,lng );
         //User user = new User(name, email);
         //ask if user exists
-        mDatabase.child("usersNew").child(user.getmUserId()).setValue(user);
+       // mDatabase.child("usersNew").child(user.getmUserId()).setValue(user);
 //        mDatabase.child(MESSAGES_CHILD)
 //                .push().setValue(user);
 //        FriendlyMessage friendlyMessage = new
@@ -327,6 +327,33 @@ public class SignInActivity extends AppCompatActivity implements
 //        mFirebaseDatabaseReference.child(MESSAGES_CHILD)
 //                .push().setValue(friendlyMessage);
 //        mMessageEditText.setText("");
+
+
+
+        mDatabase.child("usersNew").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild(firebaseUser.getUid())) {
+                    HashMap<String,Object> map = new HashMap<String, Object>();
+                    map.put("mLat",lat);
+                    map.put("mLng",lng);
+                    map.put("userKeyToken",user.getmUserKeyToken());
+                    mDatabase.child("usersNew").child(user.getmUserId()).updateChildren(map);
+                }else{
+                    mDatabase.child("usersNew").child(user.getmUserId()).setValue(user);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+
     }
 
 
