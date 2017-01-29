@@ -18,6 +18,10 @@
         android:title="@string/profile_screen"
         />
     <item
+        android:id="@+id/settings_page"
+        android:title="@string/settings_screen"
+        />
+    <item
         android:id="@+id/invite_menu"
         android:title="@string/invite_menu_label"
         />
