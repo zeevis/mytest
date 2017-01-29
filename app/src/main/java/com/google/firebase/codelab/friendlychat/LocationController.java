@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -109,17 +110,22 @@ public class LocationController {
             lng = location.getLongitude();
             lat = location.getLatitude();
             bestProvider = lm.getBestProvider(criteria, false);
-            String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            FirebaseUser  firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-            mFirebaseDatabaseReference.child("usersNew").child(userid).child("mLat")
-                    .setValue(lat);
+            if(firebaseUser != null){
+                String userid = firebaseUser.getUid();
+                mFirebaseDatabaseReference.child("usersNew").child(userid).child("mLat")
+                        .setValue(lat);
 
-            mFirebaseDatabaseReference.child("usersNew").child(userid).child("mLng")
-                    .setValue(lng);
-            if(basicListenerLocationChanged != null){
-                basicListenerLocationChanged.onSuccess();
+                mFirebaseDatabaseReference.child("usersNew").child(userid).child("mLng")
+                        .setValue(lng);
+                if(basicListenerLocationChanged != null){
+                    basicListenerLocationChanged.onSuccess();
 
+                }
             }
+
+
 
         }
 

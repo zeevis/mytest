@@ -987,6 +987,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             case R.id.matches_screen_menu:
                 startActivity(new Intent(this, MatchesActivity.class));
                 return true;
+            case R.id.profile_page_menu:
+                startActivity(new Intent(this, ProphileActivity.class));
+                return true;
             case R.id.sign_out_menu:
                 mFirebaseAuth.signOut();
                 mUsername = ANONYMOUS;

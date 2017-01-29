@@ -11,9 +11,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-
-
-
     <application
         android:name=".ApplicationClass"
         android:allowBackup="true"
@@ -107,7 +104,7 @@
         <activity
             android:name=".MainListActivity"
             android:label="@string/title_activity_main_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MatchesActivity"
             android:label="@string/title_activity_matches"
@@ -115,6 +112,10 @@
         <activity
             android:name=".ProphileActivity"
             android:label="@string/title_activity_prophile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

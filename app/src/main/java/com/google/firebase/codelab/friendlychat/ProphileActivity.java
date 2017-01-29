@@ -19,6 +19,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +32,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -408,5 +410,33 @@ public class ProphileActivity extends AppCompatActivity {
         builder.show();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+//            case R.id.crash_menu:
+//                FirebaseCrash.logcat(Log.ERROR, TAG, "crash caused");
+//                causeCrash();
+//                return true;
+//            case R.id.invite_menu:
+//                sendInvitation();
+//                return true;
+//            case R.id.fresh_config_menu:
+//                fetchConfig();
+//                return true;
+            case R.id.matches_screen_menu:
+                startActivity(new Intent(this, MatchesActivity.class));
+                return true;
+            case R.id.profile_page_menu:
+                startActivity(new Intent(this, ProphileActivity.class));
+                return true;
+            case R.id.sign_out_menu:
+//                mFirebaseAuth.signOut();
+//                mUsername = ANONYMOUS;
+//                startActivity(new Intent(this, SignInActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 }
