@@ -22,7 +22,7 @@
     android:layout_marginLeft="5dp"
     android:text="I am"/>
     <RadioGroup
-        android:id="@+id/myRadioSex"
+        android:id="@+id/myRadioSexGroup"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
@@ -51,7 +51,7 @@
         android:layout_marginLeft="5dp"
         android:text="Looking for"/>
     <RadioGroup
-        android:id="@+id/friendRadioSex"
+        android:id="@+id/friendRadioSexGroup"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >

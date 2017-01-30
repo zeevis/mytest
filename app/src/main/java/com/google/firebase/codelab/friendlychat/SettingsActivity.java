@@ -6,8 +6,21 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.RadioGroup;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SettingsActivity extends AppCompatActivity {
+
+
+    private RadioGroup myRadioSexGroup;
+    private RadioGroup friendRadioSexGroup;
+    private DatabaseReference mFirebaseDatabaseReference;
+    private String myUserId;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,6 +28,46 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        myUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+
+
+        myRadioSexGroup = (RadioGroup)findViewById(R.id.myRadioSexGroup);
+        friendRadioSexGroup = (RadioGroup)findViewById(R.id.friendRadioSexGroup);
+        myRadioSexGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i){
+                    case R.id.myRadioMale:
+                        mFirebaseDatabaseReference.child("usersNew").child(myUserId).child("sex").setValue("male");
+                        break;
+                    case R.id.myRadioFemale:
+                        mFirebaseDatabaseReference.child("usersNew").child(myUserId).child("sex").setValue("female");
+                        break;
+                }
+            }
+        });
+
+        friendRadioSexGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i){
+                    case R.id.friendRadioMale:
+                        mFirebaseDatabaseReference.child("usersNew").child(myUserId).child("lookingFor").setValue("male");
+                        break;
+                    case R.id.friendRadioFemale:
+                        mFirebaseDatabaseReference.child("usersNew").child(myUserId).child("lookingFor").setValue("female");
+                        break;
+                    case R.id.friendRadioMaleAndFemale:
+                        mFirebaseDatabaseReference.child("usersNew").child(myUserId).child("lookingFor").setValue("both");
+                        break;
+
+                }
+            }
+        });
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
