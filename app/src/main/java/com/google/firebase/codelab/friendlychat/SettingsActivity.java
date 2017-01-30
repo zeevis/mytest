@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -20,6 +21,7 @@ public class SettingsActivity extends AppCompatActivity {
     private RadioGroup friendRadioSexGroup;
     private DatabaseReference mFirebaseDatabaseReference;
     private String myUserId;
+    private TextView radiusTextView;
 
 
 
@@ -31,7 +33,7 @@ public class SettingsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
         myUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
+        radiusTextView = (TextView) findViewById(R.id.radiusTextView);
 
 
         myRadioSexGroup = (RadioGroup)findViewById(R.id.myRadioSexGroup);
@@ -71,11 +73,12 @@ public class SettingsActivity extends AppCompatActivity {
 
 
         SeekBar volControl = (SeekBar)findViewById(R.id.distanceSeekBar);
-        volControl.setMax(0);
-        volControl.setProgress(200);
+        volControl.setMax(200);
+        volControl.setProgress(0);
         volControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStopTrackingTouch(SeekBar arg0) {
+                mFirebaseDatabaseReference.child("usersNew").child(myUserId).child("radius").setValue(arg0.getProgress());
             }
 
             @Override
@@ -85,6 +88,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
                 //audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, arg1, 0);
+                radiusTextView.setText(arg1 + "");
             }
         });
 
