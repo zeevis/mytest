@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -67,6 +68,25 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+
+
+        SeekBar volControl = (SeekBar)findViewById(R.id.distanceSeekBar);
+        volControl.setMax(0);
+        volControl.setProgress(200);
+        volControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onStopTrackingTouch(SeekBar arg0) {
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar arg0) {
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+                //audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, arg1, 0);
+            }
+        });
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
