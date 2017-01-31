@@ -27,6 +27,14 @@ public class User {
     public String mUserDisplayName;
     public String mUserPhotoUrl;
 
+    public String sex;
+
+
+
+    public String lookingFor;
+    public int radius;
+
+
     public double mLat;
     public double mLng;
 
@@ -41,6 +49,22 @@ public class User {
         this.mUserPhotoUrl = userPhotoUrl;
         this.mLat = lat;
         this.mLng = lng;
+    }
+
+    public int getRadius() {
+        return radius;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public String getLookingFor() {
+        return lookingFor;
     }
 
     public String getmUsername() {

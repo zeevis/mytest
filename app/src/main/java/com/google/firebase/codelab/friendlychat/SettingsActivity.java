@@ -11,8 +11,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -72,7 +75,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 
 
-        SeekBar volControl = (SeekBar)findViewById(R.id.distanceSeekBar);
+        final SeekBar volControl = (SeekBar)findViewById(R.id.distanceSeekBar);
         volControl.setMax(200);
         volControl.setProgress(0);
         volControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -92,8 +95,34 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        DatabaseReference databaseReference = mFirebaseDatabaseReference.child("usersNew").child(myUserId);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                             @Override
+                                                             public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                 User user = dataSnapshot.getValue(User.class);
+                                                                 if(user.getSex().equals("male")){
+                                                                     myRadioSexGroup.check(R.id.myRadioMale);
+                                                                 }else{
+                                                                     myRadioSexGroup.check(R.id.myRadioFemale);
+                                                                 }
+                                                                 if(user.getLookingFor().equals("male")){
+                                                                     friendRadioSexGroup.check(R.id.friendRadioMale);
+                                                                 }else{
+                                                                     friendRadioSexGroup.check(R.id.myRadioFemale);
+                                                                 }
+                                                                 volControl.setProgress(user.getRadius());
+                                                                 user.getLookingFor();
+                                                             }
+
+                                                             @Override
+                                                             public void onCancelled(DatabaseError databaseError) {
+
+                                                             }
+                                                         });
+
+
+                FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
