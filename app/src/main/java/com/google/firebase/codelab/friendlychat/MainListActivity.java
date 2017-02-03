@@ -77,6 +77,7 @@ public class MainListActivity extends AppCompatActivity {
 
                 MyFirebaseInstanceIdService mfs = new MyFirebaseInstanceIdService();
                 mfs.onTokenRefresh();
+
             }
         });
         locationController = new LocationController(this);
@@ -89,15 +90,15 @@ public class MainListActivity extends AppCompatActivity {
         //in every chatopens 2 people group infirebase one of children should be the location of both users if changes both observe
 
 
-
         /////////////////////////////////////////////////////
 
+     //                 2               2    1/2
+        // (  ( 10 - y )   +  ( 10 - x )   )          <       200
 
-
-
+//dist = arccos(sin(lat1) · sin(lat2) + cos(lat1) · cos(lat2) · cos(lon1 - lon2)) · R
         // Initialize ProgressBar and RecyclerView.
        // mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
-         mMessageRecyclerView = (RecyclerView) findViewById(R.id.usersRecyclerView);
+        mMessageRecyclerView = (RecyclerView) findViewById(R.id.usersRecyclerView);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mLinearLayoutManager.setStackFromEnd(true);
         mMessageRecyclerView.setLayoutManager(mLinearLayoutManager);

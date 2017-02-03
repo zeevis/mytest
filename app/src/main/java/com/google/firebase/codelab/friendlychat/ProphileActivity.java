@@ -19,6 +19,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -78,12 +80,16 @@ public class ProphileActivity extends AppCompatActivity {
     private  ArrayList<ImageButton> imageButtonArrayList;
     private int lastButtonPressedPosition;
     private  Uri outputFileUri;
+    private FirebaseAuth mFirebaseAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prophile);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        mFirebaseAuth = FirebaseAuth.getInstance();
+
         setSupportActionBar(toolbar);
         firebaseStorage = FirebaseStorage.getInstance();
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
@@ -411,32 +417,41 @@ public class ProphileActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-//            case R.id.crash_menu:
+            case R.id.crash_menu:
 //                FirebaseCrash.logcat(Log.ERROR, TAG, "crash caused");
 //                causeCrash();
-//                return true;
-//            case R.id.invite_menu:
-//                sendInvitation();
-//                return true;
-//            case R.id.fresh_config_menu:
-//                fetchConfig();
-//                return true;
+                return true;
+            case R.id.invite_menu:
+                //sendInvitation();
+                //return true;
+            case R.id.fresh_config_menu:
+                //fetchConfig();
+                // return true;
             case R.id.matches_screen_menu:
                 startActivity(new Intent(this, MatchesActivity.class));
                 return true;
             case R.id.profile_page_menu:
                 startActivity(new Intent(this, ProphileActivity.class));
                 return true;
+            case R.id.settings_page:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
             case R.id.sign_out_menu:
-//                mFirebaseAuth.signOut();
-//                mUsername = ANONYMOUS;
-//                startActivity(new Intent(this, SignInActivity.class));
+                mFirebaseAuth.signOut();
+                // mUsername = ANONYMOUS;
+                startActivity(new Intent(this, SignInActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
 }

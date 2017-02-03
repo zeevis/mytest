@@ -1,10 +1,14 @@
 package com.google.firebase.codelab.friendlychat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
@@ -25,7 +29,7 @@ public class SettingsActivity extends AppCompatActivity {
     private DatabaseReference mFirebaseDatabaseReference;
     private String myUserId;
     private TextView radiusTextView;
-
+    private FirebaseAuth mFirebaseAuth;
 
 
     @Override
@@ -35,7 +39,8 @@ public class SettingsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
-        myUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        myUserId = mFirebaseAuth.getCurrentUser().getUid();
         radiusTextView = (TextView) findViewById(R.id.radiusTextView);
 
 
@@ -130,6 +135,45 @@ public class SettingsActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.crash_menu:
+//                FirebaseCrash.logcat(Log.ERROR, TAG, "crash caused");
+//                causeCrash();
+                return true;
+            case R.id.invite_menu:
+                //sendInvitation();
+                //return true;
+            case R.id.fresh_config_menu:
+                //fetchConfig();
+                // return true;
+            case R.id.matches_screen_menu:
+                startActivity(new Intent(this, MatchesActivity.class));
+                return true;
+            case R.id.profile_page_menu:
+                startActivity(new Intent(this, ProphileActivity.class));
+                return true;
+            case R.id.settings_page:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+            case R.id.sign_out_menu:
+                mFirebaseAuth.signOut();
+                // mUsername = ANONYMOUS;
+                startActivity(new Intent(this, SignInActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }
