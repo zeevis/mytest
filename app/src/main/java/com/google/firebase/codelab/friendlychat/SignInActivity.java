@@ -342,6 +342,9 @@ public class SignInActivity extends AppCompatActivity implements
                 }else{
                     mDatabase.child("usersNew").child(user.getmUserId()).setValue(user);
                 }
+
+                startActivity(new Intent(SignInActivity.this, MainListActivity.class));
+                finish();
             }
 
             @Override
@@ -410,8 +413,8 @@ public class SignInActivity extends AppCompatActivity implements
 
                             writeNewUserFacebook(lat,lng);
 
-                            startActivity(new Intent(SignInActivity.this, MainListActivity.class));
-                            finish();
+//                            startActivity(new Intent(SignInActivity.this, MainListActivity.class));
+//                            finish();
                         }
 
                         // ...

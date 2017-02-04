@@ -31,6 +31,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+//import com.wx.wheelview.adapter.ArrayWheelAdapter;
+//import com.wx.wheelview.widget.WheelView;
 
 import org.json.JSONArray;
 
@@ -53,6 +55,16 @@ public class MainListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_list);
+        kankan.wheel.widget.WheelView wheelView;
+        //WheelView hour;//
+//        WheelView wheelView = (WheelView) findViewById(R.id.wheelview);
+//        wheelView.setWheelAdapter(new ArrayWheelAdapter(this)); // 文本数据源
+//        wheelView.setSkin(WheelView.Skin.Common); // common皮肤
+////        wheelView.setWheelData( );  // 数据集合
+//
+//        wheelView.setWheelAdapter(new ArrayWheelAdapter(this){
+//
+//        });
 
         // Add code to print out the key hash
 //        try {

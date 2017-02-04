@@ -942,6 +942,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     locationController.getLat(), locationController.getLng(),
                     results);
 
+
+
             if(results[0] < 200){
                         mSendButton.setEnabled(true);
                 isInTalkZone = true;
