@@ -32,7 +32,7 @@ public class MyArrayWheelAdapter implements WheelViewAdapter {
 
     @Override
     public View getItem(int i, View view, ViewGroup viewGroup) {
-        View view1 = mInflater.inflate(R.id.)
+        View view1 = mInflater.inflate(R.layout.vertical_wheel_view,viewGroup,false);
 
         return view1;
     }
