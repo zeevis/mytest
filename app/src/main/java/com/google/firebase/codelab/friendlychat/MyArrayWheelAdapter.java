@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import kankan.wheel.widget.adapters.ArrayWheelAdapter;
 import kankan.wheel.widget.adapters.WheelViewAdapter;
 
@@ -18,7 +20,7 @@ import kankan.wheel.widget.adapters.WheelViewAdapter;
 public class MyArrayWheelAdapter implements WheelViewAdapter {
     private LayoutInflater mInflater;
     private Context mContext;
-
+    private ArrayList<>
 
     public MyArrayWheelAdapter(Context mContext) {
         this.mContext = mContext;
@@ -33,7 +35,6 @@ public class MyArrayWheelAdapter implements WheelViewAdapter {
     @Override
     public View getItem(int i, View view, ViewGroup viewGroup) {
         View view1 = mInflater.inflate(R.layout.vertical_wheel_view,viewGroup,false);
-
         return view1;
     }
 
