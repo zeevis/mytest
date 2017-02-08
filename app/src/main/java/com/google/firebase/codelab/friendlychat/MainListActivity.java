@@ -53,13 +53,13 @@ public class MainListActivity extends AppCompatActivity {
     private RecyclerView mMessageRecyclerView;
     private ArrayList<User> userArrayList;
     private LocationController locationController;
-    private  kankan.wheel.widget.WheelView wheelView;
+   // private  kankan.wheel.widget.WheelView wheelView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_list);
 
-        wheelView= (WheelView)findViewById(R.id.wheelViewUsers);
+        //wheelView= (WheelView)findViewById(R.id.wheelViewUsers);
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
         //WheelView hour;//
 //        WheelView wheelView = (WheelView) findViewById(R.id.wheelview);
