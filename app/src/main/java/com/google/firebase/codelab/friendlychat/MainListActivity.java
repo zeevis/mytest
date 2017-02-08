@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -41,6 +42,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import kankan.wheel.widget.WheelView;
 
 public class MainListActivity extends AppCompatActivity {
     private LinearLayoutManager mLinearLayoutManager;
@@ -51,11 +53,14 @@ public class MainListActivity extends AppCompatActivity {
     private RecyclerView mMessageRecyclerView;
     private ArrayList<User> userArrayList;
     private LocationController locationController;
+    private  kankan.wheel.widget.WheelView wheelView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_list);
-        kankan.wheel.widget.WheelView wheelView;
+
+        wheelView= (WheelView)findViewById(R.id.wheelViewUsers);
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
         //WheelView hour;//
 //        WheelView wheelView = (WheelView) findViewById(R.id.wheelview);
 //        wheelView.setWheelAdapter(new ArrayWheelAdapter(this)); // 文本数据源
@@ -102,53 +107,22 @@ public class MainListActivity extends AppCompatActivity {
 
 
 
-
-
-
         //////////////////////////wheel view///////////////////////////////////////////////
 
 
 
 
-        DatabaseReference databaseReference = mFirebaseDatabaseReference.child("usersNew").child(matchOrPending.getUserId());
+        DatabaseReference databaseReferenceUsers = mFirebaseDatabaseReference.child("usersNew");
 
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReferenceUsers.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                final User user =  snapshot.getValue(User.class);
 
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(MatchesActivity.this, MainActivity.class);
-                        intent.putExtra("intentType" ,"cameFormMeetingActivity" );
-                        intent.putExtra("latToGetBackTo" ,user.getmLat());
-                        intent.putExtra("lngToGetBackTo" ,user.getmLng());
-                        intent.putExtra("senderIdToGetBackToo" ,user.getmUserId());
-                        intent.putExtra("senderTokenToGetBackToo" ,user.getmUserKeyToken());
-                        intent.putExtra("pending" ,"pending" );
-                        startActivity(intent);
-                    }
-                });
-
-                viewHolder.messageTextView.setText(user.getmEmail());
-                viewHolder.messengerTextView.setText(user.getmUserDisplayName());
-
-                if(matchOrPending.getRedDot() != null && matchOrPending.getRedDot().equals("redDot")){
-                    viewHolder.redDotImageView.setVisibility(View.VISIBLE);
-                }else{
-                    viewHolder.redDotImageView.setVisibility(View.GONE);
+                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                     User user =  postSnapshot.getValue(User.class);
+                    userArrayList.add(user);
                 }
-                if (user.getmUserPhotoUrl() == null) {
-                    viewHolder.messengerImageView
-                            .setImageDrawable(ContextCompat
-                                    .getDrawable(MatchesActivity.this,
-                                            R.drawable.ic_account_circle_black_36dp));
-                } else {
-                    Glide.with(MatchesActivity.this)
-                            .load(user.getmUserPhotoUrl())
-                            .into(viewHolder.messengerImageView);
-                }
+                //wheelView.setViewAdapter(new MyArrayWheelAdapter(MainListActivity.this,userArrayList));
 
             }
 
@@ -216,7 +190,7 @@ public class MainListActivity extends AppCompatActivity {
         mMessageRecyclerView.setLayoutManager(mLinearLayoutManager);
 
         // New child entries
-        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+
         mFirebaseAdapter = new FirebaseRecyclerAdapter<User, MessageViewHolder>(
                 User.class,
                 R.layout.item_message,
@@ -252,7 +226,7 @@ public class MainListActivity extends AppCompatActivity {
                     }
                 });
 
-                userArrayList.add(user);
+                //userArrayList.add(user);
                 viewHolder.messageTextView.setText(user.getmEmail());
                 viewHolder.messengerTextView.setText(user.getmUserDisplayName());
                 if (user.getmUserPhotoUrl() == null) {
