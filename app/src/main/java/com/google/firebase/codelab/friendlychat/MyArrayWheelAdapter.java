@@ -20,16 +20,17 @@ import kankan.wheel.widget.adapters.WheelViewAdapter;
 public class MyArrayWheelAdapter implements WheelViewAdapter {
     private LayoutInflater mInflater;
     private Context mContext;
-    private ArrayList<>
+    private ArrayList<User>  mUserArrayList;
 
-    public MyArrayWheelAdapter(Context mContext) {
+    public MyArrayWheelAdapter(Context mContext, ArrayList<User>  userArrayList) {
         this.mContext = mContext;
         mInflater = LayoutInflater.from(mContext);
+        mUserArrayList = userArrayList;
     }
 
     @Override
     public int getItemsCount() {
-        return 0;
+        return mUserArrayList.size();
     }
 
     @Override

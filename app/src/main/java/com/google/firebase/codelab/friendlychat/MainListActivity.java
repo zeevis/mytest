@@ -98,6 +98,106 @@ public class MainListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
+
+
+
+
+
+
+
+        //////////////////////////wheel view///////////////////////////////////////////////
+
+
+
+
+        DatabaseReference databaseReference = mFirebaseDatabaseReference.child("usersNew").child(matchOrPending.getUserId());
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                final User user =  snapshot.getValue(User.class);
+
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(MatchesActivity.this, MainActivity.class);
+                        intent.putExtra("intentType" ,"cameFormMeetingActivity" );
+                        intent.putExtra("latToGetBackTo" ,user.getmLat());
+                        intent.putExtra("lngToGetBackTo" ,user.getmLng());
+                        intent.putExtra("senderIdToGetBackToo" ,user.getmUserId());
+                        intent.putExtra("senderTokenToGetBackToo" ,user.getmUserKeyToken());
+                        intent.putExtra("pending" ,"pending" );
+                        startActivity(intent);
+                    }
+                });
+
+                viewHolder.messageTextView.setText(user.getmEmail());
+                viewHolder.messengerTextView.setText(user.getmUserDisplayName());
+
+                if(matchOrPending.getRedDot() != null && matchOrPending.getRedDot().equals("redDot")){
+                    viewHolder.redDotImageView.setVisibility(View.VISIBLE);
+                }else{
+                    viewHolder.redDotImageView.setVisibility(View.GONE);
+                }
+                if (user.getmUserPhotoUrl() == null) {
+                    viewHolder.messengerImageView
+                            .setImageDrawable(ContextCompat
+                                    .getDrawable(MatchesActivity.this,
+                                            R.drawable.ic_account_circle_black_36dp));
+                } else {
+                    Glide.with(MatchesActivity.this)
+                            .load(user.getmUserPhotoUrl())
+                            .into(viewHolder.messengerImageView);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+        ////////////////////////////////whellview end////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
      //  AppBaseDetails.getInstance().setAccount(mFirebaseAuth.getCurrentUser().);//llllllllllllllllllllllllllllll
         //in every chatopens 2 people group infirebase one of children should be the location of both users if changes both observe
 
