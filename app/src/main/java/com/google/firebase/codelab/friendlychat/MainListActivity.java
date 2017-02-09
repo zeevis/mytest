@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +20,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -43,6 +46,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import kankan.wheel.widget.WheelView;
+import kankan.wheel.widget.adapters.WheelViewAdapter;
 
 public class MainListActivity extends AppCompatActivity {
     private LinearLayoutManager mLinearLayoutManager;
@@ -58,7 +62,36 @@ public class MainListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_list);
+        final WheelView wheelView = new WheelView(this);
+        wheelView.setViewAdapter(new WheelViewAdapter() {
+            @Override
+            public int getItemsCount() {
+                return 0;
+            }
 
+            @Override
+            public View getItem(int i, View view, ViewGroup viewGroup) {
+                return null;
+            }
+
+            @Override
+            public View getEmptyItem(View view, ViewGroup viewGroup) {
+                return null;
+            }
+
+            @Override
+            public void registerDataSetObserver(DataSetObserver dataSetObserver) {
+
+            }
+
+            @Override
+            public void unregisterDataSetObserver(DataSetObserver dataSetObserver) {
+
+            }
+        });
+
+        final LinearLayout linearLayout = (LinearLayout)findViewById(R.id.wheelViewLayout);
+//        linearLayout.addView(wheelView);
         //wheelView= (WheelView)findViewById(R.id.wheelViewUsers);
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
         //WheelView hour;//
@@ -122,8 +155,8 @@ public class MainListActivity extends AppCompatActivity {
                      User user =  postSnapshot.getValue(User.class);
                     userArrayList.add(user);
                 }
-                //wheelView.setViewAdapter(new MyArrayWheelAdapter(MainListActivity.this,userArrayList));
-
+                wheelView.setViewAdapter(new MyArrayWheelAdapter(MainListActivity.this,userArrayList));
+                linearLayout.addView(wheelView);
             }
 
             @Override
