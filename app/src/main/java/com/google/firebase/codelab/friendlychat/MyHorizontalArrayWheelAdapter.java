@@ -13,21 +13,18 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import kankan.wheel.widget.WheelView;
-import kankan.wheel.widget.adapters.ArrayWheelAdapter;
 import kankan.wheel.widget.adapters.WheelViewAdapter;
 
-//import com.wx.wheelview.adapter.ArrayWheelAdapter;
-
 /**
- * Created by zeevi on 2/3/2017.
+ * Created by zeevi on 2/9/2017.
  */
 
-public class MyArrayWheelAdapter implements WheelViewAdapter {
+public class MyHorizontalArrayWheelAdapter implements WheelViewAdapter {
     private LayoutInflater mInflater;
     private Context mContext;
-    private ArrayList<User>  mUserArrayList;
+    private ArrayList<User> mUserArrayList;
 
-    public MyArrayWheelAdapter(Context context, ArrayList<User>  userArrayList) {
+    public MyHorizontalArrayWheelAdapter(Context context, ArrayList<User>  userArrayList) {
         this.mContext = context;
         mInflater = LayoutInflater.from(mContext);
         mUserArrayList = userArrayList;
