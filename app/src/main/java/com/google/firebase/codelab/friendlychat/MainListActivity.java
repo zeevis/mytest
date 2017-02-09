@@ -63,32 +63,33 @@ public class MainListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_list);
         final WheelView wheelView = new WheelView(this);
-        wheelView.setViewAdapter(new WheelViewAdapter() {
-            @Override
-            public int getItemsCount() {
-                return 0;
-            }
-
-            @Override
-            public View getItem(int i, View view, ViewGroup viewGroup) {
-                return null;
-            }
-
-            @Override
-            public View getEmptyItem(View view, ViewGroup viewGroup) {
-                return null;
-            }
-
-            @Override
-            public void registerDataSetObserver(DataSetObserver dataSetObserver) {
-
-            }
-
-            @Override
-            public void unregisterDataSetObserver(DataSetObserver dataSetObserver) {
-
-            }
-        });
+       // wheelView.setwid
+//        wheelView.setViewAdapter(new WheelViewAdapter() {
+//            @Override
+//            public int getItemsCount() {
+//                return 0;
+//            }
+//
+//            @Override
+//            public View getItem(int i, View view, ViewGroup viewGroup) {
+//                return null;
+//            }
+//
+//            @Override
+//            public View getEmptyItem(View view, ViewGroup viewGroup) {
+//                return null;
+//            }
+//
+//            @Override
+//            public void registerDataSetObserver(DataSetObserver dataSetObserver) {
+//
+//            }
+//
+//            @Override
+//            public void unregisterDataSetObserver(DataSetObserver dataSetObserver) {
+//
+//            }
+//        });
 
         final LinearLayout linearLayout = (LinearLayout)findViewById(R.id.wheelViewLayout);
 //        linearLayout.addView(wheelView);
@@ -147,10 +148,10 @@ public class MainListActivity extends AppCompatActivity {
 
         DatabaseReference databaseReferenceUsers = mFirebaseDatabaseReference.child("usersNew");
 
-        databaseReferenceUsers.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReferenceUsers.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-
+                userArrayList = new ArrayList<User>();
                 for (DataSnapshot postSnapshot: snapshot.getChildren()) {
                      User user =  postSnapshot.getValue(User.class);
                     userArrayList.add(user);
