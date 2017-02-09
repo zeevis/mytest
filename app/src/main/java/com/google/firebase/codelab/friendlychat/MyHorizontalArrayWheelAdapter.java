@@ -22,26 +22,26 @@ import kankan.wheel.widget.adapters.WheelViewAdapter;
 public class MyHorizontalArrayWheelAdapter implements WheelViewAdapter {
     private LayoutInflater mInflater;
     private Context mContext;
-    private ArrayList<User> mUserArrayList;
+    private ArrayList<String> mUserPhotosList;
 
-    public MyHorizontalArrayWheelAdapter(Context context, ArrayList<User>  userArrayList) {
+    public MyHorizontalArrayWheelAdapter(Context context, ArrayList<String>  userArrayList) {
         this.mContext = context;
         mInflater = LayoutInflater.from(mContext);
-        mUserArrayList = userArrayList;
+        mUserPhotosList = userArrayList;
     }
 
     @Override
     public int getItemsCount() {
-        return mUserArrayList.size();
+        return mUserPhotosList.size();
     }
 
     @Override
     public View getItem(int i, View view, ViewGroup viewGroup) {
         View view1 = mInflater.inflate(R.layout.vertical_wheel_view,viewGroup,false);
-        String photoUrl = mUserArrayList.get(i).getmUserPhotoUrl();
+        String photoUrl = mUserPhotosList.get(i);
         ImageView mainPhoto = (ImageView) view1.findViewById(R.id.mainImageView);
-        LinearLayout horizontalWheelLinearLayout = (LinearLayout) view1.findViewById(R.id.horizontalWheelView);
-        WheelView horizontalWheelView = new WheelView(mContext);
+//        LinearLayout horizontalWheelLinearLayout = (LinearLayout) view1.findViewById(R.id.horizontalWheelView);
+//        WheelView horizontalWheelView = new WheelView(mContext);
 
         Glide.with(mContext)
                 .load(photoUrl)

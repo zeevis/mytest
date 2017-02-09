@@ -46,9 +46,13 @@ public class MyArrayWheelAdapter implements WheelViewAdapter {
         LinearLayout horizontalWheelLinearLayout = (LinearLayout) view1.findViewById(R.id.horizontalWheelView);
         WheelView horizontalWheelView = new WheelView(mContext);
 
-        Glide.with(mContext)
-                .load(photoUrl)
-                .into(mainPhoto);
+        horizontalWheelView.setViewAdapter(new MyHorizontalArrayWheelAdapter(mContext,));
+
+        horizontalWheelLinearLayout.addView(horizontalWheelView);
+
+//        Glide.with(mContext)
+//                .load(photoUrl)
+//                .into(mainPhoto);
         return view1;
     }
 
