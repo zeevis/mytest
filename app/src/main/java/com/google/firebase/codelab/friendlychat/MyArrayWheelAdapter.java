@@ -42,8 +42,6 @@ public class MyArrayWheelAdapter implements WheelViewAdapter {
     @Override
     public View getItem(int i, View view, ViewGroup viewGroup) {
         View view1 = mInflater.inflate(R.layout.vertical_wheel_view,viewGroup,false);
-       // String photoUrl = mUserArrayList.get(i).getmUserPhotoUrl();
-       // ImageView mainPhoto = (ImageView) view1.findViewById(R.id.mainImageView);
         LinearLayout horizontalWheelLinearLayout = (LinearLayout) view1.findViewById(R.id.horizontalWheelView);
         WheelView horizontalWheelView = new WheelView(mContext);
         List<String> picurlsList =  mUserArrayList.get(i).getProfilePic();
@@ -53,9 +51,15 @@ public class MyArrayWheelAdapter implements WheelViewAdapter {
         horizontalWheelView.setViewAdapter(new MyHorizontalArrayWheelAdapter(mContext,picurlsList));
         horizontalWheelLinearLayout.addView(horizontalWheelView);
 
-//        Glide.with(mContext)
-//                .load(photoUrl)
-//                .into(mainPhoto);
+        if(picurlsList== null || picurlsList.size() == 0){
+             String photoUrl = mUserArrayList.get(i).getmUserPhotoUrl();
+             ImageView mainPhoto = (ImageView) view1.findViewById(R.id.mainImageView);
+                    Glide.with(mContext)
+                .load(photoUrl)
+                .into(mainPhoto);
+        }
+
+
         return view1;
     }
 
