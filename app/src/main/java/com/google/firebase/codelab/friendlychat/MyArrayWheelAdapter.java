@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.ArrayWheelAdapter;
@@ -41,13 +42,15 @@ public class MyArrayWheelAdapter implements WheelViewAdapter {
     @Override
     public View getItem(int i, View view, ViewGroup viewGroup) {
         View view1 = mInflater.inflate(R.layout.vertical_wheel_view,viewGroup,false);
-        String photoUrl = mUserArrayList.get(i).getmUserPhotoUrl();
-        ImageView mainPhoto = (ImageView) view1.findViewById(R.id.mainImageView);
+       // String photoUrl = mUserArrayList.get(i).getmUserPhotoUrl();
+       // ImageView mainPhoto = (ImageView) view1.findViewById(R.id.mainImageView);
         LinearLayout horizontalWheelLinearLayout = (LinearLayout) view1.findViewById(R.id.horizontalWheelView);
         WheelView horizontalWheelView = new WheelView(mContext);
+        List<String> picurlsList =  mUserArrayList.get(i).getProfilePic();
 
-        horizontalWheelView.setViewAdapter(new MyHorizontalArrayWheelAdapter(mContext,));
 
+
+        horizontalWheelView.setViewAdapter(new MyHorizontalArrayWheelAdapter(mContext,picurlsList));
         horizontalWheelLinearLayout.addView(horizontalWheelView);
 
 //        Glide.with(mContext)

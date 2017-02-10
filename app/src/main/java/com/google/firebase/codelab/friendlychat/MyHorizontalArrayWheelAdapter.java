@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.WheelViewAdapter;
@@ -22,9 +23,9 @@ import kankan.wheel.widget.adapters.WheelViewAdapter;
 public class MyHorizontalArrayWheelAdapter implements WheelViewAdapter {
     private LayoutInflater mInflater;
     private Context mContext;
-    private ArrayList<String> mUserPhotosList;
+    private List<String> mUserPhotosList;
 
-    public MyHorizontalArrayWheelAdapter(Context context, ArrayList<String>  userArrayList) {
+    public MyHorizontalArrayWheelAdapter(Context context, List<String> userArrayList) {
         this.mContext = context;
         mInflater = LayoutInflater.from(mContext);
         mUserPhotosList = userArrayList;
@@ -32,6 +33,9 @@ public class MyHorizontalArrayWheelAdapter implements WheelViewAdapter {
 
     @Override
     public int getItemsCount() {
+        if(mUserPhotosList == null){
+            return 0;
+        }
         return mUserPhotosList.size();
     }
 

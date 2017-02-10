@@ -8,6 +8,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
+
 import static android.support.v7.widget.StaggeredGridLayoutManager.TAG;
 
 /**
@@ -28,9 +30,7 @@ public class User {
     public String mUserPhotoUrl;
 
     public String sex;
-
-
-
+    public List<String> profilePic;
     public String lookingFor;
     public int radius;
 
@@ -49,6 +49,14 @@ public class User {
         this.mUserPhotoUrl = userPhotoUrl;
         this.mLat = lat;
         this.mLng = lng;
+    }
+
+    public List<String> getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(List<String> profilePic) {
+        this.profilePic = profilePic;
     }
 
     public int getRadius() {
