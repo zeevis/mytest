@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.api.model.StringList;
 import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -153,11 +154,12 @@ public class MainListActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 userArrayList = new ArrayList<User>();
-                User user;
                 for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                    user =  postSnapshot.getValue(User.class);
+                    User user = new User(postSnapshot.child("mUserId").getValue(String.class),postSnapshot.child("mUserGivenName").getValue(String.class),postSnapshot.hasChild("mEmail")?postSnapshot.child("mEmail").getValue(String.class):"",postSnapshot.child("mUserFamilyName").getValue(String.class),postSnapshot.child("mUserDisplayName").getValue(String.class),postSnapshot.child("mUserKeyToken").getValue(String.class),postSnapshot.child("mUserPhotoUrl").getValue(String.class),postSnapshot.child("mLat").getValue(double.class),postSnapshot.child("mLng").getValue(double.class));
+                  //  user =  postSnapshot.getValue(User.class);
                     if(postSnapshot.child("profilePic").getValue()!= null &&postSnapshot.child("profilePic").getValue() instanceof List){
-                        user.setProfilePic(postSnapshot.child("profilePic").getValue(List.class));
+                        List<String> picList =  (List<String>) postSnapshot.child("profilePic").getValue();
+                        user.setProfilePic(picList);
                     }else{
                         List<String> onePicList = new ArrayList<>();
                         onePicList.add((postSnapshot.child("profilePic").getValue(String.class)));

@@ -33,7 +33,7 @@ public class MyHorizontalArrayWheelAdapter implements WheelViewAdapter {
 
     @Override
     public int getItemsCount() {
-        if(mUserPhotosList == null){
+        if(mUserPhotosList == null || mUserPhotosList.get(0) == null){
             return 0;
         }
         return mUserPhotosList.size();

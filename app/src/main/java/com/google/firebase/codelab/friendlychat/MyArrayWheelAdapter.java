@@ -44,7 +44,13 @@ public class MyArrayWheelAdapter implements WheelViewAdapter {
         View view1 = mInflater.inflate(R.layout.vertical_wheel_view,viewGroup,false);
         LinearLayout horizontalWheelLinearLayout = (LinearLayout) view1.findViewById(R.id.horizontalWheelView);
         WheelView horizontalWheelView = new WheelView(mContext);
-        List<String> picurlsList =  mUserArrayList.get(i).getProfilePic();
+        List<String> picurlsList;
+        if(mUserArrayList.get(i).getProfilePic()== null || mUserArrayList.get(i).getProfilePic().size() == 0){
+             picurlsList = new ArrayList<>();
+            picurlsList.add(mUserArrayList.get(i).getmUserPhotoUrl());
+        }else {
+           picurlsList = mUserArrayList.get(i).getProfilePic();
+        }
 
 
 
