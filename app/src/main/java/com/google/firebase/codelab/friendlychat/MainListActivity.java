@@ -43,6 +43,7 @@ import org.json.JSONArray;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import kankan.wheel.widget.WheelView;
@@ -152,8 +153,17 @@ public class MainListActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 userArrayList = new ArrayList<User>();
+                User user;
                 for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                     User user =  postSnapshot.getValue(User.class);
+                    user =  postSnapshot.getValue(User.class);
+                    if(postSnapshot.child("profilePic").getValue()!= null &&postSnapshot.child("profilePic").getValue() instanceof List){
+                        user.setProfilePic(postSnapshot.child("profilePic").getValue(List.class));
+                    }else{
+                        List<String> onePicList = new ArrayList<>();
+                        onePicList.add((postSnapshot.child("profilePic").getValue(String.class)));
+                        user.setProfilePic(onePicList);
+                    }
+
                     userArrayList.add(user);
                 }
                 wheelView.setViewAdapter(new MyArrayWheelAdapter(MainListActivity.this,userArrayList));
