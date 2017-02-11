@@ -168,6 +168,15 @@ public class MainListActivity extends AppCompatActivity {
 
                     userArrayList.add(user);
                 }
+
+                if (wheelView != null) {
+                    ViewGroup parentViewGroup = (ViewGroup) wheelView.getParent();
+                    if (parentViewGroup != null) {
+                        parentViewGroup.removeAllViews();
+                    }
+                }
+                wheelView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+                wheelView.setBackgroundColor(getColor(R.color.transparent));
                 wheelView.setViewAdapter(new MyArrayWheelAdapter(MainListActivity.this,userArrayList));
                 linearLayout.addView(wheelView);
             }

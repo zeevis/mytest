@@ -53,6 +53,8 @@ public class MyArrayWheelAdapter implements WheelViewAdapter {
         }
 
 
+        horizontalWheelView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        horizontalWheelView.setBackgroundColor(mContext.getColor(R.color.transparent));
 
         horizontalWheelView.setViewAdapter(new MyHorizontalArrayWheelAdapter(mContext,picurlsList));
         horizontalWheelLinearLayout.addView(horizontalWheelView);
