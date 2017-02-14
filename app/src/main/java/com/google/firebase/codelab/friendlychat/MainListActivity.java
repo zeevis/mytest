@@ -175,7 +175,9 @@ public class MainListActivity extends AppCompatActivity {
                         parentViewGroup.removeAllViews();
                     }
                 }
-                wheelView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+                wheelView.setShadowColor(R.color.transparent,R.color.transparent,R.color.transparent);
+                wheelView.setDrawingCacheBackgroundColor(getResources().getColor(R.color.transparent));
+               // wheelView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
                 wheelView.setBackgroundColor(getColor(R.color.transparent));
                 wheelView.setViewAdapter(new MyArrayWheelAdapter(MainListActivity.this,userArrayList));
                 linearLayout.addView(wheelView);

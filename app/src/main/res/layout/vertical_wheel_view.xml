@@ -8,10 +8,10 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center">
-
+        <!--android:rotation="90"-->
 
         <LinearLayout
-            android:rotation="90"
+
             android:id="@+id/horizontalWheelView"
             android:orientation="vertical"
             android:layout_width="wrap_content"
@@ -19,6 +19,15 @@
 
 
         </LinearLayout>
+
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </HorizontalScrollView>
+
+
 
     <ImageView
         android:layout_width="150dp"
