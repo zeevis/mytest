@@ -177,9 +177,9 @@ public class MainListActivity extends AppCompatActivity {
              //  button = new Button(newContext);
 
 
-                myWheelView.setViewAdapter(new MyArrayWheelAdapter(MainListActivity.this,userArrayList));
+                wheelView.setViewAdapter(new MyArrayWheelAdapter(MainListActivity.this,userArrayList));
                // linearLayout.addView(wheelView);
-                linearLayout.addView(myWheelView);
+                linearLayout.addView(wheelView);
 
 
 

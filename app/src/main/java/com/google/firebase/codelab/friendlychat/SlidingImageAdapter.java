@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 /**
@@ -16,17 +18,17 @@ import java.util.ArrayList;
 
 public class SlidingImageAdapter extends PagerAdapter {
 
-    private ArrayList<Integer> IMAGES;
+    private ArrayList<String> IMAGES;
     private LayoutInflater inflater;
     private Context context;
-    private int mImageId;
 
 
-    public SlidingImageAdapter(Context context,ArrayList<Integer> IMAGES,int imageId) {
+
+    public SlidingImageAdapter(Context context,ArrayList<String> IMAGES) {
         this.context = context;
         this.IMAGES=IMAGES;
         this.inflater = LayoutInflater.from(context);
-        this.mImageId = imageId;
+
     }
 
     @Override
@@ -41,14 +43,21 @@ public class SlidingImageAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup view, int position) {
-        View imageLayout = inflater.inflate(mImageId, view, false);
+        View imageLayout = inflater.inflate(R.layout.slidingimages_layout, view, false);
+
+
 
         assert imageLayout != null;
         final ImageView imageView = (ImageView) imageLayout
                 .findViewById(R.id.image);
 
 
-        imageView.setImageResource(IMAGES.get(position));
+        String photoUrl = IMAGES.get(position);
+        //ImageView mainPhoto = (ImageView) view1.findViewById(R.id.mainImageView);
+        Glide.with(context)
+                .load(photoUrl)
+                .into(imageView);
+
 
         view.addView(imageLayout, 0);
 
