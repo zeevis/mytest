@@ -74,8 +74,12 @@ public class MyArrayWheelAdapter implements WheelViewAdapter {
            picurlsList = (ArrayList<String>)mUserArrayList.get(i).getProfilePic();
         }
 
-        mPager.setAdapter(new SlidingImageAdapter(mContext,picurlsList));
+        SlidingImageAdapter adapter = new SlidingImageAdapter(mContext,picurlsList);
+        mPager.setAdapter(adapter);
         indicator.setViewPager(mPager);
+        mPager.setCurrentItem(adapter.getCount()-1);
+        adapter.notifyDataSetChanged();
+
 
 
         //Set circle indicator radius
@@ -91,13 +95,13 @@ public class MyArrayWheelAdapter implements WheelViewAdapter {
                 mPager.setCurrentItem(currentPage++, true);
             }
         };
-        Timer swipeTimer = new Timer();
-        swipeTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(Update);
-            }
-        }, 3000, 3000);
+//        Timer swipeTimer = new Timer();
+//        swipeTimer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                handler.post(Update);
+//            }
+//        }, 3000, 3000);
 
         // Pager listener over indicator
         indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {

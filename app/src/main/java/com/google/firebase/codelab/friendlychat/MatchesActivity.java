@@ -165,14 +165,9 @@ public class MatchesActivity extends AppCompatActivity {
                             }
                         });
 
+                        if(user != null) {
                             viewHolder.messageTextView.setText(user.getmEmail());
                             viewHolder.messengerTextView.setText(user.getmUserDisplayName());
-
-                        if(matchOrPending.getRedDot() != null && matchOrPending.getRedDot().equals("redDot")){
-                            viewHolder.redDotImageView.setVisibility(View.VISIBLE);
-                        }else{
-                            viewHolder.redDotImageView.setVisibility(View.GONE);
-                        }
 
                             if (user.getmUserPhotoUrl() == null) {
                                 viewHolder.messengerImageView
@@ -184,6 +179,14 @@ public class MatchesActivity extends AppCompatActivity {
                                         .load(user.getmUserPhotoUrl())
                                         .into(viewHolder.messengerImageView);
                             }
+                        }
+                        if(matchOrPending.getRedDot() != null && matchOrPending.getRedDot().equals("redDot")){
+                            viewHolder.redDotImageView.setVisibility(View.VISIBLE);
+                        }else{
+                            viewHolder.redDotImageView.setVisibility(View.GONE);
+                        }
+
+
 
                     }
 
