@@ -24,7 +24,7 @@ public class SlidingImageAdapter extends PagerAdapter {
 
 
 
-    public SlidingImageAdapter(Context context,ArrayList<String> IMAGES) {
+    public SlidingImageAdapter(Context context) {
         this.context = context;
         this.IMAGES=IMAGES;
         this.inflater = LayoutInflater.from(context);
@@ -37,7 +37,7 @@ public class SlidingImageAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return IMAGES.size();
+        return 6;
     }
 
     @Override
@@ -69,14 +69,6 @@ public class SlidingImageAdapter extends PagerAdapter {
         return view.equals(object);
     }
 
-    @Override
-    public void restoreState(Parcelable state, ClassLoader loader) {
-    }
-
-    @Override
-    public Parcelable saveState() {
-        return null;
-    }
 
 
 }

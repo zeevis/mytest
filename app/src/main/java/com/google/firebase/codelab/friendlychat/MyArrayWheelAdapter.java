@@ -83,7 +83,7 @@ public class MyArrayWheelAdapter implements WheelViewAdapter {
 
 
 
-        SlidingImageAdapter adapter = new SlidingImageAdapter(mContext,picurlsList);
+        SlidingImageAdapter adapter = new SlidingImageAdapter(mContext);
         mPager.setAdapter(adapter);
         //indicator.setViewPager(mPager);
 //        mPager.setCurrentItem(adapter.getCount()-1);
