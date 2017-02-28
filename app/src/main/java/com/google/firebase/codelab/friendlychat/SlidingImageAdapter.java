@@ -28,7 +28,6 @@ public class SlidingImageAdapter extends PagerAdapter {
         this.context = context;
         this.IMAGES=IMAGES;
         this.inflater = LayoutInflater.from(context);
-
     }
 
     @Override
@@ -54,12 +53,13 @@ public class SlidingImageAdapter extends PagerAdapter {
 
         String photoUrl = IMAGES.get(position);
         //ImageView mainPhoto = (ImageView) view1.findViewById(R.id.mainImageView);
-        Glide.with(context)
-                .load(photoUrl)
-                .into(imageView);
+//        Glide.with(context)
+//                .load(photoUrl)
+//                .into(imageView);
 
+        imageView.setImageResource(R.drawable.messenger_bubble_small_blue);
 
-        view.addView(imageLayout, 0);
+        view.addView(imageLayout,position);
 
         return imageLayout;
     }

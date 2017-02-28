@@ -52,21 +52,21 @@ public class MyArrayWheelAdapter implements WheelViewAdapter {
     @Override
     public View getItem(int i, View view, ViewGroup viewGroup) {
         View view1 = mInflater.inflate(R.layout.vertical_wheel_view,viewGroup,false);
-        LinearLayout horizontalWheelLinearLayout = (LinearLayout) view1.findViewById(R.id.horizontalWheelView);
+     //   LinearLayout horizontalWheelLinearLayout = (LinearLayout) view1.findViewById(R.id.horizontalWheelView);
 
       //  HorizontalScrollView horizontalScrollView =( HorizontalScrollView) view1.findViewById(R.id.horizontalScrollView);
-        mPager = (ViewPager) view1.findViewById(R.id.pager);
-
-
-
-        CirclePageIndicator indicator = (CirclePageIndicator)
-                view1.findViewById(R.id.indicator);
-
-
-
-        final float density = mContext.getResources().getDisplayMetrics().density;
-       // WheelView horizontalWheelView = new WheelView(mContext);
-        ArrayList<String> picurlsList;
+     mPager = (ViewPager) view1.findViewById(R.id.pager);
+//
+//
+//
+//        CirclePageIndicator indicator = (CirclePageIndicator)
+//                view1.findViewById(R.id.indicator);
+//
+//
+//
+//        final float density = mContext.getResources().getDisplayMetrics().density;
+//       // WheelView horizontalWheelView = new WheelView(mContext);
+     ArrayList<String> picurlsList;
         if(mUserArrayList.get(i).getProfilePic()== null || mUserArrayList.get(i).getProfilePic().size() == 0){
              picurlsList = new ArrayList<>();
              picurlsList.add(mUserArrayList.get(i).getmUserPhotoUrl());
@@ -74,27 +74,36 @@ public class MyArrayWheelAdapter implements WheelViewAdapter {
            picurlsList = (ArrayList<String>)mUserArrayList.get(i).getProfilePic();
         }
 
+
+//        String photoUrl = mUserArrayList.get(i).getmUserPhotoUrl();
+//        ImageView mainPhoto = (ImageView) view1.findViewById(R.id.mainImageView);
+//        Glide.with(mContext)
+//                .load(photoUrl)
+//                .into(mainPhoto);
+
+
+
         SlidingImageAdapter adapter = new SlidingImageAdapter(mContext,picurlsList);
         mPager.setAdapter(adapter);
-        indicator.setViewPager(mPager);
-        mPager.setCurrentItem(adapter.getCount()-1);
-        adapter.notifyDataSetChanged();
-
-
-
-        //Set circle indicator radius
-        indicator.setRadius(5 * density);
-
-        // Auto start of viewpager
-        final Handler handler = new Handler();
-        final Runnable Update = new Runnable() {
-            public void run() {
-                if (currentPage == NUM_PAGES) {
-                    currentPage = 0;
-                }
-                mPager.setCurrentItem(currentPage++, true);
-            }
-        };
+        //indicator.setViewPager(mPager);
+//        mPager.setCurrentItem(adapter.getCount()-1);
+//        adapter.notifyDataSetChanged();
+//
+//
+//
+//        //Set circle indicator radius
+//        indicator.setRadius(5 * density);
+//
+//        // Auto start of viewpager
+//        final Handler handler = new Handler();
+//        final Runnable Update = new Runnable() {
+//            public void run() {
+//                if (currentPage == NUM_PAGES) {
+//                    currentPage = 0;
+//                }
+//                mPager.setCurrentItem(currentPage++, true);
+//            }
+//        };
 //        Timer swipeTimer = new Timer();
 //        swipeTimer.schedule(new TimerTask() {
 //            @Override
@@ -104,25 +113,25 @@ public class MyArrayWheelAdapter implements WheelViewAdapter {
 //        }, 3000, 3000);
 
         // Pager listener over indicator
-        indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-            @Override
-            public void onPageSelected(int position) {
-                currentPage = position;
-
-            }
-
-            @Override
-            public void onPageScrolled(int pos, float arg1, int arg2) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int pos) {
-
-            }
-        });
-
+//        indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//
+//            @Override
+//            public void onPageSelected(int position) {
+//                currentPage = position;
+//
+//            }
+//
+//            @Override
+//            public void onPageScrolled(int pos, float arg1, int arg2) {
+//
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int pos) {
+//
+//            }
+//        });
+//
 
 
 //        String photoUrl = mUserArrayList.get(i).getmUserPhotoUrl();
