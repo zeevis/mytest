@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,6 +32,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,12 +50,18 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -373,6 +384,111 @@ public class ProphileActivity extends AppCompatActivity {
     }
 
 
+    private void showFromFaceBook(){
+        getAlbumPics();
+
+    }
+
+
+    protected void getAlbumPics() {
+        final Bundle permBundle = new Bundle();
+        permBundle.putCharSequence("permission", "user_photos");
+
+        GraphRequest request = GraphRequest.newMeRequest(
+                AccessToken.getCurrentAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object,
+                                            GraphResponse response) {
+                        try { // Application code
+                            JSONObject albums = new JSONObject(object
+                                    .getString("albums"));
+
+                            JSONArray data_array = albums.getJSONArray("data");
+                            ArrayList<String> AlbumId_list = new ArrayList<String>();
+                            for (int i = 0; i < data_array.length(); i++) {
+                                JSONObject _pubKey = data_array
+                                        .getJSONObject(i);
+                                String arrayfinal = _pubKey.getString("id");
+                                Log.d("FB ALbum ID ==  ", "" + arrayfinal);
+                                AlbumId_list.add(arrayfinal);
+
+                            }
+                            getAlbum_picture(AlbumId_list); // /getting picsssss
+                        } catch (JSONException E) {
+                            E.printStackTrace();
+                        }
+
+                    }
+
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields",
+                "id,name,email,gender, birthday, friends,albums");
+        request.setParameters(parameters);
+        request.executeAsync();
+
+    }
+
+
+
+
+
+
+    private void getAlbum_picture(ArrayList<String> Album_id_list) {
+
+        GraphRequest request = GraphRequest.newGraphPathRequest(
+                AccessToken.getCurrentAccessToken(), "/" + Album_id_list.get(0)
+                        + "/photos/", new GraphRequest.Callback() {
+                    @Override
+                    public void onCompleted(GraphResponse response) {
+                        JSONObject object = response.getJSONObject();
+                        try {
+                            JSONArray data_array1 = object.getJSONArray("data");
+                            ArrayList<String> Photo_list_id = new ArrayList<String>();
+                            for (int i = 0; i < data_array1.length(); i++) {
+                                JSONObject _pubKey = data_array1
+                                        .getJSONObject(i);
+                                String arrayfinal = _pubKey.getString("id");
+                                String picFinals = _pubKey.getString("picture");
+                                Log.d("pics id == ", "" + arrayfinal);
+                                Photo_list_id.add(picFinals);
+
+                            }
+
+
+//                            DetailAdapter adapter = new DetailAdapter(
+//                                    ProphileActivity.this, R.layout.grid_items,
+//                                    Photo_list_id);
+//                            gridView.setAdapter(adapter);
+
+                        } catch (JSONException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,picture");
+        parameters.putString("limit", "100");
+        request.setParameters(parameters);
+        request.executeAsync();
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     private void showFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -385,7 +501,8 @@ public class ProphileActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String[] items = {"Take a picture",
-                "Choose form existing"};
+                "Choose form existing",
+        "Choose from facebook"};
         builder.setItems(items, new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
@@ -408,6 +525,9 @@ public class ProphileActivity extends AppCompatActivity {
 
                 if (which == 1) {
                     showFileChooser();
+                }
+                if (which == 2) {
+                    showFromFaceBook();
                 }
 
             }
@@ -454,4 +574,8 @@ public class ProphileActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
+
+
 }
