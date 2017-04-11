@@ -391,17 +391,26 @@ public class ProphileActivity extends AppCompatActivity {
 
 
     protected void getAlbumPics() {
-        final Bundle permBundle = new Bundle();
-        permBundle.putCharSequence("permission", "user_photos");
+//        final Bundle permBundle = new Bundle();
+//        permBundle.putCharSequence("permission", "user_photos");
 
-        GraphRequest request = GraphRequest.newMeRequest(
-                AccessToken.getCurrentAccessToken(),
-                new GraphRequest.GraphJSONObjectCallback() {
+//        GraphRequest request = GraphRequest.newMeRequest(
+//                AccessToken.getCurrentAccessToken(),
+//                new GraphRequest.GraphJSONObjectCallback() {
+
+
+        GraphRequest request =   new GraphRequest(
+                AccessToken.getCurrentAccessToken(),  //your fb AccessToken
+                "/" + AccessToken.getCurrentAccessToken().getUserId() + "/albums",//user id of login user
+                null,
+                HttpMethod.GET,
+                new GraphRequest.Callback() {
+
+
                     @Override
-                    public void onCompleted(JSONObject object,
-                                            GraphResponse response) {
+                    public void onCompleted(GraphResponse response) {
                         try { // Application code
-                            JSONObject albums = new JSONObject(object
+                            JSONObject albums = new JSONObject(response.getJSONObject()
                                     .getString("albums"));
 
                             JSONArray data_array = albums.getJSONArray("data");

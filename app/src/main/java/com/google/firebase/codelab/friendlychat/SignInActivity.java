@@ -206,7 +206,7 @@ public class SignInActivity extends AppCompatActivity implements
 
         // Initialize FirebaseAuth
         faceBookLoginButton = (LoginButton)findViewById(R.id.login_button);
-        faceBookLoginButton.setReadPermissions("email", "public_profile", "user_friends","user_photos");
+        faceBookLoginButton.setReadPermissions("email", "public_profile", "user_friends","user_photos","albums");
 
 
         // If using in a fragment
