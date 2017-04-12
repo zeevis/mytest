@@ -397,12 +397,14 @@ public class ProphileActivity extends AppCompatActivity {
 //        GraphRequest request = GraphRequest.newMeRequest(
 //                AccessToken.getCurrentAccessToken(),
 //                new GraphRequest.GraphJSONObjectCallback() {
-
+        Bundle parameters = new Bundle();
+        parameters.putString("fields",
+                "id,name,email,gender, birthday, friends,albums");
 
         GraphRequest request =   new GraphRequest(
                 AccessToken.getCurrentAccessToken(),  //your fb AccessToken
                 "/" + AccessToken.getCurrentAccessToken().getUserId() + "/albums",//user id of login user
-                null,
+                parameters,
                 HttpMethod.GET,
                 new GraphRequest.Callback() {
 
@@ -410,8 +412,10 @@ public class ProphileActivity extends AppCompatActivity {
                     @Override
                     public void onCompleted(GraphResponse response) {
                         try { // Application code
-                            JSONObject albums = new JSONObject(response.getJSONObject()
-                                    .getString("albums"));
+//                            JSONObject albums = new JSONObject(response.getJSONObject()
+//                                    .getString("albums"));
+                            JSONObject albums = response.getJSONObject();
+
 
                             JSONArray data_array = albums.getJSONArray("data");
                             ArrayList<String> AlbumId_list = new ArrayList<String>();
@@ -431,10 +435,10 @@ public class ProphileActivity extends AppCompatActivity {
                     }
 
                 });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields",
-                "id,name,email,gender, birthday, friends,albums");
-        request.setParameters(parameters);
+//        Bundle parameters = new Bundle();
+//        parameters.putString("fields",
+//                "id,name,email,gender, birthday, friends,albums");
+//        request.setParameters(parameters);
         request.executeAsync();
 
     }
