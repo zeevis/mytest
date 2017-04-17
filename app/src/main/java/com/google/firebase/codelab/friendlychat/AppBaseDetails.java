@@ -1,5 +1,6 @@
 package com.google.firebase.codelab.friendlychat;
 
+import com.facebook.AccessToken;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 /**
@@ -10,6 +11,7 @@ public class AppBaseDetails {
 
     protected GoogleSignInAccount account;
     private static AppBaseDetails appBaseDetails;
+    public AccessToken userFaceBookIdToken;
 
     /**
      * Create private constructor
@@ -34,5 +36,13 @@ public class AppBaseDetails {
 
     public void setAccount(GoogleSignInAccount account) {
         this.account = account;
+    }
+
+    public AccessToken getUserFaceBookIdToken() {
+        return userFaceBookIdToken;
+    }
+
+    public void setUserFaceBookIdToken(AccessToken userFaceBookIdToken) {
+        this.userFaceBookIdToken = userFaceBookIdToken;
     }
 }

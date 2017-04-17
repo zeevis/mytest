@@ -385,6 +385,8 @@ public class ProphileActivity extends AppCompatActivity {
 
 
     private void showFromFaceBook(){
+        //getAlbum_picture(new ArrayList<String>());
+
         getAlbumPics();
 
     }
@@ -403,7 +405,7 @@ public class ProphileActivity extends AppCompatActivity {
 
         GraphRequest request =   new GraphRequest(
                 AccessToken.getCurrentAccessToken(),  //your fb AccessToken
-                "/" + AccessToken.getCurrentAccessToken().getUserId() + "/albums",//user id of login user
+                "/" +"v2.8" +"/" + AccessToken.getCurrentAccessToken().getUserId() + "/albums",//user id of login user
                 parameters,
                 HttpMethod.GET,
                 new GraphRequest.Callback() {

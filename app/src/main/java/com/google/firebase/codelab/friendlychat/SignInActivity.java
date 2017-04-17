@@ -136,23 +136,23 @@ public class SignInActivity extends AppCompatActivity implements
 // ...
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-
-            }
-
-            });
+//        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+//            @Override
+//            public void onSuccess(LoginResult loginResult) {
+//
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//
+//            }
+//
+//            @Override
+//            public void onError(FacebookException error) {
+//
+//            }
+//
+//            });
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -205,8 +205,15 @@ public class SignInActivity extends AppCompatActivity implements
                 .build();
 
         // Initialize FirebaseAuth
+//        LoginManager.getInstance().logInWithReadPermissions(
+//                this,
+//                Arrays.asList("user_photos"));
+
+
+
         faceBookLoginButton = (LoginButton)findViewById(R.id.login_button);
-        faceBookLoginButton.setReadPermissions("email", "public_profile", "user_friends","user_photos","albums");
+       // faceBookLoginButton.setPublishPermissions(Arrays.asList("publish_actions","user_photos"));
+        faceBookLoginButton.setReadPermissions(Arrays.asList("email", "public_profile", "user_friends","user_photos","user_status","albums"));
 
 
         // If using in a fragment
@@ -219,6 +226,18 @@ public class SignInActivity extends AppCompatActivity implements
             public void onSuccess(LoginResult loginResult) {
                 // App code
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
+
+                LoginManager.getInstance().logInWithReadPermissions(
+                        SignInActivity.this,
+                        Arrays.asList("user_photos"));
+
+                LoginManager.getInstance().logInWithPublishPermissions(
+                        SignInActivity.this,
+                        Arrays.asList("publish_actions"));
+
+
+
+                loginResult.getRecentlyGrantedPermissions();
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
@@ -413,6 +432,7 @@ public class SignInActivity extends AppCompatActivity implements
 
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
+        AppBaseDetails.getInstance().setUserFaceBookIdToken(token);
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mFirebaseAuth.signInWithCredential(credential)
