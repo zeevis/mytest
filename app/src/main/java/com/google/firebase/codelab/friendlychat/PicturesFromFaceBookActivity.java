@@ -20,5 +20,6 @@ public class PicturesFromFaceBookActivity extends AppCompatActivity {
         setContentView(R.layout.picture_faceook_albums_activity_layout);
         mGridViewFacebookAlbums = (GridView)findViewById(R.id.gridViewFacebookAlbums);
         mPicUrlList = getIntent().getStringArrayListExtra("picture_facebook_list");
+        mGridViewFacebookAlbums.setAdapter(new FacebookImageAdapter(this,mPicUrlList));
     }
 }

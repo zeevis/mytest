@@ -470,7 +470,9 @@ public class ProphileActivity extends AppCompatActivity {
                                 Photo_list_id.add(picFinals);
 
                             }
-
+                            Intent intent = new Intent(ProphileActivity.this,PicturesFromFaceBookActivity.class);
+                            intent.putStringArrayListExtra("picture_facebook_list",Photo_list_id);
+                            startActivity(intent);
 
 //                            DetailAdapter adapter = new DetailAdapter(
 //                                    ProphileActivity.this, R.layout.grid_items,

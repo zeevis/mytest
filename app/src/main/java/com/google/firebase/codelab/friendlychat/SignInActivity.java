@@ -213,7 +213,7 @@ public class SignInActivity extends AppCompatActivity implements
 
         faceBookLoginButton = (LoginButton)findViewById(R.id.login_button);
        // faceBookLoginButton.setPublishPermissions(Arrays.asList("publish_actions","user_photos"));
-        faceBookLoginButton.setReadPermissions(Arrays.asList("email", "public_profile", "user_friends","user_photos","user_status","albums"));
+        faceBookLoginButton.setReadPermissions(Arrays.asList("email", "public_profile", "user_friends","user_photos","user_status"));
 
 
         // If using in a fragment
