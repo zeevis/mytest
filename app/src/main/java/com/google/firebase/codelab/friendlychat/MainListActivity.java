@@ -1,14 +1,6 @@
 package com.google.firebase.codelab.friendlychat;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
-import android.content.res.ColorStateList;
-import android.content.res.Resources;
-import android.database.DataSetObserver;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,41 +10,33 @@ import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.api.model.StringList;
-import com.google.firebase.crash.FirebaseCrash;
+import com.google.firebase.codelab.friendlychat.wheel_controls.CustomeArrayWheelAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 //import com.wx.wheelview.adapter.ArrayWheelAdapter;
 //import com.wx.wheelview.widget.WheelView;
 
 import org.json.JSONArray;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import kankan.wheel.widget.WheelView;
-import kankan.wheel.widget.adapters.WheelViewAdapter;
 
 public class MainListActivity extends AppCompatActivity {
     private LinearLayoutManager mLinearLayoutManager;
@@ -63,8 +47,9 @@ public class MainListActivity extends AppCompatActivity {
     private RecyclerView mMessageRecyclerView;
     private ArrayList<User> userArrayList;
     private LocationController locationController;
+    private com.wx.wheelview.widget.WheelView mWheelViewWX;
    // private  kankan.wheel.widget.WheelView wheelView;
-   private MyWheelView myWheelView;
+  // private MyWheelView myWheelView;
 
     public static final class drawable {
         public static final int wheel_bg = 0xE65100;
@@ -76,14 +61,15 @@ public class MainListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_list);
-        ContextThemeWrapper newContext = new ContextThemeWrapper(MainListActivity.this,android.R.style.Theme_Holo_Light
-        );
+       // ContextThemeWrapper newContext = new ContextThemeWrapper(MainListActivity.this,android.R.style.Theme_Holo_Light
+      //  );
 
-        final WheelView wheelView = new WheelView(newContext);
-        final MyWheelView myWheelView = new MyWheelView(newContext);
+       // final WheelView wheelView = new WheelView(newContext);
+     //   final MyWheelView myWheelView = new MyWheelView(newContext);
 
 
-        final LinearLayout linearLayout = (LinearLayout)findViewById(R.id.wheelViewLayout);
+       // final LinearLayout linearLayout = (LinearLayout)findViewById(R.id.wheelViewLayout);
+        mWheelViewWX = (com.wx.wheelview.widget.WheelView)findViewById(R.id.wheelViewMainListActivity);
 //        linearLayout.addView(wheelView);
         //wheelView= (WheelView)findViewById(R.id.wheelViewUsers);
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
@@ -145,12 +131,16 @@ public class MainListActivity extends AppCompatActivity {
                     userArrayList.add(user);
                 }
 
-                if (wheelView != null) {
-                    ViewGroup parentViewGroup = (ViewGroup) wheelView.getParent();
-                    if (parentViewGroup != null) {
-                        parentViewGroup.removeAllViews();
-                    }
-                }
+//                if (mWheelViewWX != null) {
+//                    ViewGroup parentViewGroup = (ViewGroup) mWheelViewWX.getParent();
+//                    if (parentViewGroup != null) {
+//                        parentViewGroup.removeAllViews();
+//                    }
+//                }
+
+
+
+
                 //wheelView.setShadowColor(R.color.transparent,R.color.transparent,R.color.transparent);
                // wheelView.setDrawingCacheBackgroundColor(getResources().getColor(R.color.transparent));
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -161,7 +151,7 @@ public class MainListActivity extends AppCompatActivity {
 //                }
                 //wheelView.setDrawShadows(false);
               //  wheelView.setWillNotDraw(false);
-                wheelView.setWillNotCacheDrawing(false);
+               // wheelView.setWillNotCacheDrawing(false);
               //  wheelView.setWheelForeground(getResources().getColor(R.color.transparent));
            //     wheelView.setWheelBackground(drawable.wheel_bg);
                 //wheelView.setHorizontalScrollBarEnabled(false);
@@ -171,15 +161,33 @@ public class MainListActivity extends AppCompatActivity {
 
 
             //    wheelView.setViewAdapter(new MyArrayWheelAdapter(MainListActivity.this,userArrayList));
-                myWheelView.setBackgroundColor(getResources().getColor(R.color.transparent));
-                myWheelView.setWheelBackground(getResources().getColor(R.color.transparent));
+              //  myWheelView.setBackgroundColor(getResources().getColor(R.color.transparent));
+             //   myWheelView.setWheelBackground(getResources().getColor(R.color.transparent));
 
              //  button = new Button(newContext);
 
 
-                wheelView.setViewAdapter(new MyArrayWheelAdapter(MainListActivity.this,userArrayList));
+          //      wheelView.setViewAdapter(new MyArrayWheelAdapter(MainListActivity.this,userArrayList));
                // linearLayout.addView(wheelView);
-                linearLayout.addView(wheelView);
+//////////////////////new
+
+
+                mWheelViewWX.setWheelAdapter(new CustomeArrayWheelAdapter(MainListActivity.this,userArrayList)); // 文本数据源
+                mWheelViewWX.setSkin(com.wx.wheelview.widget.WheelView.Skin.Common); // common皮肤
+                mWheelViewWX.setWheelData(userArrayList);
+
+
+
+
+
+
+                ///////////////new
+
+               ///////////old
+
+//                linearLayout.addView(wheelView);
+
+                ///old
 
 
 
