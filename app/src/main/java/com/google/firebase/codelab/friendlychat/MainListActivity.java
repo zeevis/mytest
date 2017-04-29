@@ -33,6 +33,8 @@ import com.google.firebase.database.ValueEventListener;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -124,8 +126,13 @@ public class MainListActivity extends AppCompatActivity {
                         user.setProfilePic(picList);
                     }else{
                         List<String> onePicList = new ArrayList<>();
-                        onePicList.add((postSnapshot.child("profilePic").getValue(String.class)));
-                        user.setProfilePic(onePicList);
+                        HashMap<String,String> userPicturesMap =  ((HashMap<String,String>)postSnapshot.child("profilePic").getValue());
+                        if(userPicturesMap != null){
+                            Collection<String> userPicturesList =  ((HashMap<String,String>)postSnapshot.child("profilePic").getValue()).values() ;
+                            onePicList.addAll(userPicturesList);
+                            user.setProfilePic(onePicList);
+                        }
+
                     }
 
                     userArrayList.add(user);

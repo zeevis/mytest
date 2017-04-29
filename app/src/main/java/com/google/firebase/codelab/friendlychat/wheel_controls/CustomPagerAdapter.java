@@ -30,7 +30,7 @@ public class CustomPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup collection, int position) {
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ViewGroup layout = (ViewGroup) mLayoutInflater.inflate(R.layout.view_pager_example_layout, collection, false);
+        View layout =  mLayoutInflater.inflate(R.layout.view_pager_example_layout, collection, false);
         ImageView imageView = (ImageView) layout.findViewById(R.id.imageViewMainListWheelSinglePictureScreen);
 
         Glide.with(mContext)

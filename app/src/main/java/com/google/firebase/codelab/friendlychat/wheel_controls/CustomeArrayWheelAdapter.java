@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * Created by zeevi on 4/22/2017.
  */
 
-public class CustomeArrayWheelAdapter extends BaseWheelAdapter<CustomPagerAdapter> {
+public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
     private LayoutInflater mLayoutInflater;
     Context mContext;
     private ArrayList<User> mUserArrayList;
@@ -25,6 +25,9 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<CustomPagerAdapte
         mContext = context;
         mUserArrayList = aUserArrayList;
     }
+
+
+
 
     @Override
     public View bindView(int position, View convertView, ViewGroup parent) {
@@ -40,9 +43,15 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<CustomPagerAdapte
             view = convertView;
         }
         ArrayList<String> profilePictures =  (ArrayList<String>) mUserArrayList.get(position).getProfilePic();
+        ArrayList<String> picurlsList = new ArrayList<>();
+        picurlsList.add(mUserArrayList.get(position).getmUserPhotoUrl());
+
+        if(profilePictures != null && profilePictures.size() > 0){
+            picurlsList.addAll(profilePictures);
+        }
 
         ViewPager viewPager = (ViewPager)view. findViewById(R.id.viewpager);
-        viewPager.setAdapter(new CustomPagerAdapter(mContext,profilePictures));
+        viewPager.setAdapter(new CustomPagerAdapter(mContext,picurlsList));
 
         return view;
     }

@@ -313,9 +313,9 @@ public class SignInActivity extends AppCompatActivity implements
 
     private void writeNewUser(GoogleSignInAccount account, final double lat,final double lng) {
        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-       final User user = new User( firebaseUser.getUid(),account.getGivenName() ,account.getEmail(),account.getFamilyName(),account.getDisplayName(), FirebaseInstanceId.getInstance().getToken(),account.getPhotoUrl().toString(),lat,lng );
+       final User user = new User( firebaseUser.getUid(),account.getGivenName() ,account.getEmail(),account.getFamilyName(),account.getDisplayName(), FirebaseInstanceId.getInstance().getToken(), firebaseUser.getPhotoUrl().toString(),lat,lng );
         //User user = new User(name, email);
-        //ask if user exists
+        //ask if user exists111
 
 
 
@@ -379,6 +379,7 @@ public class SignInActivity extends AppCompatActivity implements
                     map.put("mLat",lat);
                     map.put("mLng",lng);
                     map.put("userKeyToken",user.getmUserKeyToken());
+                    map.put("mUserPhotoUrl",user.getmUserPhotoUrl());
                     mDatabase.child("usersNew").child(user.getmUserId()).updateChildren(map);
                 }else{
                     mDatabase.child("usersNew").child(user.getmUserId()).setValue(user);
