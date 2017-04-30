@@ -1,18 +1,22 @@
 package com.google.firebase.codelab.friendlychat.wheel_controls;
 
 import android.content.Context;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
+import android.widget.Button;
 
 import com.daprlabs.cardstack.SwipeDeck;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.codelab.friendlychat.LocationController;
+import com.google.firebase.codelab.friendlychat.MyFirebaseInstanceIdService;
+import com.google.firebase.codelab.friendlychat.NotificationController;
 import com.google.firebase.codelab.friendlychat.R;
 import com.google.firebase.codelab.friendlychat.User;
 import com.wx.wheelview.adapter.BaseWheelAdapter;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 
@@ -24,17 +28,23 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
     private LayoutInflater mLayoutInflater;
     Context mContext;
     private ArrayList<User> mUserArrayList;
+    private LocationController mLocationController;
+
+
+
+
     public CustomeArrayWheelAdapter(Context context,ArrayList<User> aUserArrayList) {
         super();
         mContext = context;
         mUserArrayList = aUserArrayList;
+        mLocationController = new LocationController(mContext);
     }
 
 
 
 
     @Override
-    public View bindView(int position, View convertView, ViewGroup parent) {
+    public View bindView(final int position, View convertView, ViewGroup parent) {
 
         View view;
         if(convertView == null) {
@@ -58,7 +68,10 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
 //        viewPager.setAdapter(new CustomPagerAdapter(mContext,picurlsList));
 
 ////////////////////////////////
-        SwipeDeck cardStack = (SwipeDeck) view.findViewById(R.id.swipe_deck);
+        final SwipeDeck cardStack = (SwipeDeck) view.findViewById(R.id.swipe_deck);
+        Button buttonSwipeLeft  = (Button) view.findViewById(R.id.buttonSwipeLeft);
+        Button buttonMeetingRequest = (Button) view.findViewById(R.id.buttonMeetingRequest);
+        Button buttonSwipeRight = (Button) view.findViewById(R.id.buttonSwipeRight);
 
 
         final SwipeDeckAdapter adapter = new SwipeDeckAdapter(picurlsList, mContext);
@@ -92,6 +105,39 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
         });
 
         ////////////////////////
+
+
+        buttonSwipeLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cardStack.swipeTopCardLeft(200);
+            }
+        });
+
+
+        buttonSwipeRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cardStack.swipeTopCardRight(200);
+            }
+        });
+
+        buttonMeetingRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.setEnabled(false);
+                double lat = mLocationController.getLat();
+                double lng = mLocationController.getLng();
+
+                NotificationController notificationController = new NotificationController(mContext);
+                ArrayList<String> regIds = new ArrayList<String>();
+                regIds.add(mUserArrayList.get(position).getmUserKeyToken());
+                JSONArray regArray = new JSONArray(regIds);
+                notificationController.sendMessage(regArray, lat + ":" + MyFirebaseInstanceIdService.DEVICE_TOKEN, lng + ":" + FirebaseAuth.getInstance().getCurrentUser().getUid(), null, "locationNotification");
+
+            }
+        });
+
 
         return view;
     }
