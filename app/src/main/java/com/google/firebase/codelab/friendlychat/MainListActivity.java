@@ -50,8 +50,7 @@ public class MainListActivity extends AppCompatActivity {
     private ArrayList<User> userArrayList;
     private LocationController locationController;
     private com.wx.wheelview.widget.WheelView mWheelViewWX;
-   // private  kankan.wheel.widget.WheelView wheelView;
-  // private MyWheelView myWheelView;
+
 
     public static final class drawable {
         public static final int wheel_bg = 0xE65100;

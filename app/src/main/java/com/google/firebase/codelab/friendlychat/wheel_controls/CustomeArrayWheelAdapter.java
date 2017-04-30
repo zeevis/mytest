@@ -2,10 +2,14 @@ package com.google.firebase.codelab.friendlychat.wheel_controls;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
+import com.daprlabs.cardstack.SwipeDeck;
 import com.google.firebase.codelab.friendlychat.R;
 import com.google.firebase.codelab.friendlychat.User;
 import com.wx.wheelview.adapter.BaseWheelAdapter;
@@ -50,8 +54,44 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
             picurlsList.addAll(profilePictures);
         }
 
-        ViewPager viewPager = (ViewPager)view. findViewById(R.id.viewpager);
-        viewPager.setAdapter(new CustomPagerAdapter(mContext,picurlsList));
+//        ViewPager viewPager = (ViewPager)view. findViewById(R.id.viewpager);
+//        viewPager.setAdapter(new CustomPagerAdapter(mContext,picurlsList));
+
+////////////////////////////////
+        SwipeDeck cardStack = (SwipeDeck) view.findViewById(R.id.swipe_deck);
+
+
+        final SwipeDeckAdapter adapter = new SwipeDeckAdapter(picurlsList, mContext);
+        cardStack.setAdapter(adapter);
+        cardStack.setHardwareAccelerationEnabled(true);
+        cardStack.setEventCallback(new SwipeDeck.SwipeEventCallback() {
+            @Override
+            public void cardSwipedLeft(int position) {
+                Log.i("MainActivity", "card was swiped left, position in adapter: " + position);
+            }
+
+            @Override
+            public void cardSwipedRight(int position) {
+                Log.i("MainActivity", "card was swiped right, position in adapter: " + position);
+            }
+
+            @Override
+            public void cardsDepleted() {
+                Log.i("MainActivity", "no more cards");
+            }
+
+            @Override
+            public void cardActionDown() {
+                Log.i("MainActivity", "action down");
+            }
+
+            @Override
+            public void cardActionUp() {
+                Log.i("MainActivity", "action up");
+            }
+        });
+
+        ////////////////////////
 
         return view;
     }
