@@ -16,7 +16,7 @@
         android:layout_marginBottom="70dp"
         swipedeck:max_visible="7"
         swipedeck:render_above="true"
-        swipedeck:opacity_end="0.000001"
+        swipedeck:opacity_end="0.000000001"
         swipedeck:rotation_degrees="15" />
 
 

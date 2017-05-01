@@ -91,6 +91,7 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
             @Override
             public void cardsDepleted() {
                 Log.i("MainActivity", "no more cards");
+
             }
 
             @Override
@@ -102,6 +103,7 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
             public void cardActionUp() {
                 Log.i("MainActivity", "action up");
             }
+
         });
 
         ////////////////////////

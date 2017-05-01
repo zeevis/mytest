@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "com.google.firebase.codelab.friendlychat"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -77,6 +77,7 @@ dependencies {
 
 
     compile 'com.daprlabs.aaron:cardstack:0.3.1-beta0'
+    //compile 'com.daprlabs.aaron:swipedeck:2.0.6'
 
 
 }

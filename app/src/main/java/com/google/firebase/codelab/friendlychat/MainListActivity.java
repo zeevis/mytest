@@ -179,8 +179,10 @@ public class MainListActivity extends AppCompatActivity {
 
 
                 mWheelViewWX.setWheelAdapter(new CustomeArrayWheelAdapter(MainListActivity.this,userArrayList)); // 文本数据源
-                mWheelViewWX.setSkin(com.wx.wheelview.widget.WheelView.Skin.Common); // common皮肤
+                mWheelViewWX.setSkin(com.wx.wheelview.widget.WheelView.Skin.Holo); // common皮肤
                 mWheelViewWX.setWheelData(userArrayList);
+                mWheelViewWX.setLoop(true);
+
 
 
 
