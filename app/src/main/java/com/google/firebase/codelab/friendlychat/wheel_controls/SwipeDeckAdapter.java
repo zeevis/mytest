@@ -64,6 +64,7 @@ public class SwipeDeckAdapter extends BaseAdapter {
             public void onClick(View v) {
                 String item = (String)getItem(position);
                 Log.i("MainActivity", item);
+
             }
         });
 

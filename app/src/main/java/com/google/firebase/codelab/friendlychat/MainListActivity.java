@@ -54,7 +54,7 @@ public class MainListActivity extends AppCompatActivity {
 
     public static final class drawable {
         public static final int wheel_bg = 0xE65100;
-        public static final int wheel_val = 0x00000000;
+        public static final int wheeghl_val = 0x00000000;
     }
 
 
@@ -179,8 +179,10 @@ public class MainListActivity extends AppCompatActivity {
 
 
                 mWheelViewWX.setWheelAdapter(new CustomeArrayWheelAdapter(MainListActivity.this,userArrayList)); // 文本数据源
-                mWheelViewWX.setSkin(com.wx.wheelview.widget.WheelView.Skin.Holo); // common皮肤
+                mWheelViewWX.setSkin(com.wx.wheelview.widget.WheelView.Skin.Common); // common皮肤
                 mWheelViewWX.setWheelData(userArrayList);
+               // mWheelViewWX.getStyle().backgroundColor = android.R.color.darker_gray;
+              //  mWheelViewWX.setBackgroundColor(getColor(android.R.color.darker_gray));
                 mWheelViewWX.setLoop(true);
 
 

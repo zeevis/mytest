@@ -1,6 +1,7 @@
 package com.google.firebase.codelab.friendlychat.wheel_controls;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,8 @@ import com.wx.wheelview.adapter.BaseWheelAdapter;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.TimerTask;
 
 /**
  * Created by zeevi on 4/22/2017.
@@ -57,7 +60,7 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
             view = convertView;
         }
         ArrayList<String> profilePictures =  (ArrayList<String>) mUserArrayList.get(position).getProfilePic();
-        ArrayList<String> picurlsList = new ArrayList<>();
+       final ArrayList<String> picurlsList = new ArrayList<>();
         picurlsList.add(mUserArrayList.get(position).getmUserPhotoUrl());
 
         if(profilePictures != null && profilePictures.size() > 0){
@@ -81,16 +84,48 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
             @Override
             public void cardSwipedLeft(int position) {
                 Log.i("MainActivity", "card was swiped left, position in adapter: " + position);
+//                Collections.rotate(picurlsList, -1);
+//             //  adapter.notifyDataSetChanged();
+//                cardStack.setSelection(0);
+            //    cardStack.setSelection((position + 1)%picurlsList.size());
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Do something after 100ms
+                        Collections.rotate(picurlsList, -1);
+                        adapter.notifyDataSetChanged();
+                        cardStack.setSelection(0);
+                    }
+                }, 200);
+
+
             }
 
             @Override
             public void cardSwipedRight(int position) {
                 Log.i("MainActivity", "card was swiped right, position in adapter: " + position);
+                //Collections.rotate(picurlsList, -1);
+                //adapter.notifyDataSetChanged();
+           //     cardStack.setSelection((position + 1)%picurlsList.size());
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Do something after 100ms
+                        Collections.rotate(picurlsList, -1);
+                        adapter.notifyDataSetChanged();
+                        cardStack.setSelection(0);
+                    }
+                }, 200);
+
             }
 
             @Override
             public void cardsDepleted() {
                 Log.i("MainActivity", "no more cards");
+             //cardStack.setSelection(0);
 
             }
 
@@ -105,6 +140,7 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
             }
 
         });
+
 
         ////////////////////////
 

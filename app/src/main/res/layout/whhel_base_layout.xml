@@ -1,30 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:swipedeck="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <com.daprlabs.cardstack.SwipeDeck
         android:id="@+id/swipe_deck"
         android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:padding="20dp"
-        android:layout_centerInParent="true"
+        android:layout_height="250dp"
         swipedeck:card_gravity="top"
+        android:padding="40dp"
         swipedeck:card_spacing="5dp"
-        android:layout_marginBottom="70dp"
         swipedeck:max_visible="7"
-        swipedeck:render_above="true"
-        swipedeck:opacity_end="0.000000001"
-        swipedeck:rotation_degrees="15" />
+        swipedeck:opacity_end="0"
+        swipedeck:rotation_degrees="15"
+        android:layout_below="@+id/viewpager"
+        android:layout_centerHorizontal="true" />
 
 
     <Button
         android:id="@+id/buttonSwipeLeft"
-        android:layout_marginLeft="20dp"
+        android:layout_alignStart="@+id/swipe_deck"
         android:text="Left"
-        android:layout_alignParentLeft="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/swipe_deck"/>
@@ -39,9 +36,9 @@
 
     <Button
         android:id="@+id/buttonSwipeRight"
+        android:layout_alignEnd="@+id/swipe_deck"
+
         android:text="Right"
-        android:layout_marginRight="20dp"
-        android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/swipe_deck"/>
