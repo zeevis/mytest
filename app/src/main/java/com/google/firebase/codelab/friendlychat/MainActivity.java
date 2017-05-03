@@ -24,6 +24,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import org.greenrobot.eventbus.EventBus;
@@ -46,12 +47,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.daprlabs.cardstack.SwipeDeck;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -79,6 +83,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.codelab.friendlychat.wheel_controls.SwipeDeckAdapter;
 import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -100,6 +105,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -133,6 +139,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private double latOfFriend;
     private double lngOfFriend;
+    private RelativeLayout unApprovedLayoutScreen;
+    private LinearLayout approvedLayoutScreen;
 
    // private Ma
 
@@ -372,7 +380,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        approvedLayoutScreen = (LinearLayout)findViewById(R.id.linearLayoutApprovedLayoutScreen) ;
 //        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(mToolbar);
         EventBus.getDefault().register(this);
@@ -392,9 +400,118 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             if(intent.getStringExtra("pending") != null &&intent.getStringExtra("pending").equals("pending")){
                 isFriendPending = true;
-                DialogUtils.createDialog(this, "do you approve this user?", new Interfaces.basicListener() {
+
+                //////////////////////////////////
+
+
+
+                ArrayList<String> profilePictures =  getIntent().getStringArrayListExtra("senderPictureList");
+                final ArrayList<String> picurlsList = new ArrayList<>();
+                picurlsList.add(getIntent().getStringExtra("senderProfilePicture"));
+
+                if(profilePictures != null && profilePictures.size() > 0){
+                    picurlsList.addAll(profilePictures);
+                }
+
+//        ViewPager viewPager = (ViewPager)view. findViewById(R.id.viewpager);
+//        viewPager.setAdapter(new CustomPagerAdapter(mContext,picurlsList));
+
+////////////////////////////////
+                unApprovedLayoutScreen = (RelativeLayout) findViewById(R.id.RelativeLayoutUnApprovedLayoutScreen);
+                unApprovedLayoutScreen.setVisibility(View.VISIBLE);
+                approvedLayoutScreen.setVisibility(View.GONE);
+                final SwipeDeck cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
+                Button buttonSwipeLeft  = (Button) findViewById(R.id.buttonSwipeLeft);
+                Button buttonApproveUser = (Button) findViewById(R.id.buttonApproveUser);
+                Button buttonSwipeRight = (Button)findViewById(R.id.buttonSwipeRight);
+
+
+                final SwipeDeckAdapter adapter = new SwipeDeckAdapter(picurlsList, this);
+                cardStack.setAdapter(adapter);
+                cardStack.setHardwareAccelerationEnabled(true);
+                cardStack.setEventCallback(new SwipeDeck.SwipeEventCallback() {
                     @Override
-                    public void onSuccess() {
+                    public void cardSwipedLeft(int position) {
+                        Log.i("MainActivity", "card was swiped left, position in adapter: " + position);
+//                Collections.rotate(picurlsList, -1);
+//             //  adapter.notifyDataSetChanged();
+//                cardStack.setSelection(0);
+                        //    cardStack.setSelection((position + 1)%picurlsList.size());
+
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                //Do something after 100ms
+                                Collections.rotate(picurlsList, -1);
+                                adapter.notifyDataSetChanged();
+                                cardStack.setSelection(0);
+                            }
+                        }, 200);
+
+
+                    }
+
+                    @Override
+                    public void cardSwipedRight(int position) {
+                        Log.i("MainActivity", "card was swiped right, position in adapter: " + position);
+                        //Collections.rotate(picurlsList, -1);
+                        //adapter.notifyDataSetChanged();
+                        //     cardStack.setSelection((position + 1)%picurlsList.size());
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                //Do something after 100ms
+                                Collections.rotate(picurlsList, -1);
+                                adapter.notifyDataSetChanged();
+                                cardStack.setSelection(0);
+                            }
+                        }, 200);
+
+                    }
+
+                    @Override
+                    public void cardsDepleted() {
+                        Log.i("MainActivity", "no more cards");
+                        //cardStack.setSelection(0);
+
+                    }
+
+                    @Override
+                    public void cardActionDown() {
+                        Log.i("MainActivity", "action down");
+                    }
+
+                    @Override
+                    public void cardActionUp() {
+                        Log.i("MainActivity", "action up");
+                    }
+
+                });
+
+
+                ////////////////////////
+
+
+                buttonSwipeLeft.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        cardStack.swipeTopCardLeft(200);
+                    }
+                });
+
+
+                buttonSwipeRight.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        cardStack.swipeTopCardRight(200);
+                    }
+                });
+
+                buttonApproveUser.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         DatabaseReference myRefMatches = FirebaseDatabase.getInstance().getReference().child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("matches");
                         DatabaseReference myFriendMatches = FirebaseDatabase.getInstance().getReference().child("usersNew").child(friendId).child("matches");
                         myRefMatches.keepSynced(true);
@@ -413,17 +530,75 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                         isFriendPending = false;
                         isFriendMatch = true;
+
+                        unApprovedLayoutScreen.setVisibility(View.GONE);
+                        approvedLayoutScreen.setVisibility(View.VISIBLE);
+
                         initGoogleMap();
-
-                    }
-
-                    @Override
-                    public void onError() {
-                        myRefPending.keepSynced(true);
-                        myRefPending.child(friendId).removeValue();
-                        finish();
                     }
                 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                ///////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//                DialogUtils.createDialog(this, "do you approve this user?", new Interfaces.basicListener() {
+//                    @Override
+//                    public void onSuccess() {
+//                        DatabaseReference myRefMatches = FirebaseDatabase.getInstance().getReference().child("usersNew").child(mFirebaseAuth.getCurrentUser().getUid()).child("matches");
+//                        DatabaseReference myFriendMatches = FirebaseDatabase.getInstance().getReference().child("usersNew").child(friendId).child("matches");
+//                        myRefMatches.keepSynced(true);
+//                        myRefPending.keepSynced(true);
+//                        myFriendMatches.keepSynced(true);
+//                        myRefPending.child(friendId).removeValue();
+//                        myRefMatches.child(friendId).child("userId").setValue(friendId);
+//                        myRefMatches.child(friendId).child("redDot").setValue("redDot");
+//
+//                        myFriendMatches.child(mFirebaseAuth.getCurrentUser().getUid()).child("userId").setValue(mFirebaseAuth.getCurrentUser().getUid());
+//                        myFriendMatches.child(mFirebaseAuth.getCurrentUser().getUid()).child("redDot").setValue("redDot");
+//                        ArrayList<String> regIds = new ArrayList<String>();
+//                        regIds.add( intent.getStringExtra("senderTokenToGetBackToo"));
+//                        JSONArray regArray = new JSONArray(regIds);
+//                        notificationController.sendMessage(regArray, locationController.getLat() + "", locationController.getLng() + ":" + mFirebaseAuth.getCurrentUser().getUid(), null, "yesIWantToMeet");
+//
+//                        isFriendPending = false;
+//                        isFriendMatch = true;
+//                        initGoogleMap();
+//
+//                    }
+//
+//                    @Override
+//                    public void onError() {
+//                        myRefPending.keepSynced(true);
+//                        myRefPending.child(friendId).removeValue();
+//                        finish();
+//                    }
+//                });
             }else {
                 isFriendMatch = true;
                 initGoogleMap();

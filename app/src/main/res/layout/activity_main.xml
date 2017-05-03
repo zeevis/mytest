@@ -11,7 +11,74 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.google.firebase.codelab.friendlychat.MainActivity">
 
+
+
+
+
+    //////////////////////////////////////////
+
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:swipedeck="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:id="@+id/RelativeLayoutUnApprovedLayoutScreen"
+        android:visibility="gone"
+        android:layout_height="wrap_content">
+
+        <com.daprlabs.cardstack.SwipeDeck
+            android:layout_marginTop="15dp"
+            android:id="@+id/swipe_deck"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
+            swipedeck:card_gravity="top"
+            android:paddingBottom="40dp"
+            swipedeck:card_spacing="5dp"
+            swipedeck:max_visible="7"
+            swipedeck:opacity_end="0"
+            swipedeck:rotation_degrees="15"
+            android:layout_below="@+id/viewpager"
+            android:layout_centerHorizontal="true" />
+
+
+        <Button
+            android:id="@+id/buttonSwipeLeft"
+            android:layout_alignStart="@+id/swipe_deck"
+            android:text="Left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/swipe_deck"/>
+
+        <Button
+            android:id="@+id/buttonApproveUser"
+            android:text="Approve user"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/swipe_deck"/>
+
+        <Button
+            android:id="@+id/buttonSwipeRight"
+            android:layout_alignEnd="@+id/swipe_deck"
+            android:text="Right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/swipe_deck"/>
+
+    </RelativeLayout>
+
+
+
+
+
+
+    ///////////////////////////////////////////
+
+
     <LinearLayout
+        android:id="@+id/linearLayoutApprovedLayoutScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"

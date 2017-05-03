@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -102,7 +103,11 @@ public class MatchesActivity extends AppCompatActivity {
                                 intent.putExtra("lngToGetBackTo" ,user.getmLng());
                                 intent.putExtra("senderIdToGetBackToo" ,user.getmUserId());
                                 intent.putExtra("senderTokenToGetBackToo" ,user.getmUserKeyToken());
+                                intent.putStringArrayListExtra("senderPictureList" ,(ArrayList)user.getProfilePic());
+                                intent.putExtra("senderProfilePicture" ,user.getmUserKeyToken());
                                 intent.putExtra("pending" ,"pending" );
+
+
                                 startActivity(intent);
                             }
                         });

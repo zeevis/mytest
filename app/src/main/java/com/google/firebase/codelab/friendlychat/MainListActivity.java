@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.wx.wheelview.widget.WheelView;
 //import com.wx.wheelview.adapter.ArrayWheelAdapter;
 //import com.wx.wheelview.widget.WheelView;
 
@@ -38,7 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import kankan.wheel.widget.WheelView;
+
 
 public class MainListActivity extends AppCompatActivity {
     private LinearLayoutManager mLinearLayoutManager;
@@ -71,6 +72,8 @@ public class MainListActivity extends AppCompatActivity {
 
        // final LinearLayout linearLayout = (LinearLayout)findViewById(R.id.wheelViewLayout);
         mWheelViewWX = (com.wx.wheelview.widget.WheelView)findViewById(R.id.wheelViewMainListActivity);
+        mWheelViewWX.setSkin(WheelView.Skin.Common);
+
 //        linearLayout.addView(wheelView);
         //wheelView= (WheelView)findViewById(R.id.wheelViewUsers);
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
@@ -179,11 +182,14 @@ public class MainListActivity extends AppCompatActivity {
 
 
                 mWheelViewWX.setWheelAdapter(new CustomeArrayWheelAdapter(MainListActivity.this,userArrayList)); // 文本数据源
-                mWheelViewWX.setSkin(com.wx.wheelview.widget.WheelView.Skin.Common); // common皮肤
+                //mWheelViewWX.setSkin(com.wx.wheelview.widget.WheelView.Skin.None); // common皮肤
                 mWheelViewWX.setWheelData(userArrayList);
                // mWheelViewWX.getStyle().backgroundColor = android.R.color.darker_gray;
               //  mWheelViewWX.setBackgroundColor(getColor(android.R.color.darker_gray));
                 mWheelViewWX.setLoop(true);
+
+
+
 
 
 
