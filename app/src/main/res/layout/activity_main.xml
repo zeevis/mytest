@@ -30,7 +30,7 @@
             android:layout_marginTop="15dp"
             android:id="@+id/swipe_deck"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="400dp"
             android:paddingRight="20dp"
             android:paddingLeft="20dp"
             swipedeck:card_gravity="top"
