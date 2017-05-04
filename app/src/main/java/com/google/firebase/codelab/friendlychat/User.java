@@ -29,6 +29,7 @@ public class User {
     public String mUserFamilyName;
     public String mUserDisplayName;
     public String mUserPhotoUrl;
+    public String mUserPhotoUrlHighQuality;
 
     public String sex;
     public ArrayList<String> profilePictures;
@@ -39,7 +40,7 @@ public class User {
     public double mLat;
     public double mLng;
 
-    public User(String userId, String userGivenName , String email, String userFamilyName, String userDisplayName, String userKeyToken, String userPhotoUrl, double lat, double lng ) {
+    public User(String userId, String userGivenName , String email, String userFamilyName, String userDisplayName, String userKeyToken, String userPhotoUrl, double lat, double lng ,String aUserPhotoUrlHighQuality) {
        // this.mUsername = uername;
         this.mEmail = email;
         this.mUserKeyToken = userKeyToken;
@@ -50,6 +51,7 @@ public class User {
         this.mUserPhotoUrl = userPhotoUrl;
         this.mLat = lat;
         this.mLng = lng;
+        this.mUserPhotoUrlHighQuality = aUserPhotoUrlHighQuality;
     }
 
     public List<String> getProfilePic() {
@@ -153,4 +155,11 @@ public class User {
 //        this.email = email;
 //    }
 
+    public String getmUserPhotoUrlHighQuality() {
+        return mUserPhotoUrlHighQuality;
+    }
+
+    public void setmUserPhotoUrlHighQuality(String mUserPhotoUrlHighQuality) {
+        this.mUserPhotoUrlHighQuality = mUserPhotoUrlHighQuality;
+    }
 }

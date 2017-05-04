@@ -104,7 +104,7 @@ public class MatchesActivity extends AppCompatActivity {
                                 intent.putExtra("senderIdToGetBackToo" ,user.getmUserId());
                                 intent.putExtra("senderTokenToGetBackToo" ,user.getmUserKeyToken());
                                 intent.putStringArrayListExtra("senderPictureList" ,(ArrayList)user.getProfilePic());
-                                intent.putExtra("senderProfilePicture" ,user.getmUserKeyToken());
+                                intent.putExtra("senderProfilePicture" ,user.getmUserPhotoUrlHighQuality());
                                 intent.putExtra("pending" ,"pending" );
 
 

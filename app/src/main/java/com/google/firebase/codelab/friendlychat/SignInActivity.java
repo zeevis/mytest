@@ -313,7 +313,7 @@ public class SignInActivity extends AppCompatActivity implements
 
     private void writeNewUser(GoogleSignInAccount account, final double lat,final double lng) {
        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-       final User user = new User( firebaseUser.getUid(),account.getGivenName() ,account.getEmail(),account.getFamilyName(),account.getDisplayName(), FirebaseInstanceId.getInstance().getToken(), firebaseUser.getPhotoUrl().toString(),lat,lng );
+       final User user = new User( firebaseUser.getUid(),account.getGivenName() ,account.getEmail(),account.getFamilyName(),account.getDisplayName(), FirebaseInstanceId.getInstance().getToken(), firebaseUser.getPhotoUrl().toString(),lat,lng,"" );
         //User user = new User(name, email);
         //ask if user exists111
 
@@ -355,7 +355,9 @@ public class SignInActivity extends AppCompatActivity implements
 
     private void writeNewUserFacebook(final double lat,final double lng) {
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        final User user = new User( firebaseUser.getUid(),firebaseUser.getDisplayName() ,firebaseUser.getEmail(),firebaseUser.getDisplayName(),firebaseUser.getDisplayName(), FirebaseInstanceId.getInstance().getToken(),firebaseUser.getPhotoUrl().toString(),lat,lng );
+        String userFaceBookId = FirebaseAuth.getInstance().getCurrentUser().getProviderData().get(1).getUid();
+        String highQualityProfilePicture = "https://graph.facebook.com/" + userFaceBookId + "/picture?type=large&redirect=true&width=600&height=600";
+        final User user = new User( firebaseUser.getUid(),firebaseUser.getDisplayName() ,firebaseUser.getEmail(),firebaseUser.getDisplayName(),firebaseUser.getDisplayName(), FirebaseInstanceId.getInstance().getToken(),firebaseUser.getPhotoUrl().toString(),lat,lng ,highQualityProfilePicture );
         //User user = new User(name, email);
         //ask if user exists
        // mDatabase.child("usersNew").child(user.getmUserId()).setValue(user);
@@ -379,7 +381,7 @@ public class SignInActivity extends AppCompatActivity implements
                     map.put("mLat",lat);
                     map.put("mLng",lng);
                     map.put("userKeyToken",user.getmUserKeyToken());
-                    map.put("mUserPhotoUrl",user.getmUserPhotoUrl());
+                    map.put("mUserPhotoUrlHighQuality",user.getmUserPhotoUrlHighQuality());
                     mDatabase.child("usersNew").child(user.getmUserId()).updateChildren(map);
                 }else{
                     mDatabase.child("usersNew").child(user.getmUserId()).setValue(user);

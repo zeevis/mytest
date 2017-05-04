@@ -69,7 +69,7 @@ public class MyArrayWheelAdapter implements WheelViewAdapter {
      ArrayList<String> picurlsList;
         if(mUserArrayList.get(i).getProfilePic()== null || mUserArrayList.get(i).getProfilePic().size() == 0){
              picurlsList = new ArrayList<>();
-             picurlsList.add(mUserArrayList.get(i).getmUserPhotoUrl());
+             picurlsList.add(mUserArrayList.get(i).getmUserPhotoUrlHighQuality());
         }else {
            picurlsList = (ArrayList<String>)mUserArrayList.get(i).getProfilePic();
         }

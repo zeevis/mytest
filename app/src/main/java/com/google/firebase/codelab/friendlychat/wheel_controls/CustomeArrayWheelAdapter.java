@@ -61,7 +61,7 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
         }
         ArrayList<String> profilePictures =  (ArrayList<String>) mUserArrayList.get(position).getProfilePic();
        final ArrayList<String> picurlsList = new ArrayList<>();
-        picurlsList.add(mUserArrayList.get(position).getmUserPhotoUrl());
+        picurlsList.add(mUserArrayList.get(position).getmUserPhotoUrlHighQuality());
 
         if(profilePictures != null && profilePictures.size() > 0){
             picurlsList.addAll(profilePictures);
