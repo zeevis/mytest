@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -115,7 +116,7 @@ public class MatchesActivity extends AppCompatActivity {
                                 intent.putExtra("senderProfilePicture" ,user.getmUserPhotoUrlHighQuality());
                                 intent.putExtra("pending" ,"pending" );
 
-
+                                mDrawerLayout.closeDrawer(0);
                                 startActivity(intent);
                             }
                         });

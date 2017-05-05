@@ -68,7 +68,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.google.firebase.codelab.friendlychat.MainActivity.MESSAGES_CHILD;
+//import static com.google.firebase.codelab.friendlychat.MainActivity.MESSAGES_CHILD;
 
 
 public class SignInActivity extends AppCompatActivity implements
