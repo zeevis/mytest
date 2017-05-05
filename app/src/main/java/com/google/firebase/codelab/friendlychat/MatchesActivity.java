@@ -116,7 +116,6 @@ public class MatchesActivity extends AppCompatActivity {
                                 intent.putExtra("senderProfilePicture" ,user.getmUserPhotoUrlHighQuality());
                                 intent.putExtra("pending" ,"pending" );
 
-                                mDrawerLayout.closeDrawer(0);
                                 startActivity(intent);
                             }
                         });
