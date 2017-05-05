@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -47,22 +48,29 @@ public class MatchesActivity extends AppCompatActivity {
     private ArrayList<User> userArrayList;
     private LocationController locationController;
 
+    private DrawerLayout mDrawerLayout;
+    Toolbar toolbar;
+    android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_matches);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        setupToolbar();
+
+
         mFirebaseAuth = FirebaseAuth.getInstance();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         // Initialize ProgressBar and RecyclerView.
         // mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -264,6 +272,8 @@ public class MatchesActivity extends AppCompatActivity {
         mMessageRecyclerView.setAdapter(mFirebaseAdapter);
 mMessageRecyclerViewPending.setLayoutManager(mLinearLayoutManagerPending);
         mMessageRecyclerViewPending.setAdapter(mFirebaseAdapterPending);
+
+        setupDrawerToggle();
     }
 
 
@@ -319,5 +329,21 @@ mMessageRecyclerViewPending.setLayoutManager(mLinearLayoutManagerPending);
         }
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
 
+    void setupToolbar(){
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+
+    void setupDrawerToggle(){
+        mDrawerToggle = new android.support.v7.app.ActionBarDrawerToggle(this,mDrawerLayout,toolbar,R.string.app_name, R.string.app_name);
+        //This is necessary to change the icon of the Drawer Toggle upon state change.
+        mDrawerToggle.syncState();
+    }
 }
