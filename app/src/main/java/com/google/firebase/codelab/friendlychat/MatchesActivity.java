@@ -53,13 +53,19 @@ public class MatchesActivity extends AppCompatActivity {
     Toolbar toolbar;
     android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
 
+    boolean toolBarWasSet;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_matches);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        setupToolbar();
+        if(!toolBarWasSet){
+            toolBarWasSet = true;
+            setupToolbar();
+        }
+
 
 
         mFirebaseAuth = FirebaseAuth.getInstance();
