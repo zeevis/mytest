@@ -10,6 +10,16 @@ import com.facebook.appevents.AppEventsLogger;
 
 public class ApplicationClass extends Application{
 
+private static ApplicationClass applicationClass;
+
+    public static ApplicationClass getInsntance(){
+        if(applicationClass == null){
+            applicationClass = new ApplicationClass();
+        }
+        return applicationClass;
+    }
+
+
 
     @Override
 public void onCreate() {

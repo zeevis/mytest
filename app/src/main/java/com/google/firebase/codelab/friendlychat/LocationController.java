@@ -52,7 +52,8 @@ public class LocationController {
     public LocationController(Context context) {
         this.context = context;
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
-        lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        Context activeContext = context!= null?context:ApplicationClass.getInsntance().getApplicationContext();
+        lm = (LocationManager) activeContext.getSystemService(Context.LOCATION_SERVICE);
         startPresentingLocation();
     }
 
