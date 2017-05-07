@@ -81,12 +81,12 @@ public class FragmentMainList extends Fragment {
         //////////////////////////wheel view///////////////////////////////////////////////
         DatabaseReference databaseReferenceUsers = mFirebaseDatabaseReference.child("usersNew");
 
-        databaseReferenceUsers.addValueEventListener(new ValueEventListener() {
+        databaseReferenceUsers.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 userArrayList = new ArrayList<User>();
                 for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                    User user = new User(postSnapshot.child("mUserId").getValue(String.class),postSnapshot.child("mUserGivenName").getValue(String.class),postSnapshot.hasChild("mEmail")?postSnapshot.child("mEmail").getValue(String.class):"",postSnapshot.child("mUserFamilyName").getValue(String.class),postSnapshot.child("mUserDisplayName").getValue(String.class),postSnapshot.child("mUserKeyToken").getValue(String.class),postSnapshot.child("mUserPhotoUrl").getValue(String.class),postSnapshot.child("mLat").getValue(double.class),postSnapshot.child("mLng").getValue(double.class),postSnapshot.child("mUserPhotoUrlHighQuality").getValue(String.class));
+                    User user = new User(postSnapshot.child("mUserId").getValue(String.class),postSnapshot.child("mUserGivenName").getValue(String.class),postSnapshot.hasChild("mEmail")?postSnapshot.child("mEmail").getValue(String.class):"",postSnapshot.child("mUserFamilyName").getValue(String.class),postSnapshot.child("mUserDisplayName").getValue(String.class),postSnapshot.child("userKeyToken").getValue(String.class),postSnapshot.child("mUserPhotoUrl").getValue(String.class),postSnapshot.child("mLat").getValue(double.class),postSnapshot.child("mLng").getValue(double.class),postSnapshot.child("mUserPhotoUrlHighQuality").getValue(String.class));
                     //  user =  postSnapshot.getValue(User.class);
                     if(postSnapshot.child("profilePic").getValue()!= null &&postSnapshot.child("profilePic").getValue() instanceof List){
                         List<String> picList =  (List<String>) postSnapshot.child("profilePic").getValue();

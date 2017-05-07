@@ -59,14 +59,14 @@ public class SwipeDeckAdapter extends BaseAdapter {
                 .load(data.get(position))
                 .into(imageView);
 
-        v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String item = (String)getItem(position);
-                Log.i("MainActivity", item);
-
-            }
-        });
+//        v.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String item = (String)getItem(position);
+//                Log.i("MainActivity", item);
+//
+//            }
+//        });
 
         return v;
     }
