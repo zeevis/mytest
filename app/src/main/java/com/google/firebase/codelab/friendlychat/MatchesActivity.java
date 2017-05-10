@@ -55,6 +55,7 @@ public class MatchesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_matches);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         if(!toolBarWasSet){
@@ -329,5 +330,17 @@ mMessageRecyclerViewPending.setLayoutManager(mLinearLayoutManagerPending);
         mDrawerToggle = new android.support.v7.app.ActionBarDrawerToggle(this,mDrawerLayout,toolbar,R.string.app_name, R.string.app_name);
         //This is necessary to change the icon of the Drawer Toggle upon state change.
         mDrawerToggle.syncState();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+       if(this.getClass().getSimpleName().equals("MainListActivity")){
+           mTextViewArrowBack.setVisibility(View.GONE);
+           return true;
+       }else{
+           mTextViewArrowBack.setVisibility(View.VISIBLE);
+           return false;
+       }
+
     }
 }
