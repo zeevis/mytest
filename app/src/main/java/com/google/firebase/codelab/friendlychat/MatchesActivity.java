@@ -2,8 +2,6 @@ package com.google.firebase.codelab.friendlychat;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -14,8 +12,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -27,10 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONArray;
-
 import java.util.ArrayList;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -46,6 +41,7 @@ public class MatchesActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private RecyclerView mMessageRecyclerView;
     private RecyclerView mMessageRecyclerViewPending;
+    private TextView mTextViewArrowBack;
     private ArrayList<User> userArrayList;
     private LocationController locationController;
 
@@ -66,23 +62,12 @@ public class MatchesActivity extends AppCompatActivity {
             setupToolbar();
         }
 
-
-
         mFirebaseAuth = FirebaseAuth.getInstance();
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
-        // Initialize ProgressBar and RecyclerView.
-        // mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         mMessageRecyclerView = (RecyclerView) findViewById(R.id.usersRecyclerView);
         mMessageRecyclerViewPending = (RecyclerView) findViewById(R.id.usersRecyclerViewPending);
+        mTextViewArrowBack = (TextView)findViewById(R.id.textViewArrowBack);
+
+        mTextViewArrowBack.setOnClickListener(mTextViewArrowBackListener);
 
         mLinearLayoutManager = new LinearLayoutManager(this);
         mLinearLayoutManagerPending = new LinearLayoutManager(this);
@@ -215,20 +200,6 @@ public class MatchesActivity extends AppCompatActivity {
                     }
                 });
 
-
-                //  userArrayList.add(user);
-//                viewHolder.messageTextView.setText(user.getmEmail());
-//                viewHolder.messengerTextView.setText(user.getmUserDisplayName());
-//                if (user.getmUserPhotoUrl() == null) {
-//                    viewHolder.messengerImageView
-//                            .setImageDrawable(ContextCompat
-//                                    .getDrawable(MatchesActivity.this,
-//                                            R.drawable.ic_account_circle_black_36dp));
-//                } else {
-//                    Glide.with(MatchesActivity.this)
-//                            .load(user.getmUserPhotoUrl())
-//                            .into(viewHolder.messengerImageView);
-//                }
             }
         };
 
@@ -297,6 +268,13 @@ mMessageRecyclerViewPending.setLayoutManager(mLinearLayoutManagerPending);
             redDotImageView = (LinearLayout) itemView.findViewById(R.id.redDotLayOut);
         }
     }
+
+    private View.OnClickListener mTextViewArrowBackListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            onBackPressed();
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
