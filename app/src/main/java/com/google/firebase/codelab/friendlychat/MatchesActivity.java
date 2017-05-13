@@ -1,6 +1,7 @@
 package com.google.firebase.codelab.friendlychat;
 
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -52,11 +53,11 @@ public class MatchesActivity extends AppCompatActivity {
 
     boolean toolBarWasSet;
 
-
+   // private BadgedDrawerArrowDrawable mBadgedDrawerArrowDrawable;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+     //  mBadgedDrawerArrowDrawable = new BadgedDrawerArrowDrawable(this);
         setContentView(R.layout.activity_matches);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         if(!toolBarWasSet){
@@ -110,6 +111,7 @@ public class MatchesActivity extends AppCompatActivity {
                                 intent.putExtra("pending" ,"pending" );
 
                                 startActivity(intent);
+                                mDrawerLayout.closeDrawer(View.TEXT_ALIGNMENT_VIEW_START);
                             }
                         });
 
@@ -118,8 +120,10 @@ public class MatchesActivity extends AppCompatActivity {
 
                         if(matchOrPending.getRedDot() != null && matchOrPending.getRedDot().equals("redDot")){
                             viewHolder.redDotImageView.setVisibility(View.VISIBLE);
+                            mDrawerToggle.setDrawerArrowDrawable(new BadgedDrawerArrowDrawable(MatchesActivity.this,true));
                         }else{
                             viewHolder.redDotImageView.setVisibility(View.GONE);
+                            mDrawerToggle.setDrawerArrowDrawable(new BadgedDrawerArrowDrawable(MatchesActivity.this,false));
                         }
                         if (user.getmUserPhotoUrl() == null) {
                             viewHolder.messengerImageView
@@ -168,6 +172,7 @@ public class MatchesActivity extends AppCompatActivity {
                                 intent.putExtra("lngToGetBackTo" ,user.getmLng());
                                 intent.putExtra("senderIdToGetBackToo" ,user.getmUserId());
                                 startActivity(intent);
+                                mDrawerLayout.closeDrawer(View.TEXT_ALIGNMENT_VIEW_START);
                             }
                         });
 
@@ -188,8 +193,10 @@ public class MatchesActivity extends AppCompatActivity {
                         }
                         if(matchOrPending.getRedDot() != null && matchOrPending.getRedDot().equals("redDot")){
                             viewHolder.redDotImageView.setVisibility(View.VISIBLE);
+                            mDrawerToggle.setDrawerArrowDrawable(new BadgedDrawerArrowDrawable(MatchesActivity.this,true));
                         }else{
                             viewHolder.redDotImageView.setVisibility(View.GONE);
+                            mDrawerToggle.setDrawerArrowDrawable(new BadgedDrawerArrowDrawable(MatchesActivity.this,false));
                         }
 
 
@@ -332,9 +339,10 @@ mMessageRecyclerViewPending.setLayoutManager(mLinearLayoutManagerPending);
         mDrawerToggle = new android.support.v7.app.ActionBarDrawerToggle(this,mDrawerLayout,toolbar,R.string.app_name, R.string.app_name);
         //This is necessary to change the icon of the Drawer Toggle upon state change.
         mDrawerToggle.syncState();
-        mDrawerToggle.setDrawerArrowDrawable(new BadgedDrawerArrowDrawable(this));
+        mDrawerToggle.setDrawerArrowDrawable(new BadgedDrawerArrowDrawable(this,false));
 
     }
+
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
