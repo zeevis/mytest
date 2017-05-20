@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.daprlabs.cardstack.SwipeDeck;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,9 +34,6 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
     private ArrayList<User> mUserArrayList;
     private LocationController mLocationController;
 
-
-
-
     public CustomeArrayWheelAdapter(Context context,ArrayList<User> aUserArrayList) {
         super();
         mContext = context;
@@ -59,13 +57,14 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
         else {
             view = convertView;
         }
-        ArrayList<String> profilePictures =  (ArrayList<String>) mUserArrayList.get(position).getProfilePic();
+        User currentUser = mUserArrayList.get(position);
+        ArrayList<String> profilePictures =  (ArrayList<String>) currentUser.getProfilePic();
        final ArrayList<String> picurlsList = new ArrayList<>();
-        String HqPROFILEpIC = mUserArrayList.get(position).getmUserPhotoUrlHighQuality();
+        String HqPROFILEpIC = currentUser.getmUserPhotoUrlHighQuality();
         if(HqPROFILEpIC != null && !HqPROFILEpIC.isEmpty()){
-            picurlsList.add(mUserArrayList.get(position).getmUserPhotoUrlHighQuality());
+            picurlsList.add(currentUser.getmUserPhotoUrlHighQuality());
         }else{
-            picurlsList.add(mUserArrayList.get(position).getmUserPhotoUrl());
+            picurlsList.add(currentUser.getmUserPhotoUrl());
         }
 
 
@@ -81,6 +80,7 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
         Button buttonSwipeLeft  = (Button) view.findViewById(R.id.buttonSwipeLeft);
         Button buttonMeetingRequest = (Button) view.findViewById(R.id.buttonMeetingRequest);
         Button buttonSwipeRight = (Button) view.findViewById(R.id.buttonSwipeRight);
+        TextView mTextViewNameAge = (TextView) view.findViewById(R.id.textViewWheelLayoutNameAge);
 
 
         final SwipeDeckAdapter adapter = new SwipeDeckAdapter(picurlsList, mContext);
@@ -149,7 +149,10 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
 
 
         ////////////////////////
-
+        String age = currentUser.getmAge();
+        boolean hasAge = age!= null && !age.isEmpty();
+        String name = currentUser.getmUserGivenName();
+        mTextViewNameAge.setText(hasAge?name + ", "+age:name);
 
         buttonSwipeLeft.setOnClickListener(new View.OnClickListener() {
             @Override

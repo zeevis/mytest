@@ -30,6 +30,7 @@ public class User {
     public String mUserDisplayName;
     public String mUserPhotoUrl;
     public String mUserPhotoUrlHighQuality;
+    public String mAge;
 
     public String sex;
     public ArrayList<String> profilePictures;
@@ -116,6 +117,10 @@ public class User {
 
     public double getmLng() {
         return mLng;
+    }
+
+    public String getmAge() {
+        return mAge;
     }
 
     public void writeNewUser(String userId, String userGivenName , String email, String userFamilyName, String userDisplayName, String userKeyToken, String userPhotoUrl, int lat, int lng ){

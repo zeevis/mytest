@@ -21,13 +21,22 @@
         android:layout_centerHorizontal="true" />
 
 
+    <TextView
+       android:layout_marginBottom="5dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/swipe_deck"
+        android:id="@+id/textViewWheelLayoutNameAge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
     <Button
         android:id="@+id/buttonSwipeLeft"
         android:layout_alignStart="@+id/swipe_deck"
         android:text="Left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/swipe_deck"/>
+        android:layout_below="@+id/textViewWheelLayoutNameAge"/>
 
     <Button
         android:id="@+id/buttonMeetingRequest"
@@ -35,7 +44,7 @@
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/swipe_deck"/>
+        android:layout_below="@+id/textViewWheelLayoutNameAge"/>
 
     <Button
         android:id="@+id/buttonSwipeRight"
@@ -44,7 +53,7 @@
         android:text="Right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/swipe_deck"/>
+        android:layout_below="@+id/textViewWheelLayoutNameAge"/>
 
 
 

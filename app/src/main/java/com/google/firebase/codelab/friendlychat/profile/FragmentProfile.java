@@ -13,10 +13,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,8 +33,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.codelab.friendlychat.PicturesFromFaceBookActivity;
-import com.google.firebase.codelab.friendlychat.ProphileActivity;
 import com.google.firebase.codelab.friendlychat.R;
+import com.google.firebase.codelab.friendlychat.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -82,6 +79,9 @@ public class FragmentProfile extends Fragment {
     private CircleImageView mImageViewAvatar3;
     private CircleImageView mImageViewAvatar4;
     private CircleImageView mImageViewAvatar5;
+
+    private EditText mEditTextName;
+    private EditText mEditTextAge;
     private DatabaseReference mFirebaseDatabaseReference;
     private Button sendAboutButton;
     private TextView aboutMeTextView;
@@ -108,6 +108,8 @@ public class FragmentProfile extends Fragment {
         sendAboutButton = (Button)mRootView.findViewById(R.id.sendAboutButton);
         aboutMeTextView = (TextView) mRootView.findViewById(R.id.aboutMeTextView);
         aboutMeEditText = (EditText) mRootView.findViewById(R.id.aboutMeEditText);
+        mEditTextName = (EditText) mRootView.findViewById(R.id.editTextProfileActivityName);
+        mEditTextAge = (EditText) mRootView.findViewById(R.id.editTextProfileActivityAge);
         cameraButton0 = (ImageButton)mRootView.findViewById(R.id.imageButtonDrawerIntentPhoto0);
         cameraButton1 = (ImageButton)mRootView.findViewById(R.id.imageButtonDrawerIntentPhoto1);
         cameraButton2 = (ImageButton)mRootView.findViewById(R.id.imageButtonDrawerIntentPhoto2);
@@ -170,6 +172,25 @@ public class FragmentProfile extends Fragment {
         });
 
 
+        mFirebaseDatabaseReference.child("usersNew").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                if(user.getmAge() != null){
+                    mEditTextAge.setText(user.getmAge());
+                }
+                if(user.getmUserGivenName() != null){
+                    mEditTextAge.setText(user.getmUserGivenName());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
 
 
         for(final ImageButton imageButton:imageButtonArrayList){
@@ -191,6 +212,10 @@ public class FragmentProfile extends Fragment {
                 aboutMeEditText.setText("");
                 mFirebaseDatabaseReference.child("usersNew").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("mAboutMe")
                         .setValue(aboutString);
+                mFirebaseDatabaseReference.child("usersNew").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("mAge")
+                        .setValue(mEditTextAge.getText().toString());
+                mFirebaseDatabaseReference.child("usersNew").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("mUserGivenName")
+                        .setValue(mEditTextName.getText().toString());
             }
         });
 
