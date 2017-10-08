@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.facebook.login.LoginManager;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.codelab.friendlychat.matches.BadgedDrawerArrowDrawable;
@@ -161,42 +162,47 @@ public class MatchesActivity extends AppCompatActivity {
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
-                        final User user =  snapshot.getValue(User.class);
+                        try {
+                            final User user =  snapshot.getValue(User.class);
 
-                        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(MatchesActivity.this, MainActivity.class);
-                                intent.putExtra("intentType" ,"cameFormMeetingActivity" );
-                                intent.putExtra("latToGetBackTo" ,user.getmLat());
-                                intent.putExtra("lngToGetBackTo" ,user.getmLng());
-                                intent.putExtra("senderIdToGetBackToo" ,user.getmUserId());
-                                startActivity(intent);
-                                mDrawerLayout.closeDrawer(View.TEXT_ALIGNMENT_VIEW_START);
+                            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(MatchesActivity.this, MainActivity.class);
+                                    intent.putExtra("intentType" ,"cameFormMeetingActivity" );
+                                    intent.putExtra("latToGetBackTo" ,user.getmLat());
+                                    intent.putExtra("lngToGetBackTo" ,user.getmLng());
+                                    intent.putExtra("senderIdToGetBackToo" ,user.getmUserId());
+                                    startActivity(intent);
+                                    mDrawerLayout.closeDrawer(View.TEXT_ALIGNMENT_VIEW_START);
+                                }
+                            });
+
+                            if(user != null) {
+                                viewHolder.messageTextView.setText(user.getmEmail());
+                                viewHolder.messengerTextView.setText(user.getmUserDisplayName());
+
+                                if (user.getmUserPhotoUrl() == null) {
+                                    viewHolder.messengerImageView
+                                            .setImageDrawable(ContextCompat
+                                                    .getDrawable(MatchesActivity.this,
+                                                            R.drawable.ic_account_circle_black_36dp));
+                                } else {
+                                    Glide.with(MatchesActivity.this)
+                                            .load(user.getmUserPhotoUrl())
+                                            .into(viewHolder.messengerImageView);
+                                }
                             }
-                        });
-
-                        if(user != null) {
-                            viewHolder.messageTextView.setText(user.getmEmail());
-                            viewHolder.messengerTextView.setText(user.getmUserDisplayName());
-
-                            if (user.getmUserPhotoUrl() == null) {
-                                viewHolder.messengerImageView
-                                        .setImageDrawable(ContextCompat
-                                                .getDrawable(MatchesActivity.this,
-                                                        R.drawable.ic_account_circle_black_36dp));
-                            } else {
-                                Glide.with(MatchesActivity.this)
-                                        .load(user.getmUserPhotoUrl())
-                                        .into(viewHolder.messengerImageView);
+                            if(matchOrPending.getRedDot() != null && matchOrPending.getRedDot().equals("redDot")){
+                                viewHolder.redDotImageView.setVisibility(View.VISIBLE);
+                                mDrawerToggle.setDrawerArrowDrawable(new BadgedDrawerArrowDrawable(MatchesActivity.this,true));
+                            }else{
+                                viewHolder.redDotImageView.setVisibility(View.GONE);
+                                mDrawerToggle.setDrawerArrowDrawable(new BadgedDrawerArrowDrawable(MatchesActivity.this,false));
                             }
-                        }
-                        if(matchOrPending.getRedDot() != null && matchOrPending.getRedDot().equals("redDot")){
-                            viewHolder.redDotImageView.setVisibility(View.VISIBLE);
-                            mDrawerToggle.setDrawerArrowDrawable(new BadgedDrawerArrowDrawable(MatchesActivity.this,true));
-                        }else{
-                            viewHolder.redDotImageView.setVisibility(View.GONE);
-                            mDrawerToggle.setDrawerArrowDrawable(new BadgedDrawerArrowDrawable(MatchesActivity.this,false));
+
+                        }catch (Exception e){
+
                         }
 
 
@@ -313,6 +319,7 @@ mMessageRecyclerViewPending.setLayoutManager(mLinearLayoutManagerPending);
                 startActivity(new Intent(this, ProphileActivity.class));
                 return true;
             case R.id.sign_out_menu:
+                LoginManager.getInstance().logOut();
                 mFirebaseAuth.signOut();
                 // mUsername = ANONYMOUS;
                 startActivity(new Intent(this, SignInActivity.class));

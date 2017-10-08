@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.facebook.login.LoginManager;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.codelab.friendlychat.main_list.FragmentMainList;
@@ -433,7 +434,8 @@ public class MainListActivity extends  MatchesActivity{// AppCompatActivity {
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             case R.id.sign_out_menu:
-              //  mFirebaseAuth.signOut();
+                LoginManager.getInstance().logOut();
+                FirebaseAuth.getInstance().signOut();
                // mUsername = ANONYMOUS;
                 startActivity(new Intent(this, SignInActivity.class));
                 return true;

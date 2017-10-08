@@ -24,4 +24,8 @@
     <string name="title_activity_prophile">ProphileActivity</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="arrow">></string>
+    <string name="com_facebook_loginview_log_out_button">Log out</string>
+    <string name="com_facebook_loginview_log_in_button">Log in</string>
+    <string name="com_facebook_loginview_log_in_button_long">Log in with Facebook</string>
+
 </resources>

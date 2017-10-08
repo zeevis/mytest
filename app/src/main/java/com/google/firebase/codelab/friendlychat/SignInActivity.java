@@ -91,13 +91,25 @@ public class SignInActivity extends AppCompatActivity implements
     private ProfileTracker profileTracker;
     private FirebaseAuth.AuthStateListener mAuthListener;
 // ...
+    private void updateUI(FirebaseUser currentUser){
+        if(currentUser != null){
+            LocationController locationController = new LocationController(SignInActivity.this);
+            double lat = locationController.getLat();
+            double lng = locationController.getLng();
 
+            writeNewUserFacebook(lat,lng);
+        }else{
+            LoginManager.getInstance().logOut();
+        }
+    }
 
     // Firebase instance variables
     @Override
     public void onStart() {
         super.onStart();
         mFirebaseAuth.addAuthStateListener(mAuthListener);
+        FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
+        updateUI(currentUser);
     }
 
     @Override
@@ -294,21 +306,21 @@ public class SignInActivity extends AppCompatActivity implements
         callbackManager.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if (result.isSuccess()) {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = result.getSignInAccount();
-                AppBaseDetails.getInstance().setAccount(account);
-                firebaseAuthWithGoogle(account);
-
-                //writeNewUser("12345678","zzzzzzz" ,"zzzzzz@gmai.com" );
-
-            } else {
-                // Google Sign In failed
-                Log.e(TAG, "Google Sign In failed.");
-            }
-        }
+//        if (requestCode == RC_SIGN_IN) {
+//            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+//            if (result.isSuccess()) {
+//                // Google Sign In was successful, authenticate with Firebase
+//                GoogleSignInAccount account = result.getSignInAccount();
+//                AppBaseDetails.getInstance().setAccount(account);
+//                firebaseAuthWithGoogle(account);
+//
+//                //writeNewUser("12345678","zzzzzzz" ,"zzzzzz@gmai.com" );
+//
+//            } else {
+//                // Google Sign In failed
+//                Log.e(TAG, "Google Sign In failed.");
+//            }
+//        }
     }
 
     private void writeNewUser(GoogleSignInAccount account, final double lat,final double lng) {
@@ -388,7 +400,7 @@ public class SignInActivity extends AppCompatActivity implements
                 }
 
                 startActivity(new Intent(SignInActivity.this, MainListActivity.class));
-                finish();
+                SignInActivity.this.finish();
             }
 
             @Override
@@ -470,6 +482,7 @@ public class SignInActivity extends AppCompatActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        faceBookLoginButton.dismissToolTip();
         accessTokenTracker.stopTracking();
         profileTracker.stopTracking();
     }
