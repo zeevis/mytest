@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,6 +30,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -96,8 +100,17 @@ public class MatchesActivity extends AppCompatActivity {
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
-                        final User user =  snapshot.getValue(User.class);
+                        final User user;// =  snapshot.getValue(User.class);
+                        final ArrayList<String> picList;
 
+                        if(snapshot.child("profilePic").getValue()!= null &&snapshot.child("profilePic").getValue() instanceof List) {
+                            user = snapshot.getValue(User.class);
+                            picList = (ArrayList<String>) snapshot.child("profilePic").getValue();
+                        }else {
+                            User1 user1 = snapshot.getValue(User1.class);
+                            user = user1;
+                            picList = new ArrayList((((HashMap<String, String>) snapshot.child("profilePic").getValue()).values()));;
+                        }
                         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -107,7 +120,7 @@ public class MatchesActivity extends AppCompatActivity {
                                 intent.putExtra("lngToGetBackTo" ,user.getmLng());
                                 intent.putExtra("senderIdToGetBackToo" ,user.getmUserId());
                                 intent.putExtra("senderTokenToGetBackToo" ,user.getmUserKeyToken());
-                                intent.putStringArrayListExtra("senderPictureList" ,(ArrayList)user.getProfilePic());
+                                intent.putStringArrayListExtra("senderPictureList" ,picList);
                                 intent.putExtra("senderProfilePicture" ,user.getmUserPhotoUrlHighQuality());
                                 intent.putExtra("pending" ,"pending" );
 
@@ -163,7 +176,17 @@ public class MatchesActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
                         try {
-                            final User user =  snapshot.getValue(User.class);
+                            final User user;// =  snapshot.getValue(User.class);
+                            final ArrayList<String> picList;
+
+                            if(snapshot.child("profilePic").getValue()== null ||  (snapshot.child("profilePic").getValue()!= null &&snapshot.child("profilePic").getValue() instanceof List)) {
+                                user = snapshot.getValue(User.class);
+                                //picList = (ArrayList<String>) snapshot.child("profilePic").getValue();
+                            }else {
+                                User1 user1 = snapshot.getValue(User1.class);
+                                user = user1;
+                               // picList = new ArrayList((((HashMap<String, String>) snapshot.child("profilePic").getValue()).values()));;
+                            }
 
                             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -174,7 +197,7 @@ public class MatchesActivity extends AppCompatActivity {
                                     intent.putExtra("lngToGetBackTo" ,user.getmLng());
                                     intent.putExtra("senderIdToGetBackToo" ,user.getmUserId());
                                     startActivity(intent);
-                                    mDrawerLayout.closeDrawer(View.TEXT_ALIGNMENT_VIEW_START);
+                                  //  mDrawerLayout.closeDrawer(GravityCompat.START);
                                 }
                             });
 
