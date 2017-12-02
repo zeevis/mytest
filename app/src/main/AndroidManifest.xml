@@ -33,9 +33,9 @@
             android:value="A123456789012" />
 
         <activity
+            android:name=".MainActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
             <!-- <intent-filter> -->
@@ -46,9 +46,10 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
+            android:name=".SignInActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:name=".SignInActivity">
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -70,10 +71,10 @@
         <!-- </intent-filter> -->
         <!-- </activity> -->
         <activity
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
             android:name="com.facebook.CustomTabActivity"
-            android:exported="true">
+            android:configChanges="orientation"
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -100,10 +101,10 @@
         </service>
 
         <activity
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
             android:name=".MeetingRequestNotificationActivity"
+            android:configChanges="orientation"
             android:label="@string/title_activity_meeting_request_notification"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Dialog" />
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
@@ -114,37 +115,35 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
             android:name=".MainListActivity"
+            android:configChanges="orientation"
             android:label="@string/title_activity_main_list"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
             android:name=".MatchesActivity"
+            android:configChanges="orientation"
             android:label="@string/title_activity_matches"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
             android:name=".ProphileActivity"
+            android:configChanges="orientation"
             android:label="@string/title_activity_prophile"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
-            android:configChanges="orientation"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".PicturesFromFaceBookActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-
-        <activity
             android:configChanges="orientation"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".SettingsActivity"
+            android:configChanges="orientation"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".splash.SplashActivity"></activity>
     </application>
 
 </manifest>

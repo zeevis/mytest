@@ -7,6 +7,8 @@
     android:gravity="center"
     android:orientation="vertical">
 
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,5 +33,20 @@
         android:layout_marginTop="30dp"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="50dp" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutLoading"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:src="@drawable/love_birds_icon"
+            android:layout_width="200dp"
+            android:layout_height="200dp" />
+
+    </LinearLayout>
 
 </FrameLayout>

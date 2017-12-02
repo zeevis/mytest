@@ -25,6 +25,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -90,6 +91,7 @@ public class SignInActivity extends AppCompatActivity implements
     private AccessToken accessToken;
     private ProfileTracker profileTracker;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private LinearLayout linearLayoutLoading;
 // ...
     private void updateUI(FirebaseUser currentUser){
         if(currentUser != null){
@@ -100,6 +102,7 @@ public class SignInActivity extends AppCompatActivity implements
             writeNewUserFacebook(lat,lng);
         }else{
             LoginManager.getInstance().logOut();
+            linearLayoutLoading.setVisibility(View.GONE);
         }
     }
 
@@ -128,6 +131,7 @@ public class SignInActivity extends AppCompatActivity implements
         mFirebaseAuth = FirebaseAuth.getInstance();
         // Assign fields
         mSignInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        linearLayoutLoading = (LinearLayout) findViewById(R.id.linearLayoutLoading);
 
 
         try {
@@ -236,16 +240,17 @@ public class SignInActivity extends AppCompatActivity implements
         faceBookLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                linearLayoutLoading.setVisibility(View.VISIBLE);
                 // App code
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
 
-                LoginManager.getInstance().logInWithReadPermissions(
-                        SignInActivity.this,
-                        Arrays.asList("user_photos"));
-
-                LoginManager.getInstance().logInWithPublishPermissions(
-                        SignInActivity.this,
-                        Arrays.asList("publish_actions"));
+//                LoginManager.getInstance().logInWithReadPermissions(
+//                        SignInActivity.this,
+//                        Arrays.asList("user_photos"));
+//
+//                LoginManager.getInstance().logInWithPublishPermissions(
+//                        SignInActivity.this,
+//                        Arrays.asList("publish_actions"));
 
 
 
@@ -257,19 +262,22 @@ public class SignInActivity extends AppCompatActivity implements
             public void onCancel() {
                 // App code
                 Log.d(TAG, "facebook:onCancel");
+                linearLayoutLoading.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(FacebookException exception) {
                 // App code
                 Log.d(TAG, "facebook:onError", exception);
+                linearLayoutLoading.setVisibility(View.GONE);
             }
         });
 
         faceBookLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginManager.getInstance().logInWithReadPermissions(SignInActivity.this, Arrays.asList("public_profile"));
+                linearLayoutLoading.setVisibility(View.VISIBLE);
+             //   LoginManager.getInstance().logInWithReadPermissions(SignInActivity.this, Arrays.asList("public_profile"));
             }
         });
 
@@ -323,35 +331,35 @@ public class SignInActivity extends AppCompatActivity implements
 //        }
     }
 
-    private void writeNewUser(GoogleSignInAccount account, final double lat,final double lng) {
-       final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-       final User user = new User( firebaseUser.getUid(),account.getGivenName() ,account.getEmail(),account.getFamilyName(),account.getDisplayName(), FirebaseInstanceId.getInstance().getToken(), firebaseUser.getPhotoUrl().toString(),lat,lng,"" );
-        //User user = new User(name, email);
-        //ask if user exists111
-
-
-
-        mDatabase.child("usersNew").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild(firebaseUser.getUid())) {
-                    HashMap<String,Object> map = new HashMap<String, Object>();
-                    map.put("mLat",lat);
-                    map.put("mLng",lng);
-                    map.put("mUserKeyToken",user.getmUserKeyToken());
-                    mDatabase.child("usersNew").child(user.getmUserId()).updateChildren(map);
-                }else{
-                    mDatabase.child("usersNew").child(user.getmUserId()).setValue(user);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
+//    private void writeNewUser(GoogleSignInAccount account, final double lat,final double lng) {
+//       final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+//       final User user = new User( firebaseUser.getUid(),account.getGivenName() ,account.getEmail(),account.getFamilyName(),account.getDisplayName(), FirebaseInstanceId.getInstance().getToken(), firebaseUser.getPhotoUrl().toString(),lat,lng,"" );
+//        //User user = new User(name, email);
+//        //ask if user exists111
+//
+//
+//
+//        mDatabase.child("usersNew").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.hasChild(firebaseUser.getUid())) {
+//                    HashMap<String,Object> map = new HashMap<String, Object>();
+//                    map.put("mLat",lat);
+//                    map.put("mLng",lng);
+//                    map.put("mUserKeyToken",user.getmUserKeyToken());
+//                    mDatabase.child("usersNew").child(user.getmUserId()).updateChildren(map);
+//                }else{
+//                    mDatabase.child("usersNew").child(user.getmUserId()).setValue(user);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//
 
 
 //        mDatabase.child(MESSAGES_CHILD)
@@ -363,7 +371,7 @@ public class SignInActivity extends AppCompatActivity implements
 //        mFirebaseDatabaseReference.child(MESSAGES_CHILD)
 //                .push().setValue(friendlyMessage);
 //        mMessageEditText.setText("");
-    }
+  //  }
 
     private void writeNewUserFacebook(final double lat,final double lng) {
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -416,34 +424,34 @@ public class SignInActivity extends AppCompatActivity implements
     }
 
 
-    private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGooogle:" + acct.getId());
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mFirebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle theF
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithCredential", task.getException());
-                            Toast.makeText(SignInActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            LocationController locationController = new LocationController(SignInActivity.this);
-                            double lat = locationController.getLat();
-                            double lng = locationController.getLng();
-
-                            writeNewUser(acct,lat,lng);
-                            startActivity(new Intent(SignInActivity.this, MainListActivity.class));
-                            finish();
-                        }
-                    }
-                });
-    }
+//    private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
+//        Log.d(TAG, "firebaseAuthWithGooogle:" + acct.getId());
+//        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+//        mFirebaseAuth.signInWithCredential(credential)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+//
+//                        // If sign in fails, display a message to the user. If sign in succeeds
+//                        // the auth state listener will be notified and logic to handle theF
+//                        // signed in user can be handled in the listener.
+//                        if (!task.isSuccessful()) {
+//                            Log.w(TAG, "signInWithCredential", task.getException());
+//                            Toast.makeText(SignInActivity.this, "Authentication failed.",
+//                                    Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            LocationController locationController = new LocationController(SignInActivity.this);
+//                            double lat = locationController.getLat();
+//                            double lng = locationController.getLng();
+//
+//                            writeNewUser(acct,lat,lng);
+//                            startActivity(new Intent(SignInActivity.this, MainListActivity.class));
+//                            finish();
+//                        }
+//                    }
+//                });
+//    }
 
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
