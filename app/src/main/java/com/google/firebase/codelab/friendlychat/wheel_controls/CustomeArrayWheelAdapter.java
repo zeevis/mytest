@@ -3,7 +3,9 @@ package com.google.firebase.codelab.friendlychat.wheel_controls;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -14,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.codelab.friendlychat.LocationController;
 import com.google.firebase.codelab.friendlychat.MyFirebaseInstanceIdService;
 import com.google.firebase.codelab.friendlychat.NotificationController;
+import com.google.firebase.codelab.friendlychat.OnSwipeTouchListener;
 import com.google.firebase.codelab.friendlychat.R;
 import com.google.firebase.codelab.friendlychat.User;
 import com.wx.wheelview.adapter.BaseWheelAdapter;
@@ -33,6 +36,7 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
     Context mContext;
     private ArrayList<User> mUserArrayList;
     private LocationController mLocationController;
+    private SwipeDeck cardStack;
 
     public CustomeArrayWheelAdapter(Context context,ArrayList<User> aUserArrayList) {
         super();
@@ -76,19 +80,26 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
 //        viewPager.setAdapter(new CustomPagerAdapter(mContext,picurlsList));
 
 ////////////////////////////////
-        final SwipeDeck cardStack = (SwipeDeck) view.findViewById(R.id.swipe_deck);
+         cardStack = (SwipeDeck) view.findViewById(R.id.swipe_deck);
         Button buttonSwipeLeft  = (Button) view.findViewById(R.id.buttonSwipeLeft);
         Button buttonMeetingRequest = (Button) view.findViewById(R.id.buttonMeetingRequest);
         Button buttonSwipeRight = (Button) view.findViewById(R.id.buttonSwipeRight);
         TextView mTextViewNameAge = (TextView) view.findViewById(R.id.textViewWheelLayoutNameAge);
 
 
-        final SwipeDeckAdapter adapter = new SwipeDeckAdapter(picurlsList, mContext);
+        final SwipeDeckAdapter adapter = new SwipeDeckAdapter(picurlsList, mContext,onSwipeCardListener);
         cardStack.setAdapter(adapter);
         cardStack.setHardwareAccelerationEnabled(true);
+//        cardStack.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//                return false;
+//            }
+//        });
         cardStack.setEventCallback(new SwipeDeck.SwipeEventCallback() {
             @Override
             public void cardSwipedLeft(int position) {
+                cardStack.requestFocus();
                 Log.i("MainActivity", "card was swiped left, position in adapter: " + position);
 //                Collections.rotate(picurlsList, -1);
 //             //  adapter.notifyDataSetChanged();
@@ -111,6 +122,7 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
 
             @Override
             public void cardSwipedRight(int position) {
+                cardStack.requestFocus();
                 Log.i("MainActivity", "card was swiped right, position in adapter: " + position);
                 //Collections.rotate(picurlsList, -1);
                 //adapter.notifyDataSetChanged();
@@ -137,11 +149,16 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
 
             @Override
             public void cardActionDown() {
+
+                cardStack.requestFocus();
                 Log.i("MainActivity", "action down");
+
             }
 
             @Override
             public void cardActionUp() {
+             //   cardStack.swipeTopCardLeft(200);
+                cardStack.requestFocus();
                 Log.i("MainActivity", "action up");
             }
 
@@ -190,4 +207,15 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
     }
 
 
+    private SwipeDeckAdapter.OnSwipeCardListener onSwipeCardListener = new SwipeDeckAdapter.OnSwipeCardListener() {
+        @Override
+        public void swipeLeft() {
+            cardStack.swipeTopCardLeft(200);
+        }
+
+        @Override
+        public void swipeRight() {
+            cardStack.swipeTopCardRight(200);
+        }
+    };
 }

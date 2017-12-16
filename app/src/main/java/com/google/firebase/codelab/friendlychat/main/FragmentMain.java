@@ -150,6 +150,7 @@ public class FragmentMain extends Fragment implements OnMapReadyCallback
     LocationController locationController;
     private View mRootView;
     private Intent mIntent;
+    private SwipeDeck cardStack;
 
     public void setIntent(Intent intent) {
         this.mIntent = intent;
@@ -201,13 +202,13 @@ public class FragmentMain extends Fragment implements OnMapReadyCallback
                 unApprovedLayoutScreen = (RelativeLayout) mRootView.findViewById(R.id.RelativeLayoutUnApprovedLayoutScreen);
                 unApprovedLayoutScreen.setVisibility(View.VISIBLE);
                 approvedLayoutScreen.setVisibility(View.GONE);
-                final SwipeDeck cardStack = (SwipeDeck) mRootView.findViewById(R.id.swipe_deck);
+                 cardStack = (SwipeDeck) mRootView.findViewById(R.id.swipe_deck);
                 Button buttonSwipeLeft  = (Button) mRootView.findViewById(R.id.buttonSwipeLeft);
                 Button buttonApproveUser = (Button) mRootView.findViewById(R.id.buttonApproveUser);
                 Button buttonSwipeRight = (Button)mRootView.findViewById(R.id.buttonSwipeRight);
 
 
-                final SwipeDeckAdapter adapter = new SwipeDeckAdapter(picurlsList, getActivity());
+                final SwipeDeckAdapter adapter = new SwipeDeckAdapter(picurlsList, getActivity(),null);
                 cardStack.setAdapter(adapter);
                 cardStack.setHardwareAccelerationEnabled(true);
                 cardStack.setEventCallback(new SwipeDeck.SwipeEventCallback() {
@@ -915,6 +916,16 @@ public class FragmentMain extends Fragment implements OnMapReadyCallback
         }
     }
 
-
+//private SwipeDeckAdapter.OnSwipeCardListener onSwipeCardListener = new SwipeDeckAdapter.OnSwipeCardListener() {
+//    @Override
+//    public void swipeLeft() {
+//        cardStack.swipeTopCardLeft(200);
+//    }
+//
+//    @Override
+//    public void swipeRight() {
+//        cardStack.swipeTopCardRight(200);
+//    }
+//};
 
 }
