@@ -1,6 +1,7 @@
 package com.google.firebase.codelab.friendlychat.wheel_controls;
 
 import android.content.Context;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,6 +23,8 @@ public class SwipeDeckAdapter extends BaseAdapter {
     private List<String> data;
     private Context context;
     private OnSwipeCardListener onSwipeCardListener;
+    float x1, x2;
+    float y1, y2;
 
     public SwipeDeckAdapter(List<String> data, Context context,OnSwipeCardListener onSwipeCardListener) {
         this.data = data;
@@ -59,44 +62,32 @@ public class SwipeDeckAdapter extends BaseAdapter {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (onSwipeCardListener != null) {
-                    float x1 = 0, x2;
-                    float y1, y2;
+
                     switch (motionEvent.getAction()) {
                         // when user first touches the screen we get x and y coordinate
                         case MotionEvent.ACTION_DOWN: {
                             x1 = motionEvent.getX();
                             y1 = motionEvent.getY();
-                            break;
+                            return true;
                         }
                         case MotionEvent.ACTION_UP: {
                             x2 = motionEvent.getX();
                             y2 = motionEvent.getY();
-
                             //if left to right sweep event on screen
                             if (x1 < x2) {
                                 onSwipeCardListener.swipeRight();
                             }
-
                             // if right to left sweep event on screen
                             if (x1 > x2) {
                                 onSwipeCardListener.swipeLeft();
                             }
-
-                            // if UP to Down sweep event on screen
-//                            if (y1 < y2) {
-//                             //   Toast.makeText(this, "UP to Down Swap Performed", Toast.LENGTH_LONG).show();
-//                            }
-//
-//                            //if Down to UP sweep event on screen
-//                            if (y1 > y2) {
-//                              //  Toast.makeText(this, "Down to UP Swap Performed", Toast.LENGTH_LONG).show();
-//                            }
-                            break;
+                            view.performClick();
+                            return true;
                         }
                     }
 
                 }
-                return true;
+                return false;
             }
         });
 
