@@ -66,8 +66,10 @@ public class SwipeDeckAdapter extends BaseAdapter {
                     switch (motionEvent.getAction()) {
                         // when user first touches the screen we get x and y coordinate
                         case MotionEvent.ACTION_DOWN: {
+                            onSwipeCardListener.actionDown();
                             x1 = motionEvent.getX();
                             y1 = motionEvent.getY();
+
                             return true;
                         }
                         case MotionEvent.ACTION_UP: {
@@ -81,7 +83,8 @@ public class SwipeDeckAdapter extends BaseAdapter {
                             if (x1 > x2) {
                                 onSwipeCardListener.swipeLeft();
                             }
-                            view.performClick();
+                          //  view.performClick();
+                            onSwipeCardListener.actionUp();
                             return true;
                         }
                     }
@@ -110,5 +113,7 @@ public class SwipeDeckAdapter extends BaseAdapter {
     public interface OnSwipeCardListener {
         void swipeLeft();
         void swipeRight();
+        void actionDown();
+        void actionUp();
     }
 }

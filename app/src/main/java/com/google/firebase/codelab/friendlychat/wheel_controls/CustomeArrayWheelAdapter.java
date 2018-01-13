@@ -36,43 +36,42 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
     Context mContext;
     private ArrayList<User> mUserArrayList;
     private LocationController mLocationController;
-    private SwipeDeck cardStack;
+//    private SwipeDeck cardStack;
+    private CustomeArrayWheelAdapterListener customeArrayWheelAdapterListener;
 
-    public CustomeArrayWheelAdapter(Context context,ArrayList<User> aUserArrayList) {
+    public CustomeArrayWheelAdapter(Context context, ArrayList<User> aUserArrayList,CustomeArrayWheelAdapterListener customeArrayWheelAdapterListener) {
         super();
         mContext = context;
         mUserArrayList = aUserArrayList;
         mLocationController = new LocationController(mContext);
+        this.customeArrayWheelAdapterListener = customeArrayWheelAdapterListener;
     }
-
-
 
 
     @Override
     public View bindView(final int position, View convertView, ViewGroup parent) {
 
         View view;
-        if(convertView == null) {
+        if (convertView == null) {
 
             mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view =  mLayoutInflater
+            view = mLayoutInflater
                     .inflate(R.layout.whhel_base_layout, parent, false);
-        }
-        else {
+        } else {
             view = convertView;
         }
         User currentUser = mUserArrayList.get(position);
-        ArrayList<String> profilePictures =  (ArrayList<String>) currentUser.getProfilePic();
-       final ArrayList<String> picurlsList = new ArrayList<>();
+        ArrayList<String> profilePictures = (ArrayList<String>) currentUser.getProfilePic();
+        final ArrayList<String> picurlsList = new ArrayList<>();
         String HqPROFILEpIC = currentUser.getmUserPhotoUrlHighQuality();
-        if(HqPROFILEpIC != null && !HqPROFILEpIC.isEmpty()){
+        if (HqPROFILEpIC != null && !HqPROFILEpIC.isEmpty()) {
             picurlsList.add(currentUser.getmUserPhotoUrlHighQuality());
-        }else{
+        } else {
             picurlsList.add(currentUser.getmUserPhotoUrl());
         }
 
 
-        if(profilePictures != null && profilePictures.size() > 0){
+        if (profilePictures != null && profilePictures.size() > 0) {
             picurlsList.addAll(profilePictures);
         }
 
@@ -80,14 +79,38 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
 //        viewPager.setAdapter(new CustomPagerAdapter(mContext,picurlsList));
 
 ////////////////////////////////
-         cardStack = (SwipeDeck) view.findViewById(R.id.swipe_deck);
-        Button buttonSwipeLeft  = (Button) view.findViewById(R.id.buttonSwipeLeft);
+       final SwipeDeck cardStack = (SwipeDeck) view.findViewById(R.id.swipe_deck);
+        Button buttonSwipeLeft = (Button) view.findViewById(R.id.buttonSwipeLeft);
         Button buttonMeetingRequest = (Button) view.findViewById(R.id.buttonMeetingRequest);
         Button buttonSwipeRight = (Button) view.findViewById(R.id.buttonSwipeRight);
         TextView mTextViewNameAge = (TextView) view.findViewById(R.id.textViewWheelLayoutNameAge);
 
 
-        final SwipeDeckAdapter adapter = new SwipeDeckAdapter(picurlsList, mContext,onSwipeCardListener);
+        final SwipeDeckAdapter adapter = new SwipeDeckAdapter(picurlsList, mContext, new SwipeDeckAdapter.OnSwipeCardListener() {
+            @Override
+            public void swipeLeft() {
+                cardStack.swipeTopCardLeft(200);
+            }
+
+            @Override
+            public void swipeRight() {
+                cardStack.swipeTopCardRight(200);
+            }
+
+            @Override
+            public void actionDown() {
+                if(customeArrayWheelAdapterListener!= null){
+                    customeArrayWheelAdapterListener.actionDown();
+                }
+            }
+
+            @Override
+            public void actionUp() {
+                if(customeArrayWheelAdapterListener!= null){
+                    customeArrayWheelAdapterListener.actionUp();
+                }
+            }
+        });
         cardStack.setAdapter(adapter);
         cardStack.setHardwareAccelerationEnabled(true);
 //        cardStack.setOnTouchListener(new View.OnTouchListener() {
@@ -104,7 +127,7 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
 //                Collections.rotate(picurlsList, -1);
 //             //  adapter.notifyDataSetChanged();
 //                cardStack.setSelection(0);
-            //    cardStack.setSelection((position + 1)%picurlsList.size());
+                //    cardStack.setSelection((position + 1)%picurlsList.size());
 
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
@@ -126,7 +149,7 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
                 Log.i("MainActivity", "card was swiped right, position in adapter: " + position);
                 //Collections.rotate(picurlsList, -1);
                 //adapter.notifyDataSetChanged();
-           //     cardStack.setSelection((position + 1)%picurlsList.size());
+                //     cardStack.setSelection((position + 1)%picurlsList.size());
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -143,7 +166,7 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
             @Override
             public void cardsDepleted() {
                 Log.i("MainActivity", "no more cards");
-             //cardStack.setSelection(0);
+                //cardStack.setSelection(0);
 
             }
 
@@ -157,7 +180,7 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
 
             @Override
             public void cardActionUp() {
-             //   cardStack.swipeTopCardLeft(200);
+                //   cardStack.swipeTopCardLeft(200);
                 cardStack.requestFocus();
                 Log.i("MainActivity", "action up");
             }
@@ -167,9 +190,9 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
 
         ////////////////////////
         String age = currentUser.getmAge();
-        boolean hasAge = age!= null && !age.isEmpty();
+        boolean hasAge = age != null && !age.isEmpty();
         String name = currentUser.getmUserGivenName();
-        mTextViewNameAge.setText(hasAge?name + ", "+age:name);
+        mTextViewNameAge.setText(hasAge ? name + ", " + age : name);
 
         buttonSwipeLeft.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,15 +230,34 @@ public class CustomeArrayWheelAdapter extends BaseWheelAdapter<User> {
     }
 
 
-    private SwipeDeckAdapter.OnSwipeCardListener onSwipeCardListener = new SwipeDeckAdapter.OnSwipeCardListener() {
-        @Override
-        public void swipeLeft() {
-            cardStack.swipeTopCardLeft(200);
-        }
+//    private SwipeDeckAdapter.OnSwipeCardListener onSwipeCardListener = new SwipeDeckAdapter.OnSwipeCardListener() {
+//        @Override
+//        public void swipeLeft() {
+//            cardStack.swipeTopCardLeft(200);
+//        }
+//
+//        @Override
+//        public void swipeRight() {
+//            cardStack.swipeTopCardRight(200);
+//        }
+//
+//        @Override
+//        public void actionDown() {
+//            if(customeArrayWheelAdapterListener!= null){
+//                customeArrayWheelAdapterListener.actionDown();
+//            }
+//        }
+//
+//        @Override
+//        public void actionUp() {
+//            if(customeArrayWheelAdapterListener!= null){
+//                customeArrayWheelAdapterListener.actionUp();
+//            }
+//        }
+//    };
 
-        @Override
-        public void swipeRight() {
-            cardStack.swipeTopCardRight(200);
-        }
-    };
+    public interface CustomeArrayWheelAdapterListener {
+        void actionUp();
+        void actionDown();
+    }
 }

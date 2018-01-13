@@ -105,7 +105,7 @@ public class FragmentMainList extends Fragment {
                     userArrayList.add(user);
                 }
 
-                mWheelViewWX.setWheelAdapter(new CustomeArrayWheelAdapter(getActivity(),userArrayList)); // 文本数据源
+                mWheelViewWX.setWheelAdapter(new CustomeArrayWheelAdapter(getActivity(),userArrayList,customeArrayWheelAdapterListener)); // 文本数据源
                 mWheelViewWX.setWheelData(userArrayList);
                 mWheelViewWX.setLoop(true);
 
@@ -135,4 +135,16 @@ public class FragmentMainList extends Fragment {
             messengerImageView = (CircleImageView) itemView.findViewById(R.id.messengerImageView);
         }
     }
+
+    private CustomeArrayWheelAdapter.CustomeArrayWheelAdapterListener customeArrayWheelAdapterListener = new CustomeArrayWheelAdapter.CustomeArrayWheelAdapterListener() {
+        @Override
+        public void actionUp() {
+            mWheelViewWX.setTranscriptMode(1);
+        }
+
+        @Override
+        public void actionDown() {
+            mWheelViewWX.setTranscriptMode(0);
+        }
+    };
 }
